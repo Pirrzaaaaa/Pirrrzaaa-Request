@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryuuzaa Stickers | Hub</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <style>
+        /* ==========================================================================
+           1. VARIABEL TEMA (DARK JELLY - ANTI BUG)
+           ========================================================================== */
+        :root {
+            --bg-color: #130f16;      
+            --card-bg: #1c1722;       
+            --input-bg: #272030;      
+            --text-main: #ffffff;
+            --text-muted: #a39cb3;
+            --jelly-pink: #ff7eb3;
+            --jelly-purple: #a88beb;
+            --jelly-grad: linear-gradient(135deg, var(--jelly-pink), var(--jelly-purple));
+            --border-color: #362c42;
+            --toast-bg: #241d2e;
+
+            --stat-blue: #3b82f6;
+            --stat-green: #27c93f;
+            --stat-yellow: #ffbd2e;
+            --stat-red: #ff5f56;
+        }
+
+        /* ==========================================================================
+           2. RESET & GLOBAL 
+           ========================================================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        html { overflow-x: hidden; }
+        body { 
+            background-color: var(--bg-color); color: var(--text-main); 
+            font-family: 'Inter', sans-serif; font-size: 15px;
+            -webkit-font-smoothing: antialiased; 
+        }
+        
+        h1, h2, h3, h4, .brand, .btn-submit, .btn-nav { font-family: 'Nunito', sans-serif; }
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 15px; padding-top: 85px; } 
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--jelly-purple); border-radius: 10px; }
+
+        /* ==========================================================================
+           3. NAVBAR & SIDEBAR (RAPI)
+           ========================================================================== */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--card-bg); border: 2px solid var(--border-color);
+            padding: 10px 18px; border-radius: 30px; 
+            width: calc(100% - 30px); max-width: 800px;
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%); z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 12px; }
+        .menu-toggle { font-size: 1.6rem; color: var(--text-main); cursor: pointer; display: flex; align-items: center; transition: 0.2s; background: none; border: none;}
+        .menu-toggle:hover { color: var(--jelly-pink); transform: scale(1.1); }
+        .brand { font-size: 1.2rem; font-weight: 900; color: var(--text-main); letter-spacing: 0.5px;}
+
+        .sidebar-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .sidebar-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .sidebar {
+            position: fixed; top: 0; left: -280px; width: 270px; height: 100vh;
+            background: var(--card-bg); border-right: 2px solid var(--border-color);
+            z-index: 2000; transition: left 0.3s ease; padding: 30px 20px;
+            display: flex; flex-direction: column; gap: 8px; overflow-y: auto;
+        }
+        .sidebar.active { left: 0; }
+        .close-sidebar { align-self: flex-end; font-size: 1.6rem; cursor: pointer; color: var(--text-muted); background: none; border: none; margin-bottom: 5px;}
+        .close-sidebar:hover { color: var(--jelly-pink); }
+        
+        .sidebar-logo { font-size: 1.4rem; font-weight: 900; color: var(--jelly-pink); margin-bottom: 10px; font-family: 'Nunito', sans-serif;}
+        .sidebar-label { font-size: 0.7rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; margin-bottom: 5px; padding-left: 5px;}
+
+        .sidebar-link { padding: 12px 16px; background: var(--input-bg); border-radius: 12px; font-weight: 700; font-size: 0.95rem; color: var(--text-main); display: flex; align-items: center; gap: 12px; cursor: pointer; border: 2px solid transparent; text-align: left; transition: 0.2s;}
+        .sidebar-link i { font-size: 1.3rem; color: var(--jelly-purple); transition: 0.2s;}
+        .sidebar-link:hover, .sidebar-link.active-menu { background: var(--jelly-grad); color: #fff; border-color: transparent;}
+        .sidebar-link:hover i, .sidebar-link.active-menu i { color: #fff; }
+
+        /* ==========================================================================
+           4. VIEW SYSTEM SPA (ANTI BUG, LANGSUNG MUNCUL)
+           ========================================================================== */
+        .view-section { display: none; padding-bottom: 80px; }
+        .view-section.active-view { display: block; animation: showView 0.4s ease-out forwards; }
+        @keyframes showView { 
+            0% { opacity: 0; transform: translateY(15px); } 
+            100% { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* ==========================================================================
+           5. HALAMAN 1: BERANDA (LENGKAP & UTUH)
+           ========================================================================== */
+        .hero { padding: 35px 0 25px; text-align: center; }
+        .hero-icon-wrap { display: flex; justify-content: center; gap: 12px; margin-bottom: 8px; }
+        .hero-icon-wrap i { font-size: 2.5rem; color: var(--jelly-purple); animation: float 3s ease-in-out infinite; }
+        .hero-icon-wrap i:nth-child(2) { color: var(--jelly-pink); animation-delay: 0.5s; font-size: 2.8rem;}
+        .hero-icon-wrap i:nth-child(3) { color: #fff; animation-delay: 1s; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        
+        .hero-title { font-size: clamp(2rem, 5.5vw, 3rem); font-weight: 900; line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.5px;}
+        .hero-title span { background: var(--jelly-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;}
+        .hero-desc { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto; font-weight: 500; line-height: 1.5; }
+
+        .btn-submit {
+            width: 100%; background: var(--jelly-grad); color: white; padding: 14px; border-radius: 20px;
+            font-weight: 800; font-size: 0.95rem; display: flex; justify-content: center;
+            align-items: center; gap: 8px; border: none; cursor: pointer; transition: 0.2s; margin-top: 12px;
+            font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(168, 139, 235, 0.2); }
+
+        .section-wrap { margin-bottom: 40px; }
+        .section-title { text-align: center; font-size: 1.3rem; font-weight: 900; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .section-title i { color: var(--jelly-pink); font-size: 1.6rem; }
+
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+        
+        .cat-box { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 15px; padding: 15px 10px; text-align: center; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .cat-box i { font-size: 2rem; color: var(--jelly-pink); margin-bottom: 8px; }
+        .cat-box span { font-weight: 800; font-size: 0.8rem; font-family: 'Nunito', sans-serif;}
+        .cat-box:hover { background: var(--card-bg); border-color: var(--jelly-purple); transform: translateY(-2px);}
+
+        .drop-card { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 15px; padding: 12px; display: flex; align-items: center; gap: 12px; transition: 0.2s;}
+        .drop-card img { width: 50px; height: 50px; object-fit: contain; background: #000; border-radius: 10px; padding: 4px; border: 1px solid var(--border-color);}
+        .drop-info h4 { font-size: 0.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px;}
+        .drop-info p { font-size: 0.7rem; color: var(--jelly-pink); font-weight: 700; }
+        .drop-card:hover { border-color: var(--jelly-purple); transform: translateY(-2px);}
+
+        .jelly-box { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px; padding: 20px 15px; text-align: center; transition: 0.2s; }
+        .jelly-box i { font-size: 2.2rem; color: var(--jelly-purple); margin-bottom: 10px; display: inline-block;}
+        .jelly-box h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 4px; color: var(--text-main);}
+        .jelly-box p { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; line-height: 1.4;}
+        .jelly-box:hover { border-color: var(--jelly-pink); transform: translateY(-3px); }
+
+        .trending-wrap { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .trend-tag { background: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 5px;}
+        .trend-tag i { color: var(--stat-yellow); font-size: 0.9rem;}
+
+        .testi-box { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px 20px 20px 5px; padding: 15px; position: relative;}
+        .testi-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;}
+        .testi-avatar { width: 30px; height: 30px; background: var(--jelly-grad); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-family: 'Nunito', sans-serif; font-size: 0.8rem;}
+        .testi-name { font-size: 0.85rem; font-weight: 800; color: var(--text-main); }
+        .testi-text { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; line-height: 1.4; font-style: italic;}
+
+        .faq-box { background: var(--input-bg); border-radius: 15px; padding: 15px; border: 2px solid var(--border-color); display: flex; flex-direction: column; justify-content: flex-start;}
+        .faq-q { font-weight: 800; font-size: 0.85rem; color: var(--text-main); margin-bottom: 6px; display: flex; gap: 8px; align-items: flex-start; font-family: 'Nunito', sans-serif;}
+        .faq-q i { color: var(--jelly-pink); font-size: 1.1rem; margin-top: 1px;}
+        .faq-a { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; padding-left: 24px; line-height: 1.5;}
+
+        /* Unified Card for ALL sub-pages */
+        .unified-card {
+            background: var(--card-bg); border: 2px solid var(--border-color);
+            border-radius: 25px; padding: 25px; position: relative; margin-top: 10px; width: 100%;
+        }
+        .mac-dots { display: flex; gap: 5px; margin-bottom: 20px; justify-content: center;}
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-r { background: var(--stat-red); } .dot-y { background: var(--stat-yellow); } .dot-g { background: var(--stat-green); }
+
+        /* ==========================================================================
+           6. GALERI STICKER & FOLDER
+           ========================================================================== */
+        .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+        .folder-card { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 18px; padding: 15px 12px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .folder-card i { font-size: 3rem; color: var(--jelly-pink); margin-bottom: 8px; }
+        .folder-card span { display: block; font-size: 0.85rem; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--text-main); }
+        .folder-card p { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; margin-top: 4px;}
+        .folder-card:hover { background: var(--card-bg); border-color: var(--jelly-purple); transform: translateY(-3px); }
+
+        .items-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .btn-back-folder { background: var(--input-bg); border: 2px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: 12px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 5px; transition: 0.2s; font-size: 0.8rem;}
+        .btn-back-folder:hover { background: var(--card-bg); border-color: var(--jelly-pink); }
+        
+        .sticker-items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
+        .gal-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .gal-card img { width: 100%; aspect-ratio: 1; object-fit: contain; margin-bottom: 6px; background: #000; border-radius: 8px; padding: 4px; }
+        .gal-name { font-size: 0.75rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;}
+        
+        /* Animasi Transisi antar Folder/Galeri */
+        .gal-view { display: none; }
+        .gal-view.active-gal { display: block; animation: showView 0.3s ease-out forwards; }
+
+        /* ==========================================================================
+           7. FORM REQUEST
+           ========================================================================== */
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: flex; align-items: center; gap: 6px; font-weight: 800; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-main); font-family: 'Nunito', sans-serif;}
+        .badge-req { background: rgba(255,77,77,0.15); color: var(--stat-red); font-size: 0.6rem; padding: 2px 6px; border-radius: 8px; text-transform: uppercase; font-weight: 700; border: 1px solid var(--stat-red);}
+        .badge-opt { background: var(--input-bg); color: var(--text-muted); font-size: 0.6rem; padding: 2px 6px; border-radius: 8px; text-transform: uppercase; font-weight: 700; border: 1px solid var(--border-color);}
+        
+        .form-input, .form-textarea {
+            width: 100%; padding: 12px 15px; border-radius: 15px; background: var(--input-bg);
+            border: 2px solid transparent; color: var(--text-main); font-size: 0.85rem; transition: 0.2s; font-weight: 500;
+        }
+        .form-input:focus, .form-textarea:focus { border-color: var(--jelly-pink); background: var(--bg-color); }
+        .form-textarea { height: 80px; resize: none; border-radius: 15px; }
+
+        .media-box { background: var(--input-bg); padding: 12px; border-radius: 15px; border: 2px dashed var(--border-color); }
+        .file-upload-wrapper {
+            position: relative; width: 100%; height: 40px; border-radius: 12px;
+            background: var(--card-bg); border: 2px solid var(--jelly-purple);
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            color: var(--jelly-purple); font-weight: 800; font-family: 'Nunito', sans-serif; font-size: 0.8rem; cursor: pointer; transition: 0.2s; overflow: hidden; margin-bottom: 8px;
+        }
+        .file-upload-wrapper:hover { background: rgba(168, 139, 235, 0.1); }
+        .file-upload-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        #fileName { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-align: center; display: block; margin-bottom: 8px;}
+        
+        .separator { text-align: center; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 8px; position: relative;}
+        .separator::before, .separator::after { content: ''; position: absolute; top: 50%; width: 35%; height: 1px; background: var(--border-color); }
+        .separator::before { left: 0; } .separator::after { right: 0; }
+
+        /* ==========================================================================
+           8. INFO BOT WA
+           ========================================================================== */
+        .bot-header-info { text-align: center; margin-bottom: 20px; }
+        .bot-icon { font-size: 4rem; color: var(--jelly-purple); margin-bottom: 5px; display: inline-block;}
+        .bot-title { font-size: 1.4rem; font-weight: 900; color: var(--text-main); font-family: 'Nunito', sans-serif; margin-bottom: 5px;}
+        .bot-status { font-size: 0.8rem; color: var(--stat-green); font-weight: 800; background: rgba(39, 201, 63, 0.15); padding: 4px 12px; border-radius: 12px; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px;}
+        
+        .bot-features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 20px;}
+        .bot-feat { background: var(--input-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; color: var(--text-main); display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; transition: 0.2s;}
+        .bot-feat i { color: var(--jelly-pink); font-size: 1.5rem; }
+        .bot-feat:hover { border-color: var(--jelly-purple); transform: translateY(-2px);}
+        
+        .bot-more { grid-column: 1 / -1; background: var(--input-bg); border: 1px dashed var(--jelly-purple); padding: 10px; border-radius: 12px; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; font-style: italic; text-align: center;}
+
+        /* ==========================================================================
+           9. PROFIL ADMIN
+           ========================================================================== */
+        .profile-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+        .profile-banner { width: 100%; height: 100px; background: var(--jelly-grad); opacity: 0.4; }
+        .profile-header { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: -45px; padding: 0 20px 20px; position: relative; z-index: 2;}
+        
+        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; border: 4px solid var(--card-bg); background: var(--input-bg); overflow: hidden; margin: 0 auto 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);}
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .profile-info h3 { font-size: 1.3rem; font-weight: 900; color: var(--text-main); margin-bottom: 2px;}
+        .profile-info p { font-size: 0.8rem; color: var(--jelly-purple); font-weight: 700; background: rgba(168, 139, 235, 0.15); padding: 3px 10px; border-radius: 10px; display: inline-block;}
+        
+        .profile-body { padding: 0 20px 25px;}
+        .skill-box { background: var(--input-bg); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border-color);}
+        .skill-title { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px;}
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill-tag { background: var(--card-bg); border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 5px;}
+        
+        .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .bento-item { background: var(--input-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;}
+        .bento-item i { font-size: 1.4rem; color: var(--text-main); }
+        .bento-text { font-size: 0.8rem; font-weight: 700; color: var(--text-main); }
+        .bento-item:hover { background: var(--jelly-grad); border-color: transparent;}
+        .bento-item:hover .bento-text, .bento-item:hover i { color: #fff;}
+
+        /* ==========================================================================
+           10. ADMIN DASHBOARD (RAPI & INTERAKTIF)
+           ========================================================================== */
+        .admin-login-area { text-align: center; padding: 40px 20px; margin-top: 15px;}
+        #admin-dashboard { display: none; margin-top: 15px;}
+        
+        .admin-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-box { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 15px; padding: 15px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 5px;}
+        .stat-box i { font-size: 1.5rem; }
+        .stat-box h4 { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800;}
+        .stat-box span { font-size: 1.4rem; font-weight: 900; font-family: 'Nunito', sans-serif; }
+        
+        .stat-total i { color: var(--text-main); } .stat-total span { color: var(--text-main); }
+        .stat-pending i { color: var(--stat-yellow); } .stat-pending span { color: var(--stat-yellow); }
+        .stat-done i { color: var(--stat-green); } .stat-done span { color: var(--stat-green); }
+
+        .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; background: var(--input-bg); padding: 6px; border-radius: 20px; border: 2px solid var(--border-color); }
+        .tab-btn { flex: 1; padding: 10px; border-radius: 15px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; cursor: pointer; transition: 0.2s; font-family: 'Nunito', sans-serif; font-size: 0.9rem; display: flex; justify-content: center; align-items: center; gap: 6px;}
+        .tab-btn.active { background: var(--card-bg); color: var(--jelly-pink); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 1px solid var(--border-color);}
+
+        .req-item { background: var(--input-bg); border-radius: 18px; padding: 18px; margin-bottom: 18px; border: 2px solid var(--border-color); position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; }
+        .req-item::before { content:''; position:absolute; top:0; left:0; width: 4px; height: 100%; background: var(--stat-yellow); }
+        .req-item.done-item::before { background: var(--stat-green); }
+        
+        .req-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; }
+        .req-id { font-family: 'Inter', monospace; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); background: var(--card-bg); padding: 3px 8px; border-radius: 6px;}
+        .req-date { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; display: flex; align-items: center; gap: 4px; }
+
+        .req-main { display: flex; gap: 15px; align-items: stretch; }
+        .req-info { flex-grow: 1; display: flex; flex-direction: column; gap: 6px;}
+        .req-title { font-size: 1.1rem; font-weight: 900; color: var(--text-main); font-family: 'Nunito', sans-serif;}
+        .req-user { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;}
+        .req-user i { color: var(--jelly-purple); }
+        .req-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; background: var(--card-bg); padding: 10px; border-radius: 10px; margin-top: auto; font-style: italic;}
+        
+        .req-media { width: 90px; min-width: 90px; display: flex; justify-content: center; align-items: center; }
+        .req-media img { width: 100%; height: 100%; max-height: 90px; object-fit: cover; border-radius: 10px; border: 2px solid var(--border-color); }
+        .no-img { width: 100%; height: 90px; background: var(--card-bg); border-radius: 10px; display: flex; justify-content: center; align-items: center; color: var(--text-muted); font-size: 0.65rem; font-weight: 700; border: 2px dashed var(--border-color); text-align: center;}
+
+        .req-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; flex-wrap: wrap; gap: 8px; padding-top: 10px; border-top: 1px solid var(--border-color);}
+        
+        .action-group { display: flex; gap: 8px; width: 100%; justify-content: flex-end;}
+        .btn-act { padding: 6px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; font-family: 'Nunito', sans-serif; display: flex; align-items: center; gap: 4px; justify-content: center; flex: 1;}
+        .btn-act:hover { transform: translateY(-2px); }
+        
+        .btn-act-done { background: var(--jelly-purple); color: white; }
+        .btn-act-done:hover { background: var(--stat-green); }
+        
+        .btn-act-edit { background: var(--stat-blue); color: white; }
+        .btn-act-revert { background: var(--stat-yellow); color: #000; }
+        .btn-act-delete { background: transparent; border: 1px solid var(--stat-red); color: var(--stat-red); }
+        .btn-act-delete:hover { background: var(--stat-red); color: #fff; }
+
+        /* ==========================================================================
+           11. AUDIO & TOAST 
+           ========================================================================== */
+        .music-player { 
+            position: fixed; bottom: 20px; left: 20px; display: flex; align-items: center; gap: 10px; 
+            padding: 8px 15px; background: var(--card-bg); border: 2px solid var(--border-color); 
+            border-radius: 25px; z-index: 1000; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .music-player:hover { border-color: var(--jelly-purple); }
+        .play-btn { font-size: 1.4rem; display: flex; align-items: center; color: var(--text-main); background: none; border: none; cursor: pointer;}
+        .play-btn:hover { color: var(--jelly-pink); }
+        .track-info { display: flex; flex-direction: column; width: 75px; overflow: hidden; }
+        .track-name { font-size: 0.65rem; font-weight: 800; color: var(--jelly-purple); font-family: 'Nunito', sans-serif; white-space: nowrap; animation: scrollText 6s linear infinite; }
+        .artist-name { font-size: 0.55rem; color: var(--text-muted); line-height: 1; font-weight: 600;}
+        .equalizer { display: flex; gap: 2px; align-items: flex-end; height: 10px; }
+        .bar { width: 2px; height: 2px; background: var(--text-muted); border-radius: 2px; transition: 0.3s; }
+        .playing .bar { background: var(--jelly-pink); animation: bounceBar 0.8s infinite alternate; }
+        .playing .bar:nth-child(2) { animation-delay: 0.2s; } .playing .bar:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounceBar { 0% { height: 2px; } 100% { height: 10px; } }
+        @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        #toast {
+            position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%);
+            background: var(--toast-bg); border: 2px solid var(--jelly-pink); color: #fff;
+            padding: 12px 18px; border-radius: 18px; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 25px rgba(255, 126, 179, 0.4); z-index: 9999; 
+            font-size: 0.85rem; width: max-content; max-width: 90%; font-family: 'Nunito', sans-serif; font-weight: 800;
+            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); overflow: hidden;
+        }
+        #toast.show { bottom: 25px; }
+        #toast i { font-size: 1.5rem; color: var(--jelly-pink); }
+        .toast-progress {
+            position: absolute; bottom: 0; left: 0; height: 3px; background: var(--jelly-grad);
+            width: 100%; transform-origin: left; transform: scaleX(0);
+        }
+        #toast.show .toast-progress { animation: progress 2.5s linear forwards; }
+        @keyframes progress { 100% { transform: scaleX(1); } }
+
+        footer { text-align: center; padding: 25px 15px 80px 15px; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; border-top: 1px solid var(--border-color); margin-top: 30px; line-height: 1.5;}
+        
+        @media (max-width: 600px) {
+            .req-main { flex-direction: column; gap: 10px; }
+            .req-media { width: 100%; }
+            .req-media img, .no-img { height: 130px; max-height: 130px;}
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: 1fr; }
+            .admin-stats { grid-template-columns: 1fr; gap: 8px;}
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="success-sound" preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=success-1-6297.mp3" type="audio/mpeg">
+    </audio>
+
+    <nav>
+        <div class="nav-left">
+            <button class="menu-toggle" id="btn-menu"><i class="ph-bold ph-list"></i></button>
+            <div class="brand">Ryuuzaa Stickers</div>
+        </div>
+    </nav>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar" id="btn-close-sidebar"><i class="ph-bold ph-x"></i></button>
+        <div class="sidebar-logo">Ryuuzaa Hub</div>
+        
+        <div class="sidebar-label">Menu Utama</div>
+        <button class="sidebar-link active-menu" onclick="switchView('view-home')"><i class="ph-duotone ph-house"></i> Beranda</button>
+        <button class="sidebar-link" onclick="switchView('view-gallery')"><i class="ph-duotone ph-images"></i> Galeri & Pack</button>
+        <button class="sidebar-link" onclick="switchView('view-form')"><i class="ph-bold ph-paper-plane-tilt"></i> Form Request</button>
+        
+        <div class="sidebar-label" style="margin-top: 10px;">Tentang Kami</div>
+        <button class="sidebar-link" onclick="switchView('view-bot')"><i class="ph-duotone ph-robot"></i> Info Bot WA</button>
+        <button class="sidebar-link" onclick="switchView('view-profile')"><i class="ph-duotone ph-user-circle"></i> Profil Admin</button>
+
+        <div class="sidebar-label" style="margin-top: auto;">Sistem</div>
+        <button class="sidebar-link" onclick="switchView('view-admin')"><i class="ph-duotone ph-shield-check"></i> Panel Admin</button>
+    </div>
+
+    <div class="container">
+        
+        <main id="view-home" class="view-section active-view">
+            
+            <section class="hero">
+                <div class="hero-icon-wrap">
+                    <i class="ph-duotone ph-planet"></i>
+                    <i class="ph-duotone ph-ghost"></i>
+                    <i class="ph-duotone ph-game-controller"></i>
+                </div>
+                <h1 class="hero-title">Ryuuuzaaa Stickers<br><span>Present</span></h1>
+                <p class="hero-desc">Kirim ide sticker favoritmu, cek galeri pack, atau eksplor fitur bot WA keren kita. Semua jadi satu di sini!</p>
+                <button class="btn-submit" style="width: auto; display: inline-flex; padding: 10px 20px; margin: 15px auto 0;" onclick="switchView('view-form')">
+                    <i class="ph-duotone ph-rocket-launch"></i> Buat Request Baru
+                </button>
+            </section>
+
+            <section class="section-wrap">
+                <h2 class="section-title"><i class="ph-duotone ph-shapes"></i> Kategori Populer</h2>
+                <div class="grid-4">
+                    <div class="cat-box"><i class="ph-duotone ph-cat"></i><span>Chibi Cute</span></div>
+                    <div class="cat-box"><i class="ph-duotone ph-sword"></i><span>Action Anime</span></div>
+                    <div class="cat-box"><i class="ph-duotone ph-smiley-wink"></i><span>Meme Lucu</span></div>
+                    <div class="cat-box"><i class="ph-duotone ph-alien"></i><span>Gaming</span></div>
+                </div>
+            </section>
+
+            <section class="section-wrap">
+                <h2 class="section-title"><i class="ph-duotone ph-rocket-launch"></i> Baru Saja Rilis</h2>
+                <div class="grid-3">
+                    <div class="drop-card">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Anya&backgroundColor=000" alt="Drop 1">
+                        <div class="drop-info"><h4>Kosong</h4><p>Hari ini</p></div>
+                    </div>
+                    <div class="drop-card">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Gojo&backgroundColor=000" alt="Drop 2">
+                        <div class="drop-info"><h4>Kosong</h4><p>Kemarin</p></div>
+                    </div>
+                    <div class="drop-card">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Meme&backgroundColor=000" alt="Drop 3">
+                        <div class="drop-info"><h4>Kosong</h4><p>2 Hari lalu</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-wrap">
+                <h2 class="section-title"><i class="ph-duotone ph-magic-wand"></i> Alur Sistem</h2>
+                <div class="grid-3">
+                    <div class="jelly-box">
+                        <i class="ph-duotone ph-pencil-line"></i>
+                        <h3>1. Tulis Ide</h3>
+                        <p>Sebutin karakter atau upload referensinya.</p>
+                    </div>
+                    <div class="jelly-box">
+                        <i class="ph-duotone ph-paper-plane-tilt"></i>
+                        <h3>2. Submit</h3>
+                        <p>Request otomatis terekam di database admin.</p>
+                    </div>
+                    <div class="jelly-box">
+                        <i class="ph-duotone ph-check-circle"></i>
+                        <h3>3. Rilis</h3>
+                        <p>Admin proses dan share ke grup/channel!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-wrap">
+                <h2 class="section-title"><i class="ph-duotone ph-fire"></i> Paling Banyak Di-Request</h2>
+                <div class="trending-wrap">
+                    <span class="trend-tag"><i class="ph-duotone ph-fire"></i> Gojo Satoru</span>
+                    <span class="trend-tag"><i class="ph-duotone ph-fire"></i> Meme Kucing</span>
+                    <span class="trend-tag">Frieren</span>
+                    <span class="trend-tag">Keqing</span>
+                    <span class="trend-tag">Anya Forger</span>
+                    <span class="trend-tag">Kobo Kanaeru</span>
+                </div>
+            </section>
+
+            <section class="section-wrap">
+                <h2 class="section-title"><i class="ph-duotone ph-chat-centered-text"></i> Kata Mereka</h2>
+                <div class="grid-2">
+                    <div class="testi-box">
+                        <div class="testi-header">
+                            <div class="testi-avatar">R</div>
+                            <span class="testi-name">Reza</span>
+                        </div>
+                        <p class="testi-text">"Gila sih, request kemaren sore, hari ini udah di-share di channel. Hasil stickernya HD parah."</p>
+                    </div>
+                    <div class="testi-box">
+                        <div class="testi-header">
+                            <div class="testi-avatar" style="background: #a88beb;">Z</div>
+                            <span class="testi-name">Zakky</span>
+                        </div>
+                        <p class="testi-text">"Suka banget sama editan chibinya! Web requestnya juga rapi banget gampang dipakenya hehe."</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-wrap">
+                <h2 class="section-title"><i class="ph-duotone ph-question"></i> Tanya Jawab</h2>
+                <div class="grid-2">
+                    <div class="faq-box">
+                        <div class="faq-q"><i class="ph-duotone ph-chat-circle-text"></i> Semua pasti dibikin?</div>
+                        <div class="faq-a">Admin memilah request yang paling menarik. Harap bersabar sesuai antrian ya.</div>
+                    </div>
+                    <div class="faq-box">
+                        <div class="faq-q"><i class="ph-duotone ph-chat-circle-text"></i> Share nya di mana?</div>
+                        <div class="faq-a">Hasil sticker jadi akan di-share langsung ke Channel WhatsApp kita.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <main id="view-gallery" class="view-section">
+            <div id="gal-folder-view" class="gal-view active-gal">
+                <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-folder-open"></i> Sticker Packs</h2>
+                <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">Pilih folder pack di bawah untuk melihat koleksi.</p>
+                
+                <div class="folder-grid">
+                    <div class="folder-card" onclick="openFolder('pack-jjk')">
+                        <i class="ph-duotone ph-folder-notch"></i><span>Jujutsu Kaisen</span><p>12 Stickers</p>
+                    </div>
+                    <div class="folder-card" onclick="openFolder('pack-hxh')">
+                        <i class="ph-duotone ph-folder-notch"></i><span>Hunter x Hunter</span><p>8 Stickers</p>
+                    </div>
+                    <div class="folder-card" onclick="openFolder('pack-meme')">
+                        <i class="ph-duotone ph-folder-notch"></i><span>Meme Kucing</span><p>15 Stickers</p>
+                    </div>
+                    <div class="folder-card" onclick="openFolder('pack-chibi')">
+                        <i class="ph-duotone ph-folder-notch"></i><span>Chibi Mix</span><p>10 Stickers</p>
+                    </div>
+                    <div class="folder-card" onclick="openFolder('pack-vtuber')">
+                        <i class="ph-duotone ph-folder-notch"></i><span>VTuber Hololive</span><p>0 Stickers</p>
+                    </div>
+                    <div class="folder-card" onclick="openFolder('pack-genshin')">
+                        <i class="ph-duotone ph-folder-notch"></i><span>Genshin Impact</span><p>0 Stickers</p>
+                    </div>
+                    <div class="folder-card" onclick="openFolder('pack-reaction')">
+                        <i class="ph-duotone ph-folder-notch"></i><span>Reaction Meme</span><p>0 Stickers</p>
+                    </div>
+                    <div class="folder-card" onclick="openFolder('pack-random')">
+                        <i class="ph-duotone ph-folder-notch"></i><span>Random Anime</span><p>0 Stickers</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gal-items-view" class="gal-view">
+                <div class="items-header">
+                    <button class="btn-back-folder" onclick="closeFolder()"><i class="ph-bold ph-arrow-left"></i> Kembali</button>
+                    <h2 id="folder-title" style="font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.2rem;">Nama Folder</h2>
+                </div>
+                <div id="items-grid" class="sticker-items-grid"></div>
+            </div>
+        </main>
+
+        <main id="view-form" class="view-section">
+            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-envelope-simple-open"></i> Request Form</h2>
+            
+            <div class="unified-card">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Silakan isi formulir tiket request di bawah ini.</p>
+                
+                <form id="stickerForm">
+                    <div class="form-group">
+                        <label class="form-label">Karakter / Subjek <span class="badge-req">Wajib</span></label>
+                        <input type="text" id="reqChar" class="form-input" placeholder="Tulis nama karakter/animenya..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Username <span class="badge-req">Wajib</span></label>
+                        <input type="text" id="reqUser" class="form-input" placeholder="Nama kamu..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email <span class="badge-opt">Opsional</span></label>
+                        <input type="email" id="reqEmail" class="form-input" placeholder="Alamat email kamu...">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Keterangan Tambahan <span class="badge-opt">Opsional</span></label>
+                        <textarea id="reqDetail" class="form-textarea" placeholder="Tambahkan pose, teks dalam sticker, dll..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Media Referensi Gambar <span class="badge-opt">Opsional</span></label>
+                        <div class="media-box">
+                            <div class="file-upload-wrapper">
+                                <i class="ph-duotone ph-upload-simple"></i> Upload Gambar dari Galeri
+                                <input type="file" id="reqFile" accept="image/*">
+                            </div>
+                            <span id="fileName"></span>
+                            
+                            <div class="separator">ATAU</div>
+                            <input type="url" id="reqUrl" class="form-input" placeholder="Paste Link Gambar (Pinterest/Google)..." style="background: var(--bg-color);">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="ph-bold ph-paper-plane-right"></i> Kirim Tiket Request
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <main id="view-bot" class="view-section">
+            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-robot"></i> Ryuuzaa Bot Area</h2>
+            
+            <div class="unified-card">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="bot-header-info">
+                    <i class="ph-duotone ph-robot bot-icon"></i>
+                    <h3 class="bot-title">Ryuuzaa Bot (Node.js)</h3>
+                    <span class="bot-status"><i class="ph-fill ph-check-circle"></i> Server Online 24/7</span>
+                </div>
+                
+                <div class="bot-features-grid">
+                    <div class="bot-feat"><i class="ph-duotone ph-download-simple"></i> Auto-Download (YT/TikTok)</div>
+                    <div class="bot-feat"><i class="ph-duotone ph-magic-wand"></i> AI Chat & Gemini</div>
+                    <div class="bot-feat"><i class="ph-duotone ph-sticker"></i> Custom Sticker Maker</div>
+                    <div class="bot-feat"><i class="ph-duotone ph-image-square"></i> Canvas Maker (Welcome/Lvl)</div>
+                    <div class="bot-feat"><i class="ph-duotone ph-palette"></i> Image Edit (tohitam, topeci)</div>
+                    <div class="bot-feat"><i class="ph-duotone ph-user-circle"></i> Image Edit (toanime, tofigure)</div>
+                </div>
+                <div class="bot-more">... dan ratusan fitur canggih lainnya!</div>
+
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 15px 0; text-align: center;">Bot serbaguna yang dikembangkan menggunakan Node.js. Siap membantu kebutuhan automasi kamu.</p>
+                
+                <a href="#" class="btn-submit" style="width: 100%; display: flex; justify-content: center;"><i class="ph-bold ph-whatsapp-logo"></i> Chat Bot Sekarang</a>
+            </div>
+        </main>
+
+        <main id="view-profile" class="view-section">
+            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-user-circle"></i> Profil Admin</h2>
+            
+            <div class="unified-card profile-card">
+                <div class="profile-banner"></div>
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="https://cdn.yupra.my.id/yp/nzqc6kn8.jpg" alt="Pirrrzaaa">
+                    </div>
+                    <div class="profile-info">
+                        <h3>Pirrrzaaa ( Ryuuzaa )</h3>
+                        <p>Siswa SMK TKJ & Dev Otodidak</p>
+                    </div>
+                </div>
+
+                <div class="profile-body">
+                    <div class="skill-box">
+                        <div class="skill-title">Tech Stack & Skills</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag"><i class="ph-fill ph-file-html" style="color: #ff5f56;"></i> HTML/CSS</span>
+                            <span class="skill-tag"><i class="ph-fill ph-file-js" style="color: #ffbd2e;"></i> JavaScript</span>
+                            <span class="skill-tag"><i class="ph-fill ph-node-logo" style="color: #27c93f;"></i> Node.js Bot</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-box">
+                        <div class="skill-title">Hobbies & Interests</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag"><i class="ph-fill ph-game-controller" style="color: var(--jelly-purple);"></i> Push Rank MLBB</span>
+                            <span class="skill-tag"><i class="ph-fill ph-sword" style="color: var(--jelly-pink);"></i> Action Anime (HxH, JJK)</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-title" style="margin-top: 20px; margin-bottom: 10px; color: var(--text-main); font-family: 'Nunito', sans-serif;">Connect With Me:</div>
+                    <div class="bento-grid">
+                        <a href="#" class="bento-item"><i class="ph-bold ph-whatsapp-logo"></i> <span class="bento-text">WhatsApp</span></a>
+                        <a href="#" class="bento-item"><i class="ph-bold ph-instagram-logo"></i> <span class="bento-text">Instagram</span></a>
+                        <a href="#" class="bento-item"><i class="ph-bold ph-discord-logo"></i> <span class="bento-text">Discord</span></a>
+                        <a href="#" class="bento-item"><i class="ph-bold ph-github-logo"></i> <span class="bento-text">GitHub</span></a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <main id="view-admin" class="view-section">
+            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-shield-check"></i> Administrator Area</h2>
+            
+            <div class="unified-card admin-login-area" id="login-area">
+                <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <i class="ph-duotone ph-lock-key" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 10px;"></i>
+                <h2 style="font-family: 'Nunito', sans-serif; font-weight: 900; margin-bottom: 5px;">Security Check</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; font-weight: 600;">Masukkan kredensial admin Ryuuzaa.</p>
+                
+                <input type="password" id="adminPass" class="form-input" placeholder="Password Admin..." style="max-width: 250px; text-align: center; margin: 0 auto 12px; display: block;">
+                <button type="button" id="btnLogin" class="btn-submit" style="max-width: 250px; margin: 0 auto; padding: 10px;"><i class="ph-bold ph-sign-in"></i> Login Database</button>
+            </div>
+
+            <div id="admin-dashboard" class="unified-card" style="display: none;">
+                <div class="admin-stats">
+                    <div class="stat-box stat-total">
+                        <i class="ph-duotone ph-files"></i><h4>Total</h4><span id="statTotal">0</span>
+                    </div>
+                    <div class="stat-box stat-pending">
+                        <i class="ph-duotone ph-hourglass-high"></i><h4>Menunggu</h4><span id="statPending">0</span>
+                    </div>
+                    <div class="stat-box stat-done">
+                        <i class="ph-duotone ph-check-circle"></i><h4>Selesai</h4><span id="statDone">0</span>
+                    </div>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn active" id="tab-pending" onclick="changeAdminTab('pending')"><i class="ph-bold ph-clock"></i> Menunggu</button>
+                    <button class="tab-btn" id="tab-done" onclick="changeAdminTab('done')"><i class="ph-bold ph-check-circle"></i> Selesai</button>
+                </div>
+
+                <div id="admin-request-list"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <div class="music-player" id="music-player">
+        <button class="play-btn" id="play-btn"><i class="ph-fill ph-play-circle" id="play-icon"></i></button>
+        <div class="track-info">
+            <span class="track-name">Ryuuzaa Vibes</span>
+            <span class="artist-name">Lofi Anime Mix</span>
+        </div>
+        <div class="equalizer" id="equalizer">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+        <audio id="bg-audio" loop preload="auto">
+            <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <footer>
+        <strong>✧ 𝙎𝙩𝙞𝙘𝙠𝙚𝙧𝙨 ʚ𝙛𝙞𝙧𝙯 🍓 ➜</strong> &copy; 2026.<br>
+        <span style="font-size: 0.75rem; margin-top: 5px; display: inline-block;">Managed by Pirrrzaaa ( Ryuuzaa )</span>
+    </footer>
+
+    <div id="toast">
+        <i class="ph-fill ph-check-circle"></i>
+        <div>
+            <div style="font-weight: 900; margin-bottom: 2px; font-size: 0.9rem;" id="toast-title">Success!</div>
+            <div style="font-size: 0.75rem; font-weight: 500; color: var(--text-muted);" id="toast-desc">Aksi berhasil.</div>
+        </div>
+        <div class="toast-progress"></div>
+    </div>
+
+    <script>
+    // ==========================================================================
+    // 1. KONFIGURASI FIREBASE - GANTI DENGAN KONFIGURASI PROJECT KAMU!
+    // ==========================================================================
+    const firebaseConfig = {
+  apiKey: "AIzaSyCz26x_hrSokMVTjucisNyBrNHllBEwY0E",
+  authDomain: "pirrzaaaa.firebaseapp.com",
+  databaseURL: "https://pirrzaaaa-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "pirrzaaaa",
+  storageBucket: "pirrzaaaa.firebasestorage.app",
+  messagingSenderId: "399736393133",
+  appId: "1:399736393133:web:7ae5d8654aeff1246a6524",
+  measurementId: "G-DV2W9SJ152"
+};
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    
+    // ==========================================================================
+    // 2. SPA NAVIGATION LOGIC
+    // ==========================================================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const views = document.querySelectorAll('.view-section');
+    const sideLinks = document.querySelectorAll('.sidebar-link');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        sidebarOverlay.classList.toggle('active');
+    }
+
+    document.getElementById('btn-menu').addEventListener('click', toggleSidebar);
+    document.getElementById('btn-close-sidebar').addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+
+    window.switchView = function(viewId) {
+        views.forEach(v => v.classList.remove('active-view'));
+        sideLinks.forEach(link => link.classList.remove('active-menu'));
+        
+        document.getElementById(viewId).classList.add('active-view');
+        if(event && event.currentTarget) {
+            event.currentTarget.classList.add('active-menu');
+        }
+        
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        window.scrollTo(0,0);
+
+        if(viewId === 'view-admin') { 
+            if(document.getElementById('admin-dashboard').style.display === 'block') {
+                renderAdminData(); 
+            }
+        }
+        if(viewId === 'view-gallery') { closeFolder(); }
+    }
+
+    // ==========================================================================
+    // 3. FOLDER GALERI DUMMY
+    // ==========================================================================
+    const galleryData = {
+        'pack-jjk': { title: 'Jujutsu Kaisen', items: [{ name: 'Gojo Smirk', img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Gojo1&backgroundColor=000' }, { name: 'Sukuna', img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Sukuna&backgroundColor=000' }] },
+        'pack-hxh': { title: 'Hunter x Hunter', items: [{ name: 'Killua Cool', img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Killua1&backgroundColor=000' }, { name: 'Gon Rage', img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Gon&backgroundColor=000' }] },
+        'pack-meme': { title: 'Meme Kucing', items: [{ name: 'Cat Nangis', img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Cat1&backgroundColor=000' }, { name: 'Cat Ketawa', img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Cat2&backgroundColor=000' }] },
+        'pack-chibi': { title: 'Chibi Mix', items: [{ name: 'Anya', img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Anya&backgroundColor=000' }, { name: 'Nezuko', img: 'https://api.dicebear.com/7.x/bottts/svg?seed=Nezuko&backgroundColor=000' }] },
+        'pack-vtuber': { title: 'VTuber Hololive', items: [] },
+        'pack-genshin': { title: 'Genshin Impact', items: [] },
+        'pack-reaction': { title: 'Reaction Meme', items: [] },
+        'pack-random': { title: 'Random Anime', items: [] }
+    };
+
+    function openFolder(folderId) {
+        const data = galleryData[folderId];
+        if(!data) return;
+        document.getElementById('folder-title').innerText = data.title;
+        const grid = document.getElementById('items-grid');
+        grid.innerHTML = '';
+        
+        if(data.items.length === 0) {
+            grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Folder masih kosong. Segera hadir!</p>`;
+        } else {
+            data.items.forEach(item => {
+                grid.innerHTML += `
+                    <div class="gal-card">
+                        <img src="${item.img}" alt="${item.name}">
+                        <span class="gal-name">${item.name}</span>
+                    </div>
+                `;
+            });
+        }
+        document.getElementById('gal-folder-view').classList.remove('active-gal');
+        document.getElementById('gal-items-view').classList.add('active-gal');
+    }
+
+    function closeFolder() {
+        document.getElementById('gal-items-view').classList.remove('active-gal');
+        document.getElementById('gal-folder-view').classList.add('active-gal');
+    }
+
+    // ==========================================================================
+    // 4. MUSIC PLAYER LOGIC
+    // ==========================================================================
+    const aud = document.getElementById('bg-audio');
+    const pBtn = document.getElementById('play-btn');
+    const pIcon = document.getElementById('play-icon');
+    const eq = document.getElementById('equalizer');
+    let isP = false; 
+    if(aud) aud.volume = 0.2; 
+    if(pBtn) {
+        pBtn.addEventListener('click', () => {
+            if(isP) { 
+                aud.pause(); 
+                pIcon.classList.replace('ph-pause-circle','ph-play-circle'); 
+                eq.classList.remove('playing'); 
+            } else { 
+                aud.play().catch(e => console.log("Autoplay blocked")); 
+                pIcon.classList.replace('ph-play-circle','ph-pause-circle'); 
+                eq.classList.add('playing'); 
+            }
+            isP = !isP;
+        });
+    }
+
+    // ==========================================================================
+    // 5. FORM SUBMIT KE FIRESTORE
+    // ==========================================================================
+    const fileInput = document.getElementById('reqFile');
+    const urlInput = document.getElementById('reqUrl');
+    const fileNameDisplay = document.getElementById('fileName');
+    const successSound = document.getElementById('success-sound');
+    
+    fileInput.addEventListener('change', function() {
+        if(this.files && this.files.length > 0) {
+            fileNameDisplay.innerText = "📁 File siap: " + this.files[0].name;
+            fileNameDisplay.style.color = "var(--jelly-pink)";
+            urlInput.value = ''; 
+        } else { fileNameDisplay.innerText = ""; }
+    });
+
+    urlInput.addEventListener('input', function() {
+        if(this.value.trim() !== '') {
+            fileInput.value = '';
+            fileNameDisplay.innerText = "";
+        }
+    });
+
+    function getFormattedDate() {
+        const now = new Date();
+        const date = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+        const time = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        return `${date} - ${time} WIB`;
+    }
+
+    function showToast(title = "Success!", desc = "Tiket request sukses terkirim.") {
+        // Play sound
+        if(successSound) {
+            successSound.currentTime = 0;
+            successSound.play().catch(e => console.log("Sound block"));
+        }
+        
+        // Update text
+        document.getElementById('toast-title').innerText = title;
+        document.getElementById('toast-desc').innerText = desc;
+        
+        // Show toast
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+        
+        // Force reflow
+        void toast.offsetWidth;
+        
+        toast.classList.add('show');
+        
+        // Auto hide after 2.5 seconds
+        setTimeout(() => { 
+            toast.classList.remove('show'); 
+        }, 2500);
+    }
+
+    function generateId() {
+        return Math.floor(1000 + Math.random() * 9000).toString();
+    }
+
+    document.getElementById('stickerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const char = document.getElementById('reqChar').value.trim();
+        const user = document.getElementById('reqUser').value.trim();
+        const email = document.getElementById('reqEmail').value.trim();
+        const detail = document.getElementById('reqDetail').value.trim();
+        const url = document.getElementById('reqUrl').value.trim();
+        const date = getFormattedDate();
+        const id = generateId();
+        
+        const file = fileInput.files[0];
+        
+        try {
+            if(file) {
+                if(file.size > 2 * 1024 * 1024) {
+                    alert("Ukuran file terlalu besar! Maksimal 2MB.");
+                    return;
+                }
+                
+                // Convert file to base64
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const requestData = {
+                        id: id,
+                        char: char,
+                        user: user,
+                        email: email || null,
+                        detail: detail || null,
+                        image: e.target.result,
+                        url: null,
+                        date: date,
+                        status: 'pending',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    
+                    await db.collection('requests').add(requestData);
+                    
+                    showToast("Sukses!", "Tiket berhasil masuk ke sistem.");
+                    document.getElementById('stickerForm').reset();
+                    fileNameDisplay.innerText = "";
+                    
+                    setTimeout(() => { switchView('view-home'); }, 1500);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                const requestData = {
+                    id: id,
+                    char: char,
+                    user: user,
+                    email: email || null,
+                    detail: detail || null,
+                    image: null,
+                    url: url !== "" ? url : null,
+                    date: date,
+                    status: 'pending',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('requests').add(requestData);
+                
+                showToast("Sukses!", "Tiket berhasil masuk ke sistem.");
+                document.getElementById('stickerForm').reset();
+                fileNameDisplay.innerText = "";
+                
+                setTimeout(() => { switchView('view-home'); }, 1500);
+            }
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            showToast("Error!", "Gagal mengirim request. Coba lagi nanti.");
+        }
+    });
+
+    // ==========================================================================
+    // 6. ADMIN LOGIC (REALTIME DARI FIRESTORE) - FIXED VERSION
+    // ==========================================================================
+    let currentAdminTab = 'pending';
+    let unsubscribe = null;
+
+    window.changeAdminTab = function(tabName) {
+        currentAdminTab = tabName;
+        document.getElementById('tab-pending').classList.remove('active');
+        document.getElementById('tab-done').classList.remove('active');
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+        renderAdminData();
+    }
+
+    function renderAdminData() {
+        if (unsubscribe) {
+            unsubscribe();
+        }
+        
+        const adminList = document.getElementById('admin-request-list');
+        
+        // Real-time listener dengan error handling
+        unsubscribe = db.collection('requests')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot((snapshot) => {
+                let allRequests = [];
+                snapshot.forEach(doc => {
+                    allRequests.push({ docId: doc.id, ...doc.data() });
+                });
+                
+                // Update Stats
+                document.getElementById('statTotal').innerText = allRequests.length;
+                document.getElementById('statPending').innerText = allRequests.filter(r => r.status === 'pending').length;
+                document.getElementById('statDone').innerText = allRequests.filter(r => r.status === 'done').length;
+
+                const filteredData = allRequests.filter(r => r.status === currentAdminTab);
+
+                if(filteredData.length === 0) {
+                    adminList.innerHTML = `<p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; padding: 20px;">Kosong...</p>`;
+                    return;
+                }
+
+                let htmlContent = '';
+                filteredData.forEach((req) => {
+                    let imgSrc = req.image || req.url || null;
+                    let imgHtml = imgSrc ? `<img src="${imgSrc}" alt="Ref">` : `<div class="no-img">Tanpa<br>Gambar</div>`;
+                    
+                    let isDone = (req.status === 'done');
+                    
+                    let actionsHtml = isDone
+                        ? `<div class="action-group">
+                               <button class="btn-act btn-act-revert" onclick="updateStatus('${req.docId}', 'pending')"><i class="ph-bold ph-arrow-u-up-left"></i> Batal Selesai</button>
+                               <button class="btn-act btn-act-delete" onclick="deleteReq('${req.docId}')"><i class="ph-bold ph-trash"></i> Hapus</button>
+                           </div>`
+                        : `<div class="action-group">
+                               <button class="btn-act btn-act-done" onclick="updateStatus('${req.docId}', 'done')"><i class="ph-bold ph-check"></i> Selesai</button>
+                               <button class="btn-act btn-act-edit" onclick="editReq('${req.docId}')"><i class="ph-bold ph-pencil-simple"></i> Edit</button>
+                               <button class="btn-act btn-act-delete" onclick="deleteReq('${req.docId}')"><i class="ph-bold ph-trash"></i> Hapus</button>
+                           </div>`;
+
+                    let itemClass = isDone ? 'req-item done-item' : 'req-item';
+
+                    htmlContent += `
+                        <div class="${itemClass}">
+                            <div class="req-top">
+                                <span class="req-id">#REQ-${req.id || req.docId.slice(-4)}</span>
+                                <span class="req-date"><i class="ph-bold ph-clock"></i> ${req.date || 'No date'}</span>
+                            </div>
+                            <div class="req-main">
+                                <div class="req-info">
+                                    <div class="req-title">${req.char || 'No title'}</div>
+                                    <div class="req-user">
+                                        <span><i class="ph-bold ph-user-circle" style="color:var(--jelly-purple)"></i> ${req.user || 'Unknown'}</span>
+                                        ${req.email ? `<span style="margin-left:10px;"><i class="ph-bold ph-envelope-simple" style="color:var(--jelly-pink)"></i> ${req.email}</span>` : ''}
+                                    </div>
+                                    <div class="req-desc">${req.detail ? req.detail : '<i>Tidak ada keterangan tambahan.</i>'}</div>
+                                </div>
+                                <div class="req-media">${imgHtml}</div>
+                            </div>
+                            <div class="req-actions">
+                                ${actionsHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+                adminList.innerHTML = htmlContent;
+            }, (error) => {
+                console.error("Firestore error:", error);
+                adminList.innerHTML = `<p style="text-align: center; color: var(--stat-red); font-size: 0.9rem; font-weight: 600; padding: 20px;">Error loading data: ${error.message}</p>`;
+            });
+    }
+
+    window.updateStatus = async function(docId, newStatus) {
+        try {
+            await db.collection('requests').doc(docId).update({
+                status: newStatus
+            });
+            showToast("Diperbarui!", "Status tiket berhasil diubah.");
+        } catch (error) {
+            console.error("Error updating document: ", error);
+            showToast("Error!", "Gagal mengupdate status: " + error.message);
+        }
+    }
+
+    window.deleteReq = async function(docId) {
+        if(confirm("Yakin mau hapus tiket ini permanen?")) {
+            try {
+                await db.collection('requests').doc(docId).delete();
+                showToast("Dihapus!", "Tiket berhasil dihapus.");
+            } catch (error) {
+                console.error("Error deleting document: ", error);
+                showToast("Error!", "Gagal menghapus tiket: " + error.message);
+            }
+        }
+    }
+
+    window.editReq = async function(docId) {
+        try {
+            const doc = await db.collection('requests').doc(docId).get();
+            if (!doc.exists) {
+                showToast("Error!", "Data tidak ditemukan");
+                return;
+            }
+            
+            const reqData = doc.data();
+            
+            let newChar = prompt("Edit Karakter / Subjek:", reqData.char || "");
+            if(newChar !== null && newChar.trim() !== "") {
+                let newDetail = prompt("Edit Keterangan (Opsional):", reqData.detail || "");
+                
+                await db.collection('requests').doc(docId).update({
+                    char: newChar.trim(),
+                    detail: newDetail !== null ? newDetail.trim() : reqData.detail
+                });
+                
+                showToast("Tersimpan!", "Data tiket berhasil diedit.");
+            }
+        } catch (error) {
+            console.error("Error editing document: ", error);
+            showToast("Error!", "Gagal mengedit tiket: " + error.message);
+        }
+    }
+
+    document.getElementById('btnLogin').addEventListener('click', function() {
+        const pass = document.getElementById('adminPass').value;
+        // PASSWORD ADMIN: AndaSiapa32
+        if(pass === "AndaSiapa32") {
+            document.getElementById('login-area').style.display = 'none';
+            document.getElementById('admin-dashboard').style.display = 'block';
+            renderAdminData();
+            showToast("Login Berhasil", "Selamat datang di panel admin!");
+        } else {
+            showToast("Error!", "Password salah!");
+        }
+    });
+
+    // Cleanup listener when page unloads
+    window.addEventListener('beforeunload', function() {
+        if (unsubscribe) {
+            unsubscribe();
+        }
+    });
+
+    // Test Firebase connection
+    window.addEventListener('load', function() {
+        console.log("Firebase initialized:", firebase.app().name);
+    });
+
+</script>
+</body>
+</html>
