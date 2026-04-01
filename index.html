@@ -7,11 +7,6 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <!-- Chart.js untuk Grafik Statistik -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
-    <!-- Kompresi gambar -->
     <script src="https://unpkg.com/browser-image-compression@2.0.0/dist/browser-image-compression.js"></script>
     
     <style>
@@ -55,23 +50,12 @@
         }
 
         *, *::before, *::after {
-            transition: background-color 0.3s ease, 
-                        color 0.2s ease, 
-                        border-color 0.2s ease,
-                        box-shadow 0.2s ease,
-                        transform 0.2s ease,
-                        opacity 0.3s ease;
+            transition: background-color 0.3s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, opacity 0.3s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
         html { overflow-x: hidden; }
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            font-size: 15px;
-            -webkit-font-smoothing: antialiased; 
-        }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 15px; -webkit-font-smoothing: antialiased; }
         h1, h2, h3, h4, .brand, .btn-submit, .btn-nav { font-family: 'Nunito', sans-serif; }
         a { text-decoration: none; color: inherit; transition: 0.2s; }
         .container { max-width: 800px; margin: 0 auto; padding: 0 15px; padding-top: 85px; } 
@@ -81,7 +65,7 @@
         ::-webkit-scrollbar-thumb { background: var(--jelly-purple); border-radius: 10px; }
 
         /* ==========================================================================
-           3. NAVBAR, SIDEBAR & NOTIFIKASI
+           3. NAVBAR & SIDEBAR
            ========================================================================== */
         nav {
             display: flex; justify-content: space-between; align-items: center;
@@ -102,32 +86,8 @@
         .btn-nav-login:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(168, 139, 235, 0.3); }
 
         /* Theme toggle button */
-        #theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-main);
-            font-size: 1.3rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            margin-right: 5px;
-            transition: transform 0.3s ease;
-        }
-        #theme-toggle:hover {
-            color: var(--jelly-pink);
-            transform: rotate(15deg);
-        }
-
-        /* Notifikasi Badge & Dropdown */
-        .notif-badge { position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background: var(--stat-red); border-radius: 50%; display: none; box-shadow: 0 0 5px var(--stat-red); }
-        .notif-badge.active { display: block; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
-        
-        .notif-dropdown { position: absolute; top: 40px; right: 0; width: 280px; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 15px; padding: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none; flex-direction: column; gap: 8px; z-index: 2000; max-height: 350px; overflow-y: auto; }
-        .notif-dropdown.show { display: flex; animation: showView 0.2s ease-out forwards; }
-        .notif-item { padding: 10px; background: var(--input-bg); border-radius: 10px; font-size: 0.75rem; color: var(--text-main); border-left: 3px solid var(--jelly-pink); display: flex; flex-direction: column; gap: 4px; transition: 0.2s;}
-        .notif-item.unread { font-weight: 800; background: rgba(255, 126, 179, 0.1); border-left-color: var(--stat-red);}
-        .notif-time { font-size: 0.6rem; color: var(--text-muted); font-weight: 600;}
+        #theme-toggle { background: none; border: none; color: var(--text-main); font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; margin-right: 5px; transition: transform 0.3s ease; }
+        #theme-toggle:hover { color: var(--jelly-pink); transform: rotate(15deg); }
 
         /* Sidebar */
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
@@ -146,58 +106,15 @@
         /* ==========================================================================
            4. VIEW SYSTEM & LIGHTBOX MODAL
            ========================================================================== */
-        .view-section { 
-            display: none; 
-            padding-bottom: 80px; 
-            opacity: 0;
-            transform: translateX(30px) scale(0.98); 
-        }
-        .view-section.active-view { 
-            display: block; 
-            animation: swipeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; 
-        }
-        @keyframes swipeIn {
-            0% { opacity: 0; transform: translateX(30px) scale(0.98); }
-            100% { opacity: 1; transform: translateX(0) scale(1); }
-        }
-        .chibi-mascot {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 60px;
-            height: auto;
-            z-index: 1000;
-            pointer-events: none;
-            animation: floatMascot 3s ease-in-out infinite;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
-            transition: 0.3s;
-        }
-        @keyframes floatMascot {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-12px) rotate(2deg); }
-        }
-        .modal-overlay { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; 
-            display: flex; justify-content: center; align-items: center; 
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px;
-        }
-        .modal-overlay.active { 
-            opacity: 1; pointer-events: all; 
-        }
-        .modal-content { 
-            background: var(--card-bg); padding: 18px; border-radius: 20px; 
-            border: 2px solid var(--jelly-purple); max-width: 400px; width: 100%; 
-            text-align: center; position: relative; transform: scale(0.8); 
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
-            box-shadow: 0 10px 30px var(--shadow-color);
-        }
+        .view-section { display: none; padding-bottom: 80px; opacity: 0; transform: translateX(30px) scale(0.98); }
+        .view-section.active-view { display: block; animation: swipeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        @keyframes swipeIn { 0% { opacity: 0; transform: translateX(30px) scale(0.98); } 100% { opacity: 1; transform: translateX(0) scale(1); } }
+        
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px; }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-content { background: var(--card-bg); padding: 18px; border-radius: 20px; border: 2px solid var(--jelly-purple); max-width: 400px; width: 100%; text-align: center; position: relative; transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 10px 30px var(--shadow-color); }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-content img { 
-            width: 100%; border-radius: 12px; margin-bottom: 10px; 
-            background: var(--bg-color); object-fit: contain; max-height: 50vh; 
-            padding: 5px; filter: blur(0);
-            transition: filter 0.4s ease;
-        }
+        .modal-content img { width: 100%; border-radius: 12px; margin-bottom: 10px; background: var(--bg-color); object-fit: contain; max-height: 50vh; padding: 5px; filter: blur(0); transition: filter 0.4s ease; }
         .modal-content img.lazy-image { filter: blur(10px); }
         .modal-content img.lazy-image.loaded { filter: blur(0); }
         .modal-title { font-size: 1.1rem; font-weight: 900; color: var(--text-main); font-family: 'Nunito', sans-serif;}
@@ -211,14 +128,13 @@
         .btn-modal-wa:hover { background: #16a34a; transform: translateY(-2px);}
         .btn-donate { display: inline-flex; justify-content: center; align-items: center; gap: 8px; background: #ffbd2e; color: #000; font-weight: 900; padding: 14px 20px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; border: none; font-family: 'Nunito', sans-serif; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 189, 46, 0.3); width: 100%; margin-top: 15px; text-decoration: none;}
         .btn-donate:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255, 189, 46, 0.5); background: #ffca4d; color: #000;}
-        .btn-fav { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); border: 1px solid var(--border-color); color: #fff; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(4px); z-index: 5;}
-        .btn-fav:hover { color: var(--jelly-pink); transform: scale(1.1); border-color: var(--jelly-pink);}
-        .btn-fav.active { color: var(--stat-red); background: rgba(255, 95, 86, 0.2); border-color: var(--stat-red);}
+        
         .hero { padding: 35px 0 25px; text-align: center; }
         .hero-icon-wrap { display: flex; justify-content: center; gap: 12px; margin-bottom: 8px; }
         .hero-icon-wrap i { font-size: 2.5rem; color: var(--jelly-purple); animation: float 3s ease-in-out infinite; }
         .hero-icon-wrap i:nth-child(2) { color: var(--jelly-pink); animation-delay: 0.5s; font-size: 2.8rem;}
         .hero-icon-wrap i:nth-child(3) { color: var(--stat-blue); animation-delay: 1s; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .hero-title { font-size: clamp(2rem, 5.5vw, 3rem); font-weight: 900; line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.5px;}
         .hero-title span { background: var(--jelly-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;}
         .hero-desc { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto; font-weight: 500; line-height: 1.5; }
@@ -227,59 +143,12 @@
         .section-wrap { margin-bottom: 40px; }
         .section-title { text-align: center; font-size: 1.3rem; font-weight: 900; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .section-title i { color: var(--jelly-pink); font-size: 1.6rem; }
-        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
-        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-        .cat-box { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 15px; padding: 15px 10px; text-align: center; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .cat-box i { font-size: 2rem; color: var(--jelly-pink); margin-bottom: 8px; }
-        .cat-box span { font-weight: 800; font-size: 0.8rem; font-family: 'Nunito', sans-serif;}
-        .cat-box:hover { background: var(--card-bg); border-color: var(--jelly-purple); transform: translateY(-2px);}
-        .drop-card { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 15px; padding: 12px; display: flex; align-items: center; gap: 12px; transition: 0.2s; cursor: pointer;}
-        .drop-card img { width: 50px; height: 50px; object-fit: contain; background: var(--bg-color); border-radius: 10px; padding: 4px; border: 1px solid var(--border-color); filter: blur(0); transition: filter 0.4s ease; }
-        .drop-card img.lazy-image { filter: blur(10px); }
-        .drop-card img.lazy-image.loaded { filter: blur(0); }
-        .drop-info h4 { font-size: 0.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px;}
-        .drop-info p { font-size: 0.7rem; color: var(--jelly-pink); font-weight: 700; background: rgba(255, 126, 179, 0.15); display: inline-block; padding: 2px 8px; border-radius: 8px;}
-        .drop-card:hover { border-color: var(--jelly-purple); transform: translateY(-2px);}
-        .jelly-box { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px; padding: 20px 15px; text-align: center; transition: 0.2s; }
-        .jelly-box i { font-size: 2.2rem; color: var(--jelly-purple); margin-bottom: 10px; display: inline-block;}
-        .jelly-box h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 4px; color: var(--text-main);}
-        .jelly-box p { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; line-height: 1.4;}
-        .jelly-box:hover { border-color: var(--jelly-pink); transform: translateY(-3px); }
-        .trending-wrap { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-        .trend-tag { background: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 5px;}
-        .trend-tag i { color: var(--stat-yellow); font-size: 0.9rem;}
-        .testi-box { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px 20px 20px 5px; padding: 15px; position: relative; display: flex; flex-direction: column;}
-        .testi-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;}
-        .testi-avatar { width: 30px; height: 30px; background: var(--jelly-grad); color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-family: 'Nunito', sans-serif; font-size: 0.8rem; object-fit: cover;}
-        .testi-name { font-size: 0.85rem; font-weight: 800; color: var(--text-main); }
-        .testi-text { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; line-height: 1.5; font-style: italic; margin-top: auto;}
-        .faq-box { background: var(--input-bg); border-radius: 15px; padding: 15px; border: 2px solid var(--border-color); display: flex; flex-direction: column; justify-content: flex-start;}
-        .faq-q { font-weight: 800; font-size: 0.85rem; color: var(--text-main); margin-bottom: 6px; display: flex; gap: 8px; align-items: flex-start; font-family: 'Nunito', sans-serif;}
-        .faq-q i { color: var(--jelly-pink); font-size: 1.1rem; margin-top: 1px;}
-        .faq-a { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; padding-left: 24px; line-height: 1.5;}
+        
         .unified-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 25px; padding: 25px; position: relative; margin-top: 10px; width: 100%; overflow: hidden; transition: 0.3s;}
         .mac-dots { display: flex; gap: 5px; margin-bottom: 20px; justify-content: center;}
         .dot { width: 10px; height: 10px; border-radius: 50%; }
         .dot-r { background: var(--stat-red); } .dot-y { background: var(--stat-yellow); } .dot-g { background: var(--stat-green); }
-        .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
-        .folder-card { background: var(--input-bg); border: 2px solid var(--border-color); border-radius: 18px; padding: 15px 12px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .folder-card i { font-size: 3rem; color: var(--jelly-pink); margin-bottom: 8px; }
-        .folder-card span { display: block; font-size: 0.85rem; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--text-main); }
-        .folder-card p { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; margin-top: 4px;}
-        .folder-card:hover { background: var(--card-bg); border-color: var(--jelly-purple); transform: translateY(-3px); }
-        .items-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .btn-back-folder { background: var(--input-bg); border: 2px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: 12px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 5px; transition: 0.2s; font-size: 0.8rem;}
-        .btn-back-folder:hover { background: var(--card-bg); border-color: var(--jelly-pink); }
-        .sticker-items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
-        .gal-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.2s; position: relative;}
-        .gal-card:hover { border-color: var(--jelly-pink); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255, 126, 179, 0.2);}
-        .gal-card img { width: 100%; aspect-ratio: 1; object-fit: contain; margin-bottom: 6px; background: var(--bg-color); border-radius: 8px; padding: 4px; pointer-events: none; filter: blur(0); transition: filter 0.4s ease; }
-        .gal-card img.lazy-image { filter: blur(10px); }
-        .gal-card img.lazy-image.loaded { filter: blur(0); }
-        .gal-name { font-size: 0.75rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;}
-        .gal-view { display: none; }
-        .gal-view.active-gal { display: block; animation: showView 0.3s ease-out forwards; }
+        
         .form-group { margin-bottom: 15px; text-align: left;}
         .form-label { display: flex; align-items: center; gap: 6px; font-weight: 800; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-main); font-family: 'Nunito', sans-serif;}
         .badge-req { background: rgba(255,77,77,0.15); color: var(--stat-red); font-size: 0.6rem; padding: 2px 6px; border-radius: 8px; text-transform: uppercase; font-weight: 700; border: 1px solid var(--stat-red);}
@@ -287,7 +156,6 @@
         .form-input, .form-textarea, .form-select { width: 100%; padding: 12px 15px; border-radius: 15px; background: var(--input-bg); border: 2px solid transparent; color: var(--text-main); font-size: 0.85rem; transition: 0.2s; font-weight: 500; }
         .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--jelly-pink); background: var(--bg-color); }
         .form-textarea { height: 80px; resize: none; border-radius: 15px; }
-        .form-select { appearance: auto; cursor: pointer; }
         .media-box { background: var(--input-bg); padding: 12px; border-radius: 15px; border: 2px dashed var(--border-color); }
         .file-upload-wrapper { position: relative; width: 100%; height: 40px; border-radius: 12px; background: var(--card-bg); border: 2px solid var(--jelly-purple); display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--jelly-purple); font-weight: 800; font-family: 'Nunito', sans-serif; font-size: 0.8rem; cursor: pointer; transition: 0.2s; overflow: hidden; margin-bottom: 8px; }
         .file-upload-wrapper:hover { background: rgba(168, 139, 235, 0.1); }
@@ -298,62 +166,14 @@
         .separator::before { left: 0; } .separator::after { right: 0; }
         .form-auth-overlay { position: absolute; inset: 0; background: var(--overlay-bg); z-index: 10; display: flex; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(4px); transition: 0.3s; border-radius: 25px;}
         .form-auth-overlay i { font-size: 3.5rem; color: var(--jelly-pink); margin-bottom: 10px; animation: float 3s infinite;}
-        .image-preview-container {
-            position: relative;
-            width: 100%;
-            min-height: 120px;
-            background: var(--bg-color);
-            border-radius: 12px;
-            border: 2px dashed var(--border-color);
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .image-preview-container img {
-            max-width: 100%;
-            max-height: 150px;
-            object-fit: contain;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            filter: blur(0);
-        }
+        .image-preview-container { position: relative; width: 100%; min-height: 120px; background: var(--bg-color); border-radius: 12px; border: 2px dashed var(--border-color); margin-bottom: 15px; display: flex; justify-content: center; align-items: center; overflow: hidden; transition: all 0.3s ease; }
+        .image-preview-container img { max-width: 100%; max-height: 150px; object-fit: contain; opacity: 0; transform: scale(0.9); transition: opacity 0.3s ease, transform 0.3s ease; filter: blur(0); }
         .image-preview-container img.lazy-image { filter: blur(10px); }
         .image-preview-container img.lazy-image.loaded { filter: blur(0); }
-        .image-preview-container img.loaded {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .image-preview-container .preview-placeholder {
-            position: absolute;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            opacity: 0.7;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .image-preview-container.has-image .preview-placeholder {
-            opacity: 0;
-        }
-        .rank-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 15px; padding: 12px 15px; display: flex; align-items: center; gap: 15px; margin-bottom: 10px; transition: 0.2s; }
-        .rank-card:hover { transform: translateX(5px); border-color: var(--jelly-purple); }
-        .rank-num { font-size: 1.5rem; font-weight: 900; font-family: 'Nunito', sans-serif; color: var(--text-muted); width: 30px; text-align: center;}
-        .rank-num.top-1 { color: #ffbd2e; text-shadow: 0 0 10px rgba(255,189,46,0.5); }
-        .rank-num.top-2 { color: #a39cb3; }
-        .rank-num.top-3 { color: #cd7f32; }
-        .rank-info { flex: 1; display: flex; flex-direction: column; }
-        .rank-name { font-size: 0.95rem; font-weight: 800; color: var(--text-main); font-family: 'Nunito', sans-serif;}
-        .rank-score { font-size: 0.75rem; color: var(--jelly-pink); font-weight: 700; display: flex; align-items: center; gap: 4px; margin-top: 2px;}
-        .rank-img { width: 45px; height: 45px; border-radius: 10px; border: 1px solid var(--border-color); object-fit: cover; background: var(--bg-color); filter: blur(0); transition: filter 0.4s ease; }
-        .rank-img.lazy-image { filter: blur(10px); }
-        .rank-img.lazy-image.loaded { filter: blur(0); }
+        .image-preview-container img.loaded { opacity: 1; transform: scale(1); }
+        .image-preview-container .preview-placeholder { position: absolute; color: var(--text-muted); font-size: 0.8rem; display: flex; flex-direction: column; align-items: center; gap: 5px; opacity: 0.7; pointer-events: none; transition: opacity 0.3s ease; }
+        .image-preview-container.has-image .preview-placeholder { opacity: 0; }
+        
         .profile-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
         .profile-banner { width: 100%; height: 100px; background: var(--jelly-grad); opacity: 0.4; }
         .profile-header { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: -45px; padding: 0 20px 20px; position: relative; z-index: 2;}
@@ -374,6 +194,7 @@
         .bento-text { font-size: 0.8rem; font-weight: 700; color: var(--text-main); }
         .bento-item:hover { background: var(--jelly-grad); border-color: transparent;}
         .bento-item:hover .bento-text, .bento-item:hover i { color: #fff;}
+        
         .admin-login-area { text-align: center; padding: 40px 20px; margin-top: 15px;}
         #admin-dashboard { display: none; margin-top: 15px;}
         .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 25px; }
@@ -385,341 +206,53 @@
         .stat-pending i, .stat-pending span { color: var(--stat-yellow); } 
         .stat-done i, .stat-done span { color: var(--stat-green); } 
         .stat-rejected i, .stat-rejected span { color: var(--stat-red); }
-        .stats-charts {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 30px;
-        }
-        .chart-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            border: 2px solid var(--border-color);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .chart-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--jelly-purple);
-        }
-        .chart-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 5px;
-            background: var(--jelly-grad);
-        }
-        .chart-card h4 {
-            font-family: 'Nunito', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .chart-icon-wrap {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 32px; height: 32px;
-            background: rgba(168, 139, 235, 0.15);
-            border-radius: 10px;
-            color: var(--jelly-purple);
-            font-size: 1.3rem;
-        }
-        .chart-card:nth-child(1) .chart-icon-wrap {
-            background: rgba(255, 126, 179, 0.15);
-            color: var(--jelly-pink);
-        }
-        .chart-container {
-            position: relative;
-            height: 200px;
-            width: 100%;
-            margin: 10px 0;
-        }
-        .activity-log-list {
-            max-height: 450px;
-            overflow-y: auto;
-            padding: 5px 15px 15px 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-        .activity-log-item {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px 25px;
-            border: 2px solid transparent;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: slideUpFade 0.4s ease forwards;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes slideUpFade {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .activity-log-item:hover {
-            transform: translateY(-4px) scale(1.01);
-            background: var(--input-bg);
-            border-color: var(--jelly-pink);
-            box-shadow: 0 10px 25px rgba(255, 126, 179, 0.15);
-        }
-        .activity-log-content {
-            display: flex;
-            align-items: center;
-            gap: 18px; 
-            flex: 1;
-        }
-        .activity-log-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 50px; 
-            height: 50px;
-            border-radius: 16px;
-            font-size: 1.6rem; 
-            background: var(--bg-color);
-        }
-        .activity-log-text {
-            display: flex;
-            flex-direction: column;
-            gap: 6px; 
-            line-height: 1.5;
-        }
-        .activity-log-text strong {
-            color: var(--text-main);
-            font-family: 'Nunito', sans-serif;
-            font-weight: 900;
-            font-size: 1.05rem;
-            letter-spacing: 0.3px;
-        }
-        .activity-log-text span {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        .activity-time {
-            font-size: 0.75rem;
-            color: var(--jelly-purple);
-            font-weight: 800;
-            background: rgba(168, 139, 235, 0.1);
-            padding: 8px 14px; 
-            border-radius: 12px;
-            white-space: nowrap;
-            font-family: 'Nunito', sans-serif;
-        }
+        
+        .activity-log-list { max-height: 450px; overflow-y: auto; padding: 5px 15px 15px 5px; display: flex; flex-direction: column; gap: 18px; }
+        .activity-log-item { background: var(--card-bg); border-radius: 20px; padding: 20px 25px; border: 2px solid transparent; box-shadow: 0 8px 20px rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; gap: 20px; opacity: 0; transform: translateY(15px); animation: slideUpFade 0.4s ease forwards; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+        .activity-log-item:hover { transform: translateY(-4px) scale(1.01); background: var(--input-bg); border-color: var(--jelly-pink); box-shadow: 0 10px 25px rgba(255, 126, 179, 0.15); }
+        .activity-log-content { display: flex; align-items: center; gap: 18px; flex: 1; }
+        .activity-log-icon { display: flex; justify-content: center; align-items: center; min-width: 50px; height: 50px; border-radius: 16px; font-size: 1.6rem; background: var(--bg-color); }
+        .activity-log-text { display: flex; flex-direction: column; gap: 6px; line-height: 1.5; }
+        .activity-log-text strong { color: var(--text-main); font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.05rem; letter-spacing: 0.3px; }
+        .activity-log-text span { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; }
+        .activity-time { font-size: 0.75rem; color: var(--jelly-purple); font-weight: 800; background: rgba(168, 139, 235, 0.1); padding: 8px 14px; border-radius: 12px; white-space: nowrap; font-family: 'Nunito', sans-serif; }
+        
         @media (max-width: 600px) {
-            .activity-log-item {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 20px;
-                gap: 15px;
-            }
-            .activity-time {
-                align-self: flex-start;
-                margin-left: 68px;
-                margin-top: 0;
-            }
+            .activity-log-item { flex-direction: column; align-items: flex-start; padding: 20px; gap: 15px; }
+            .activity-time { align-self: flex-start; margin-left: 68px; margin-top: 0; }
         }
-        .admin-tabs-wrapper {
-            background: var(--input-bg);
-            padding: 8px;
-            border-radius: 20px;
-            border: 2px solid var(--border-color);
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .admin-tabs { 
-            display: flex; 
-            gap: 8px; 
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .tab-btn { 
-            flex: 1 1 auto; 
-            padding: 12px 15px; 
-            border-radius: 15px; 
-            border: 2px solid transparent; 
-            background: transparent; 
-            color: var(--text-muted); 
-            font-weight: 800; 
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
-            font-family: 'Nunito', sans-serif; 
-            font-size: 0.85rem; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px; 
-            min-width: 130px;
-        }
-        .tab-btn:hover {
-            color: var(--jelly-pink);
-            background: var(--bg-color);
-        }
-        .tab-btn.active { 
-            background: var(--card-bg); 
-            color: var(--jelly-purple); 
-            box-shadow: 0 6px 20px rgba(168, 139, 235, 0.2); 
-            border-color: var(--jelly-purple);
-            transform: translateY(-2px);
-        }
-        .admin-form-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px; 
-            margin-bottom: 30px;
-        } 
-        .admin-panel-card { 
-            background: var(--input-bg); 
-            border-radius: 25px; 
-            padding: 25px; 
-            border: 2px solid var(--border-color); 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05); 
-            display: flex; 
-            flex-direction: column;
-            transition: transform 0.3s ease;
-        }
-        .admin-panel-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--jelly-purple);
-        }
-        .admin-panel-card h3 { 
-            font-family: 'Nunito', sans-serif; 
-            font-size: 1.1rem; 
-            margin-bottom: 20px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            color: var(--text-main); 
-            padding-bottom: 15px; 
-            border-bottom: 2px dashed var(--border-color);
-        }
-        .req-item {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 15px;
-            transition: 0.2s;
-        }
-        .req-item:hover {
-            border-color: var(--jelly-purple);
-            transform: translateY(-2px);
-        }
-        .req-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-        }
-        .req-id {
-            font-weight: 900;
-            font-family: 'Nunito', sans-serif;
-            color: var(--jelly-pink);
-        }
-        .req-date {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-        .req-main {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .req-info {
-            flex: 1;
-        }
-        .req-title {
-            font-weight: 800;
-            font-size: 1.05rem;
-            color: var(--text-main);
-            margin-bottom: 5px;
-        }
-        .req-user {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--jelly-purple);
-            margin-bottom: 8px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .req-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            background: var(--input-bg);
-            padding: 10px;
-            border-radius: 12px;
-            font-style: italic;
-        }
-        .req-media {
-            width: 80px;
-            min-width: 80px;
-            background: var(--input-bg);
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-        .req-media img {
-            width: 100%;
-            max-height: 80px;
-            object-fit: contain;
-            cursor: pointer;
-        }
-        .req-media .no-img {
-            text-align: center;
-            font-size: 0.6rem;
-            color: var(--text-muted);
-        }
-        .req-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-        .btn-act {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .btn-act:hover {
-            background: var(--card-bg);
-            border-color: var(--jelly-pink);
-        }
+        .admin-tabs-wrapper { background: var(--input-bg); padding: 8px; border-radius: 20px; border: 2px solid var(--border-color); margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .admin-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .tab-btn { flex: 1 1 auto; padding: 12px 15px; border-radius: 15px; border: 2px solid transparent; background: transparent; color: var(--text-muted); font-weight: 800; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); font-family: 'Nunito', sans-serif; font-size: 0.85rem; display: flex; justify-content: center; align-items: center; gap: 8px; min-width: 130px; }
+        .tab-btn:hover { color: var(--jelly-pink); background: var(--bg-color); }
+        .tab-btn.active { background: var(--card-bg); color: var(--jelly-purple); box-shadow: 0 6px 20px rgba(168, 139, 235, 0.2); border-color: var(--jelly-purple); transform: translateY(-2px); }
+        .admin-panel-card { background: var(--input-bg); border-radius: 25px; padding: 25px; border: 2px solid var(--border-color); box-shadow: 0 8px 25px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: transform 0.3s ease; }
+        .admin-panel-card:hover { transform: translateY(-3px); border-color: var(--jelly-purple); }
+        
+        .req-item { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px; padding: 15px; margin-bottom: 15px; transition: 0.2s; }
+        .req-item:hover { border-color: var(--jelly-purple); transform: translateY(-2px); }
+        .req-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px; }
+        .req-id { font-weight: 900; font-family: 'Nunito', sans-serif; color: var(--jelly-pink); }
+        .req-date { font-size: 0.7rem; color: var(--text-muted); }
+        .req-main { display: flex; gap: 15px; flex-wrap: wrap; }
+        .req-info { flex: 1; }
+        .req-title { font-weight: 800; font-size: 1.05rem; color: var(--text-main); margin-bottom: 5px; }
+        .req-user { font-size: 0.8rem; font-weight: 600; color: var(--jelly-purple); margin-bottom: 8px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .req-desc { font-size: 0.8rem; color: var(--text-muted); background: var(--input-bg); padding: 10px; border-radius: 12px; font-style: italic; }
+        .req-media { width: 80px; min-width: 80px; background: var(--input-bg); border-radius: 12px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .req-media img { width: 100%; max-height: 80px; object-fit: contain; cursor: pointer; }
+        .req-media .no-img { text-align: center; font-size: 0.6rem; color: var(--text-muted); }
+        .req-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; justify-content: flex-end; }
+        .btn-act { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 0.7rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-act:hover { background: var(--card-bg); border-color: var(--jelly-pink); }
         .btn-act-copy:hover { color: var(--stat-blue); }
         .btn-act-edit:hover { color: var(--stat-yellow); }
         .btn-act-reject:hover { color: var(--stat-red); }
         .btn-act-done:hover { color: var(--stat-green); }
         .btn-act-revert:hover { color: var(--jelly-purple); }
-        .music-player { 
-            position: fixed; bottom: 20px; left: 20px; display: flex; align-items: center; gap: 10px; 
-            padding: 8px 15px; background: var(--card-bg); border: 2px solid var(--border-color); 
-            border-radius: 25px; z-index: 1000; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
+        
+        .music-player { position: fixed; bottom: 20px; left: 20px; display: flex; align-items: center; gap: 10px; padding: 8px 15px; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 25px; z-index: 1000; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .music-player:hover { border-color: var(--jelly-purple); }
         .play-btn { font-size: 1.4rem; display: flex; align-items: center; color: var(--text-main); background: none; border: none; cursor: pointer;}
         .play-btn:hover { color: var(--jelly-pink); }
@@ -732,193 +265,35 @@
         .playing .bar:nth-child(2) { animation-delay: 0.2s; } .playing .bar:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounceBar { 0% { height: 2px; } 100% { height: 10px; } }
         @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .bot-card-wrap {
-            padding: 30px 20px;
-            text-align: center;
-            border-top: 5px solid var(--jelly-purple);
-        }
-        .bot-header-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .bot-icon-wrapper {
-            width: 80px;
-            height: 80px;
-            background: rgba(168, 139, 235, 0.15);
-            border-radius: 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 15px;
-            box-shadow: 0 10px 20px rgba(168, 139, 235, 0.2);
-            animation: floatBot 3s ease-in-out infinite;
-            border: 2px solid var(--jelly-purple);
-        }
-        @keyframes floatBot {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .bot-icon-wrapper i {
-            font-size: 3.5rem;
-            color: var(--jelly-purple);
-        }
-        .bot-title {
-            font-size: 1.4rem;
-            font-weight: 900;
-            font-family: 'Nunito', sans-serif;
-            color: var(--text-main);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .badge-nodejs {
-            background: rgba(39, 201, 63, 0.15);
-            color: var(--stat-green);
-            font-size: 0.65rem;
-            padding: 4px 8px;
-            border-radius: 8px;
-            border: 1px solid var(--stat-green);
-            text-transform: uppercase;
-            font-weight: 800;
-        }
-        .bot-status {
-            background: rgba(39, 201, 63, 0.15);
-            color: var(--stat-green);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 15px;
-            border: 1px dashed var(--stat-green);
-        }
-        .bot-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            max-width: 90%;
-            margin: 0 auto;
-            font-weight: 500;
-        }
-        .bot-features-bento {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .bot-feat-item {
-            background: var(--input-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 18px;
-            padding: 15px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: default;
-        }
-        .bot-feat-item i {
-            font-size: 1.8rem;
-            transition: transform 0.3s ease;
-        }
-        .bot-feat-item span {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--text-main);
-            font-family: 'Nunito', sans-serif;
-        }
-        .bot-feat-item:hover {
-            border-color: var(--hover-color);
-            background: var(--card-bg);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .bot-feat-item:hover i {
-            transform: scale(1.1);
-        }
-        .bot-more-wrap {
-            background: rgba(255, 126, 179, 0.05);
-            border-radius: 15px;
-            padding: 12px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            color: var(--jelly-pink);
-            text-align: center;
-            border: 2px dashed rgba(255, 126, 179, 0.3);
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: 'Nunito', sans-serif;
-        }
-        .btn-bot-wa {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-            font-size: 1rem;
-            padding: 14px;
-        }
-        .btn-bot-wa:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
-        }
-        #toast {
-            position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%);
-            background: var(--toast-bg); border: 2px solid var(--jelly-pink); color: var(--text-main);
-            padding: 12px 18px; border-radius: 18px; display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 10px 25px rgba(255, 126, 179, 0.4); z-index: 9999; 
-            font-size: 0.85rem; width: max-content; max-width: 90%; font-family: 'Nunito', sans-serif; font-weight: 800;
-            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); overflow: hidden;
-        }
+        
+        #toast { position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%); background: var(--toast-bg); border: 2px solid var(--jelly-pink); color: var(--text-main); padding: 12px 18px; border-radius: 18px; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(255, 126, 179, 0.4); z-index: 9999; font-size: 0.85rem; width: max-content; max-width: 90%; font-family: 'Nunito', sans-serif; font-weight: 800; transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); overflow: hidden; }
         #toast.show { bottom: 25px; }
         #toast i { font-size: 1.5rem; color: var(--jelly-pink); }
         .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--jelly-grad); width: 100%; transform-origin: left; transform: scaleX(0); }
         #toast.show .toast-progress { animation: progress 2.5s linear forwards; }
         @keyframes progress { 100% { transform: scaleX(1); } }
+        
         footer { text-align: center; padding: 25px 15px 80px 15px; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; border-top: 1px solid var(--border-color); margin-top: 30px; line-height: 1.5;}
-        .skeleton {
-            background: linear-gradient(90deg, var(--input-bg) 25%, var(--card-bg) 50%, var(--input-bg) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 8px;
-        }
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
+        .skeleton { background: linear-gradient(90deg, var(--input-bg) 25%, var(--card-bg) 50%, var(--input-bg) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        
         @media (max-width: 600px) {
             .req-main { flex-direction: column; gap: 10px; }
             .req-media { width: 100%; }
             .req-media img, .no-img { height: 140px; max-height: 140px;}
-            .grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .grid-3 { grid-template-columns: 1fr; }
             .admin-stats { grid-template-columns: repeat(2, 1fr); gap: 10px;} 
-            .admin-form-grid { grid-template-columns: 1fr; }
             .btn-act { flex: 1; }
-            .notif-dropdown { width: 250px; right: -10px; }
-            .stats-charts { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Audio -->
     <audio id="success-sound" preload="auto">
         <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=success-1-6297.mp3" type="audio/mpeg">
     </audio>
     <audio id="pop-sound" preload="auto">
         <source src="https://cdn.yupra.my.id/yp/j6obfe08.mp3" type="audio/mpeg">
     </audio>
-    <img src="https://cdn.yupra.my.id/yp/7eyuchlo.png" alt="Mascot" class="chibi-mascot" id="chibi-mascot">
 
-    <!-- Modal -->
     <div id="imageModal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal(event)"><i class="ph-bold ph-x"></i></span>
@@ -926,12 +301,10 @@
             <h4 id="modalTitle" class="modal-title">Nama Stiker</h4>
             <div class="modal-actions">
                 <button id="btnDownloadSticker" class="btn-modal btn-modal-dl"><i class="ph-bold ph-download-simple"></i> Download</button>
-                <button id="btnSourceSticker" class="btn-modal btn-modal-wa" style="display: none;"><i class="ph-bold ph-link"></i> Source</button>
             </div>
         </div>
     </div>
 
-    <!-- Navbar -->
     <nav>
         <div class="nav-left">
             <button class="menu-toggle" id="btn-menu"><i class="ph-bold ph-list"></i></button>
@@ -943,16 +316,8 @@
             </button>
             <button class="btn-nav-login" onclick="switchView('view-auth', this)"><i class="ph-bold ph-sign-in"></i> Login</button>
         </div>
-        
-        <div id="notif-dropdown" class="notif-dropdown">
-            <div style="font-weight: 900; font-family: 'Nunito', sans-serif; color: var(--text-main); margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Notifikasi</div>
-            <div id="notif-list-container" style="display: flex; flex-direction: column; gap: 8px;">
-                <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 10px 0;">Tidak ada notifikasi.</p>
-            </div>
-        </div>
     </nav>
 
-    <!-- Sidebar -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <div class="sidebar" id="sidebar">
         <button class="close-sidebar" id="btn-close-sidebar"><i class="ph-bold ph-x"></i></button>
@@ -960,17 +325,12 @@
         
         <div class="sidebar-label">Menu Utama</div>
         <button class="sidebar-link active-menu" onclick="switchView('view-home', this)"><i class="ph-duotone ph-house"></i> Beranda</button>
-        <button class="sidebar-link" onclick="switchView('view-gallery', this)"><i class="ph-duotone ph-images"></i> Galeri & Pack</button>
-        <button class="sidebar-link" onclick="switchView('view-form', this)"><i class="ph-bold ph-paper-plane-tilt"></i> Form Request</button>
-        <button class="sidebar-link" onclick="switchView('view-leaderboard', this)"><i class="ph-duotone ph-trophy"></i> Papan Peringkat</button>
         
         <div class="sidebar-label" id="label-private" style="display: none; margin-top: 15px;">Area Pribadi</div>
         <button class="sidebar-link" onclick="switchView('view-history', this)" id="nav-history-menu" style="display: none;"><i class="ph-duotone ph-clock-counter-clockwise"></i> Riwayat Tiketku</button>
-        <button class="sidebar-link" onclick="switchView('view-favorites', this)" id="nav-fav-menu" style="display: none;"><i class="ph-duotone ph-heart"></i> Koleksi Favorit</button>
         <button class="sidebar-link" onclick="switchView('view-my-profile', this)" id="nav-my-profile-menu" style="display: none;"><i class="ph-duotone ph-user-circle"></i> Profil Saya</button>
 
         <div class="sidebar-label" style="margin-top: 10px;">Tentang Kami</div>
-        <button class="sidebar-link" onclick="switchView('view-bot', this)"><i class="ph-duotone ph-robot"></i> Info Bot WA</button>
         <button class="sidebar-link" onclick="switchView('view-profile', this)"><i class="ph-duotone ph-user-gear"></i> Profil Admin</button>
 
         <div class="sidebar-label" style="margin-top: auto;">Sistem</div>
@@ -979,7 +339,6 @@
     </div>
 
     <div class="container">
-        <!-- View Auth -->
         <main id="view-auth" class="view-section">
             <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-user-circle"></i> Autentikasi</h2>
             <div class="unified-card" style="max-width: 400px; margin: 0 auto; text-align: center; padding: 40px 25px;">
@@ -1007,7 +366,6 @@
             </div>
         </main>
 
-        <!-- View My Profile -->
         <main id="view-my-profile" class="view-section">
             <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-user-circle"></i> Profil Saya</h2>
             <div class="unified-card profile-card" style="max-width: 500px; margin: 0 auto;">
@@ -1039,7 +397,6 @@
             </div>
         </main>
         
-        <!-- View Home -->
         <main id="view-home" class="view-section active-view">
             <section class="hero">
                 <div class="hero-icon-wrap">
@@ -1048,128 +405,10 @@
                     <i class="ph-duotone ph-game-controller"></i>
                 </div>
                 <h1 class="hero-title">Ryuuuzaaa Stickers<br><span>Present</span></h1>
-                <p class="hero-desc">Kirim ide sticker favoritmu, cek galeri pack, atau eksplor fitur bot WA keren kita. Semua jadi satu di sini!</p>
-                <button class="btn-submit" style="width: auto; display: inline-flex; padding: 10px 20px; margin: 15px auto 0;" onclick="switchView('view-form', this)">
-                    <i class="ph-duotone ph-rocket-launch"></i> Buat Request Baru
-                </button>
+                <p class="hero-desc">Kirim ide sticker favoritmu sekarang. Semua jadi satu di sini!</p>
             </section>
 
-            <section class="section-wrap">
-                <h2 class="section-title"><i class="ph-duotone ph-shapes"></i> Kategori Populer</h2>
-                <div class="grid-4">
-                    <div class="cat-box"><i class="ph-duotone ph-cat"></i><span>Chibi Cute</span></div>
-                    <div class="cat-box"><i class="ph-duotone ph-sword"></i><span>Action Anime</span></div>
-                    <div class="cat-box"><i class="ph-duotone ph-smiley-wink"></i><span>Meme Lucu</span></div>
-                    <div class="cat-box"><i class="ph-duotone ph-alien"></i><span>Gaming</span></div>
-                </div>
-            </section>
-
-            <section class="section-wrap">
-                <h2 class="section-title"><i class="ph-duotone ph-rocket-launch"></i> Baru Saja Rilis</h2>
-                <div class="grid-3" id="recent-drops-grid">
-                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem;">Memuat rilisan terbaru...</p>
-                </div>
-            </section>
-
-            <section class="section-wrap">
-                <h2 class="section-title"><i class="ph-duotone ph-magic-wand"></i> Alur Sistem</h2>
-                <div class="grid-3">
-                    <div class="jelly-box"><i class="ph-duotone ph-pencil-line"></i><h3>1. Tulis Ide</h3><p>Sebutin karakter atau upload referensinya.</p></div>
-                    <div class="jelly-box"><i class="ph-duotone ph-paper-plane-tilt"></i><h3>2. Submit</h3><p>Request otomatis terekam di database admin.</p></div>
-                    <div class="jelly-box"><i class="ph-duotone ph-check-circle"></i><h3>3. Rilis</h3><p>Admin proses dan share ke grup/channel!</p></div>
-                </div>
-            </section>
-
-            <section class="section-wrap">
-                <h2 class="section-title"><i class="ph-duotone ph-fire"></i> Paling Banyak Di-Request</h2>
-                <div class="trending-wrap" id="dynamic-trending">
-                    <p style="color: var(--text-muted); font-size: 0.8rem;">Loading trending data...</p>
-                </div>
-            </section>
-
-            <section class="section-wrap">
-                <h2 class="section-title"><i class="ph-duotone ph-chat-centered-text"></i> Kata Mereka</h2>
-                <div class="grid-2" id="dynamic-testimoni">
-                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.8rem;">Loading testimoni...</p>
-                </div>
-            </section>
-
-            <section class="section-wrap">
-                <h2 class="section-title"><i class="ph-duotone ph-question"></i> Tanya Jawab</h2>
-                <div class="grid-2">
-                    <div class="faq-box"><div class="faq-q"><i class="ph-duotone ph-chat-circle-text"></i> Semua pasti dibikin?</div><div class="faq-a">Admin memilah request yang paling menarik. Harap bersabar sesuai antrian ya.</div></div>
-                    <div class="faq-box"><div class="faq-q"><i class="ph-duotone ph-chat-circle-text"></i> Share nya di mana?</div><div class="faq-a">Hasil sticker jadi akan di-share langsung ke Channel WhatsApp kita.</div></div>
-                </div>
-            </section>
-        </main>
-
-        <!-- View Leaderboard -->
-        <main id="view-leaderboard" class="view-section">
-            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-trophy" style="color: #ffbd2e;"></i> Papan Peringkat</h2>
-            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">User paling aktif dan stiker paling favorit.</p>
-            
-            <div class="grid-2">
-                <div class="unified-card" style="padding: 20px;">
-                    <h3 style="font-family: 'Nunito', sans-serif; font-size: 1.1rem; color: var(--text-main); margin-bottom: 15px; display: flex; align-items: center; gap: 8px;"><i class="ph-bold ph-star" style="color: var(--stat-yellow);"></i> Top Requesters</h3>
-                    <div id="leaderboard-users">
-                        <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">Loading peringkat...</p>
-                    </div>
-                </div>
-                <div class="unified-card" style="padding: 20px;">
-                    <h3 style="font-family: 'Nunito', sans-serif; font-size: 1.1rem; color: var(--text-main); margin-bottom: 15px; display: flex; align-items: center; gap: 8px;"><i class="ph-fill ph-heart" style="color: var(--stat-red);"></i> Top Stickers</h3>
-                    <div id="leaderboard-stickers">
-                        <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">Loading stiker terpopuler...</p>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- View Gallery -->
-        <main id="view-gallery" class="view-section">
-            <div style="margin-top: 20px; margin-bottom: 25px;">
-                <div style="position: relative;">
-                    <i class="ph-bold ph-magnifying-glass" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.3rem;"></i>
-                    <input type="text" id="searchSticker" class="form-input" placeholder="Cari nama stiker kesukaanmu..." style="padding-left: 50px; border-radius: 20px; border: 2px solid var(--border-color); font-size: 0.95rem;">
-                </div>
-            </div>
-
-            <div id="gal-folder-view" class="gal-view active-gal">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 class="section-title"><i class="ph-duotone ph-folder-open"></i> Sticker Packs</h2>
-                    <button class="btn-back-folder" onclick="refreshPacks()"><i class="ph-bold ph-arrow-clockwise"></i> Refresh</button>
-                </div>
-                <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">Pilih folder pack di bawah untuk melihat koleksi.</p>
-                <div class="folder-grid" id="dynamic-folder-grid"><p style="text-align: center; grid-column: 1/-1; color: var(--text-muted); font-size: 0.85rem;">Loading data...</p></div>
-            </div>
-
-            <div id="gal-items-view" class="gal-view">
-                <div class="items-header">
-                    <button class="btn-back-folder" onclick="closeFolder()"><i class="ph-bold ph-arrow-left"></i> Kembali</button>
-                    <h2 id="folder-title" style="font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%;">Nama Folder</h2>
-                </div>
-                <div id="items-grid" class="sticker-items-grid"></div>
-            </div>
-        </main>
-
-        <!-- View History -->
-        <main id="view-history" class="view-section">
-            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-clock-counter-clockwise"></i> Riwayat Tiketku</h2>
-            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">Kumpulan request stiker yang pernah kamu buat.</p>
-            <div id="user-history-grid" style="display: flex; flex-direction: column; gap: 15px;"><p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">Loading riwayat tiket...</p></div>
-        </main>
-
-        <!-- View Favorites -->
-        <main id="view-favorites" class="view-section">
-            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-fill ph-heart" style="color: var(--stat-red);"></i> Koleksi Favorit</h2>
-            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">Kumpulan stiker yang kamu simpan.</p>
-            <div id="favorites-grid" class="sticker-items-grid"><p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem;">Loading favorit...</p></div>
-        </main>
-
-        <!-- View Form dengan PREVIEW GAMBAR -->
-        <main id="view-form" class="view-section">
-            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-envelope-simple-open"></i> Request Form</h2>
-            
-            <div class="unified-card" style="padding: 0;">
+            <div class="unified-card" style="padding: 0; margin-top: 20px;">
                 <div id="form-auth-overlay" class="form-auth-overlay">
                     <i class="ph-duotone ph-lock-key"></i>
                     <h3 style="color: #fff; font-family: 'Nunito', sans-serif; font-size: 1.3rem; margin-bottom: 5px;">Akses Terkunci</h3>
@@ -1181,7 +420,6 @@
                     <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                     <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Silakan isi formulir tiket request di bawah ini.</p>
                     
-                    <!-- PREVIEW GAMBAR CONTAINER -->
                     <div class="image-preview-container" id="imagePreviewContainer">
                         <img id="imagePreview" src="" class="lazy-image">
                         <div class="preview-placeholder">
@@ -1208,69 +446,14 @@
             </div>
             
             <a href="https://teer.id/whvnbxtgclq8zwisrc6r" target="_blank" class="btn-donate"><i class="ph-bold ph-coffee"></i> Traktir Admin Kopi</a>
-
-            <div class="unified-card" style="margin-top: 25px; border-top: 4px solid var(--jelly-purple);">
-                <h3 style="margin-bottom: 15px; font-family: 'Nunito', sans-serif; display: flex; align-items: center; gap: 8px;"><i class="ph-duotone ph-magnifying-glass" style="color: var(--jelly-purple); font-size: 1.4rem;"></i> Lacak Status Tiket</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Cek manual ID Tiket kamu (contoh: 5678).</p>
-                <form id="trackForm" style="display: flex; gap: 10px;">
-                    <input type="text" id="trackId" class="form-input" placeholder="ID Tiket (Cth: 5678)" required style="flex: 1;">
-                    <button type="submit" class="btn-submit" style="width: auto; margin-top: 0; padding: 10px 20px; background: var(--jelly-purple);"><i class="ph-bold ph-magnifying-glass"></i> Cek</button>
-                </form>
-                <div id="trackResult" style="margin-top: 15px; display: none; padding: 15px; border-radius: 15px; background: var(--bg-color); border: 1px solid var(--border-color);"></div>
-            </div>
         </main>
 
-        <!-- View Bot -->
-        <main id="view-bot" class="view-section">
-            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-robot"></i> Ryuuzaa Bot Area</h2>
-            <div class="unified-card bot-card-wrap">
-                <div class="mac-dots" style="justify-content: center; margin-bottom: 25px;">
-                    <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-                </div>
-                <div class="bot-header-center">
-                    <div class="bot-icon-wrapper">
-                        <i class="ph-duotone ph-robot"></i>
-                    </div>
-                    <h3 class="bot-title">Ryuuzaa Bot <span class="badge-nodejs">Node.js</span></h3>
-                    <span class="bot-status"><i class="ph-fill ph-check-circle"></i> Server Online 24/7</span>
-                    <p class="bot-desc">Bot WhatsApp serbaguna yang dikembangkan dengan Node.js. Siap membantu kebutuhan automasi dan hiburan grup kamu!</p>
-                </div>
-                <div class="bot-features-bento">
-                    <div class="bot-feat-item" style="--hover-color: var(--stat-blue);">
-                        <i class="ph-duotone ph-download-simple" style="color: var(--stat-blue);"></i>
-                        <span>Auto-Download</span>
-                    </div>
-                    <div class="bot-feat-item" style="--hover-color: var(--jelly-purple);">
-                        <i class="ph-duotone ph-magic-wand" style="color: var(--jelly-purple);"></i>
-                        <span>AI & Gemini</span>
-                    </div>
-                    <div class="bot-feat-item" style="--hover-color: var(--jelly-pink);">
-                        <i class="ph-duotone ph-sticker" style="color: var(--jelly-pink);"></i>
-                        <span>Sticker Maker</span>
-                    </div>
-                    <div class="bot-feat-item" style="--hover-color: var(--stat-yellow);">
-                        <i class="ph-duotone ph-image-square" style="color: var(--stat-yellow);"></i>
-                        <span>Canvas (Lvl/Wel)</span>
-                    </div>
-                    <div class="bot-feat-item" style="--hover-color: var(--stat-green);">
-                        <i class="ph-duotone ph-palette" style="color: var(--stat-green);"></i>
-                        <span>Edit (Hitam/Peci)</span>
-                    </div>
-                    <div class="bot-feat-item" style="--hover-color: var(--stat-red);">
-                        <i class="ph-duotone ph-user-circle" style="color: var(--stat-red);"></i>
-                        <span>Edit (Anime/Fig)</span>
-                    </div>
-                </div>
-                <div class="bot-more-wrap">
-                    <i class="ph-duotone ph-sparkle"></i> ... dan ratusan fitur canggih lainnya!
-                </div>
-                <a href="https://chat.whatsapp.com/Hr9FbaODVBo7wdLqqLFTWd?mode=gi_t" class="btn-submit btn-bot-wa" style="width: 100%; display: flex; justify-content: center; border: none;">
-                    <i class="ph-bold ph-whatsapp-logo"></i> Chat Bot Sekarang
-                </a>
-            </div>
+        <main id="view-history" class="view-section">
+            <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-clock-counter-clockwise"></i> Riwayat Tiketku</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">Kumpulan request stiker yang pernah kamu buat.</p>
+            <div id="user-history-grid" style="display: flex; flex-direction: column; gap: 15px;"><p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">Loading riwayat tiket...</p></div>
         </main>
 
-        <!-- View Profile -->
         <main id="view-profile" class="view-section">
             <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-user-gear"></i> Profil Admin</h2>
             <div class="unified-card profile-card">
@@ -1294,7 +477,6 @@
             </div>
         </main>
 
-        <!-- View ADMIN dengan GRAFIK STATISTIK & ACTIVITY LOG -->
         <main id="view-admin" class="view-section">
             <h2 class="section-title" style="margin-top: 20px;"><i class="ph-duotone ph-shield-check"></i> Administrator Area</h2>
             
@@ -1313,9 +495,6 @@
                         <button class="tab-btn" id="tab-pending" onclick="changeAdminTab('pending')"><i class="ph-bold ph-envelope-simple-open"></i> Tiket Baru</button>
                         <button class="tab-btn" id="tab-done" onclick="changeAdminTab('done')"><i class="ph-bold ph-check-circle"></i> Selesai</button>
                         <button class="tab-btn" id="tab-rejected" onclick="changeAdminTab('rejected')"><i class="ph-bold ph-x-circle"></i> Ditolak</button>
-                        <button class="tab-btn" id="tab-gallery" onclick="changeAdminTab('gallery')"><i class="ph-bold ph-folder-star"></i> Kelola Galeri</button>
-                        <button class="tab-btn" id="tab-drop" onclick="changeAdminTab('drop')"><i class="ph-bold ph-rocket-launch"></i> Kelola Drop</button>
-                        <button class="tab-btn" id="tab-home" onclick="changeAdminTab('home')"><i class="ph-bold ph-layout"></i> Kelola Web</button>
                     </div>
                 </div>
 
@@ -1339,81 +518,10 @@
                 </div>
 
                 <div id="admin-request-list" style="display: none;"></div>
-
-                <div id="admin-gallery-mgr" style="display: none;">
-                    <div class="admin-form-grid">
-                        <div class="admin-panel-card" style="border-top: 5px solid var(--jelly-pink);">
-                            <h3><i class="ph-duotone ph-folder-plus" style="color: var(--jelly-pink); font-size: 1.5rem;"></i> Buat Folder Pack</h3>
-                            <form id="formAddPack" style="display: flex; flex-direction: column; flex: 1; gap: 15px;">
-                                <div class="form-group" style="margin-bottom: 0;"><input type="text" id="addPackId" class="form-input" placeholder="ID Folder (Tanpa Spasi)" required></div>
-                                <div class="form-group" style="margin-bottom: 0;"><input type="text" id="addPackTitle" class="form-input" placeholder="Nama Folder" required></div>
-                                <button type="submit" class="btn-submit" style="background: var(--jelly-pink); margin-top: auto;"><i class="ph-bold ph-plus"></i> Simpan Folder</button>
-                            </form>
-                        </div>
-                        <div class="admin-panel-card" style="border-top: 5px solid var(--stat-blue);">
-                            <h3><i class="ph-duotone ph-image-square" style="color: var(--stat-blue); font-size: 1.5rem;"></i> Upload Stiker</h3>
-                            <form id="formAddSticker" style="display: flex; flex-direction: column; flex: 1; gap: 12px;">
-                                <div class="form-group" style="margin-bottom: 0;"><select id="selectPack" class="form-select" required><option value="">-- Pilih Folder --</option></select></div>
-                                <div class="form-group" style="margin-bottom: 0;"><input type="text" id="addStickerName" class="form-input" placeholder="Nama Stiker" required></div>
-                                <div class="form-group" style="margin-bottom: 0;"><input type="url" id="addStickerSource" class="form-input" placeholder="Link Source (Opsional)"></div>
-                                <div class="media-box">
-                                    <div class="file-upload-wrapper" style="height: 35px; margin-bottom: 5px;"><i class="ph-duotone ph-upload-simple"></i> Pilih Galeri <input type="file" id="addStickerFile" accept="image/*"></div>
-                                    <span id="addStickerFileName" class="fileNameDisplay" style="font-size: 0.7rem;"></span>
-                                    <input type="url" id="addStickerUrl" class="form-input" placeholder="Atau Paste Link..." style="padding: 10px;">
-                                </div>
-                                <button type="submit" class="btn-submit" style="background: var(--stat-blue); margin-top: auto;"><i class="ph-bold ph-upload-simple"></i> Upload Stiker</button>
-                            </form>
-                        </div>
-                    </div>
-                    <h3 class="section-title" style="margin-top: 30px; text-align: left; font-size: 1.2rem;"><i class="ph-duotone ph-folders"></i> Kelola Pack & Stiker</h3>
-                    <div id="admin-pack-list"></div>
-                </div>
-
-                <div id="admin-drop-mgr" style="display: none;">
-                    <div class="admin-panel-card" style="border-top: 5px solid var(--stat-yellow); max-width: 500px; margin: 0 auto 30px;">
-                        <h3><i class="ph-duotone ph-rocket-launch" style="color: var(--stat-yellow); font-size: 1.5rem;"></i> Pasang Drop Baru Rilis</h3>
-                        <form id="formAddDrop" style="display: flex; flex-direction: column; flex: 1; gap: 15px;">
-                            <div class="form-group" style="margin-bottom: 0;"><input type="text" id="addDropTime" class="form-input" placeholder="Keterangan (Contoh: Hari ini)" required></div>
-                            <div class="media-box">
-                                <div class="file-upload-wrapper" style="height: 40px; margin-bottom: 5px; border-color: var(--stat-yellow); color: var(--stat-yellow);"><i class="ph-duotone ph-upload-simple"></i> Pilih Gambar <input type="file" id="addDropFile" accept="image/*"></div>
-                                <span id="addDropFileName" class="fileNameDisplay" style="font-size: 0.7rem;"></span>
-                                <input type="url" id="addDropUrl" class="form-input" placeholder="Atau Paste Link URL..." style="padding: 10px;">
-                            </div>
-                            <button type="submit" class="btn-submit" style="background: var(--stat-yellow); color: #000; margin-top: auto;"><i class="ph-bold ph-rocket-launch"></i> Rilis Sekarang</button>
-                        </form>
-                    </div>
-                    <h3 class="section-title" style="text-align: left; font-size: 1.2rem;"><i class="ph-duotone ph-clock-counter-clockwise"></i> Kelola Drop Terbaru</h3>
-                    <div id="admin-drops-list" style="display: flex; gap: 15px; flex-wrap: wrap;"></div>
-                </div>
-
-                <div id="admin-home-mgr" style="display: none;">
-                    <div class="admin-form-grid">
-                        <div class="admin-panel-card" style="border-top: 5px solid var(--jelly-purple);">
-                            <h3><i class="ph-duotone ph-fire" style="color: var(--jelly-purple); font-size: 1.5rem;"></i> Tambah Trending</h3>
-                            <form id="formAddTrending" style="display: flex; flex-direction: column; flex: 1; gap: 15px;">
-                                <div class="form-group" style="margin-bottom: 0;"><input type="text" id="addTrendingTag" class="form-input" placeholder="contoh: Gojo Satoru" required></div>
-                                <button type="submit" class="btn-submit" style="background: var(--jelly-purple); margin-top: auto;"><i class="ph-bold ph-plus"></i> Tambah Trending</button>
-                            </form>
-                            <div id="admin-trending-list" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
-                        </div>
-
-                        <div class="admin-panel-card" style="border-top: 5px solid var(--stat-green);">
-                            <h3><i class="ph-duotone ph-chat-centered-text" style="color: var(--stat-green); font-size: 1.5rem;"></i> Tambah Testimoni</h3>
-                            <form id="formAddTestimoni" style="display: flex; flex-direction: column; flex: 1; gap: 15px;">
-                                <div class="form-group" style="margin-bottom: 0;"><input type="text" id="addTestiName" class="form-input" placeholder="Nama User (contoh: Reza)" required></div>
-                                <div class="form-group" style="margin-bottom: 0;"><textarea id="addTestiText" class="form-textarea" placeholder="Isi testimoni dari user..." required></textarea></div>
-                                <button type="submit" class="btn-submit" style="background: var(--stat-green); margin-top: auto;"><i class="ph-bold ph-plus"></i> Pasang Testimoni</button>
-                            </form>
-                        </div>
-                    </div>
-                    <h3 class="section-title" style="margin-top: 30px; text-align: left; font-size: 1.2rem;"><i class="ph-duotone ph-chats"></i> Kelola Testimoni</h3>
-                    <div id="admin-testimoni-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;"></div>
-                </div>
             </div>
         </main>
     </div>
 
-    <!-- Music Player -->
     <div class="music-player" id="music-player">
         <button class="play-btn" id="play-btn"><i class="ph-fill ph-play-circle" id="play-icon"></i></button>
         <div class="track-info">
@@ -1433,7 +541,6 @@
         <span style="font-size: 0.75rem; margin-top: 5px; display: inline-block;">Managed by Pirrrzaaa ( Ryuuzaa )</span>
     </footer>
 
-    <!-- Toast -->
     <div id="toast">
         <i class="ph-fill ph-check-circle"></i>
         <div>
@@ -1444,14 +551,10 @@
     </div>
 
     <script type="module">
-        // ==========================================================================
-        // 1. IMPOR FIREBASE MODULAR SDK v9+
-        // ==========================================================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
             getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, 
-            query, where, orderBy, limit, startAfter, onSnapshot, serverTimestamp, increment, 
-            writeBatch, getCountFromServer, setDoc
+            query, where, orderBy, limit, onSnapshot, serverTimestamp, writeBatch, getCountFromServer, setDoc
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { 
             getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
@@ -1472,22 +575,10 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // ==========================================================================
-        // 2. VARIABEL GLOBAL
-        // ==========================================================================
         let currentUserData = null;
-        let userFavoritesIds = [];
-        let unreadNotifCount = 0;
-        let isStickersCached = false;
-        let allStickersCache = [];
-        let currentAdminTab = 'pending';
-        let searchTimeout;
-
-        // Admin real-time unsubscribe
         let adminRequestsUnsub = null;
-        
-        // Array untuk cleanup listener user
         let userUnsubscribers = [];
+        let adminCurrentTab = 'overview'; 
 
         function registerCleanup(unsub) {
             if (typeof unsub === 'function') userUnsubscribers.push(unsub);
@@ -1498,19 +589,10 @@
             if (adminRequestsUnsub) adminRequestsUnsub();
         }
 
-        // ==========================================================================
-        // 3. UTILITY FUNCTIONS
-        // ==========================================================================
         function escapeHTML(str) {
             if (!str) return '';
             return String(str).replace(/[&<>'"]/g, 
-                tag => ({
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    "'": '&#39;',
-                    '"': '&quot;'
-                }[tag] || tag)
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
             );
         }
 
@@ -1538,11 +620,7 @@
         }
 
         async function compressImage(file, maxSizeMB = 0.2) {
-            const options = {
-                maxSizeMB: maxSizeMB,
-                maxWidthOrHeight: 800,
-                useWebWorker: true,
-            };
+            const options = { maxSizeMB: maxSizeMB, maxWidthOrHeight: 800, useWebWorker: true };
             try {
                 const compressed = await imageCompression(file, options);
                 return await new Promise((resolve) => {
@@ -1550,15 +628,9 @@
                     reader.onload = (e) => resolve(e.target.result);
                     reader.readAsDataURL(compressed);
                 });
-            } catch (error) {
-                console.log("Kompresi gagal, pakai asli");
-                return null;
-            }
+            } catch (error) { return null; }
         }
 
-        // ==========================================================================
-        // 4. THEME TOGGLE
-        // ==========================================================================
         window.toggleTheme = function() {
             const root = document.documentElement;
             const icon = document.getElementById('theme-icon');
@@ -1585,9 +657,6 @@
             }
         })();
 
-        // ==========================================================================
-        // 5. PREVIEW GAMBAR (tanpa validasi MIME/URL)
-        // ==========================================================================
         window.previewImage = function(input) {
             const preview = document.getElementById('imagePreview');
             const container = document.getElementById('imagePreviewContainer');
@@ -1622,9 +691,6 @@
             }
         };
 
-        // ==========================================================================
-        // 6. LAZY LOADING
-        // ==========================================================================
         function initLazyLoading() {
             const images = document.querySelectorAll('img[loading="lazy"], .lazy-image');
             if ('IntersectionObserver' in window) {
@@ -1656,15 +722,10 @@
                         });
                     });
                     observer.observe(img);
-                } else {
-                    img.classList.add('loaded');
-                }
+                } else { img.classList.add('loaded'); }
             });
         }
 
-        // ==========================================================================
-        // 7. AUTHENTICATION (modular)
-        // ==========================================================================
         window.toggleAuthMode = function() {
             const modeInput = document.getElementById('authMode');
             const title = document.getElementById('authTitle');
@@ -1716,7 +777,6 @@
             }
         });
 
-        // Show password toggle
         document.getElementById('togglePassword').addEventListener('click', function() {
             const passInput = document.getElementById('authPass');
             if (passInput.type === 'password') {
@@ -1740,128 +800,7 @@
             }
         };
 
-        // ==========================================================================
-        // 8. DATA PUBLIK (sekali load)
-        // ==========================================================================
-        async function loadRecentDrops() {
-            try {
-                const q = query(collection(db, 'recent_drops'), orderBy('createdAt', 'desc'), limit(3));
-                const snapshot = await getDocs(q);
-                const grid = document.getElementById('recent-drops-grid');
-                if(snapshot.empty) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem;">Belum ada drop terbaru.</p>';
-                    return;
-                }
-                let html = '';
-                snapshot.forEach(doc => {
-                    const drop = doc.data();
-                    html += `
-                        <div class="drop-card" onclick="openModal('${escapeHTML(drop.img)}', 'Baru Rilis: ${escapeHTML(drop.time)}')">
-                            <img src="${escapeHTML(drop.img)}" alt="Drop" loading="lazy" class="lazy-image">
-                            <div class="drop-info">
-                                <h4>${escapeHTML(drop.time)}</h4>
-                                <p>Rilis Baru</p>
-                            </div>
-                        </div>
-                    `;
-                });
-                grid.innerHTML = html;
-                setTimeout(observeNewImages, 100);
-            } catch(err) { console.error("Gagal load drops:", err); }
-        }
-
-        async function loadTrending() {
-            try {
-                const q = query(collection(db, 'trending'), limit(15));
-                const snapshot = await getDocs(q);
-                const wrap = document.getElementById('dynamic-trending');
-                if(snapshot.empty) {
-                    wrap.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem;">Belum ada data trending.</p>';
-                    return;
-                }
-                let html = '';
-                snapshot.forEach(doc => {
-                    html += `<span class="trend-tag"><i class="ph-duotone ph-fire"></i> ${escapeHTML(doc.data().tag)}</span>`;
-                });
-                wrap.innerHTML = html;
-            } catch(err) { console.error("Gagal load trending:", err); }
-        }
-
-        async function loadTestimonials() {
-            try {
-                const q = query(collection(db, 'testimonials'), limit(10));
-                const snapshot = await getDocs(q);
-                const wrap = document.getElementById('dynamic-testimoni');
-                if(snapshot.empty) {
-                    wrap.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.8rem;">Belum ada testimoni.</p>';
-                    return;
-                }
-                let html = '';
-                snapshot.forEach(doc => {
-                    const t = doc.data();
-                    html += `
-                        <div class="testi-box">
-                            <div class="testi-header">
-                                <div class="testi-avatar" style="background: ${t.color};">
-                                    ${escapeHTML(t.name).charAt(0).toUpperCase()}
-                                </div>
-                                <span class="testi-name">${escapeHTML(t.name)}</span>
-                            </div>
-                            <p class="testi-text">"${escapeHTML(t.text)}"</p>
-                        </div>
-                    `;
-                });
-                wrap.innerHTML = html;
-            } catch(err) { console.error("Gagal load testimoni:", err); }
-        }
-
-        async function loadPacks() {
-            try {
-                const q = query(collection(db, 'packs'), limit(100));
-                const snapshot = await getDocs(q);
-                const grid = document.getElementById('dynamic-folder-grid');
-                if(snapshot.empty) {
-                    grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">Belum ada folder pack.</p>';
-                    return;
-                }
-                let html = '';
-                snapshot.forEach(doc => {
-                    const pack = doc.data();
-                    html += `
-                        <div class="folder-card" onclick="openFolder('${doc.id}', '${escapeHTML(pack.title).replace(/'/g, "\\'")}')">
-                            <i class="ph-duotone ph-folder-notch"></i>
-                            <span>${escapeHTML(pack.title)}</span>
-                            <p>${pack.count || 0} stiker</p>
-                        </div>
-                    `;
-                });
-                grid.innerHTML = html;
-            } catch(err) { console.error("Gagal load packs:", err); }
-        }
-
-        window.refreshPacks = function() {
-            loadPacks();
-            showToast("Info", "Daftar pack diperbarui");
-        };
-
-        // ==========================================================================
-        // 9. REAL-TIME LISTENER USER
-        // ==========================================================================
-        let notifUnsub = null, favUnsub = null, historyUnsub = null, userAvatarUnsub = null;
-
-        function loadUserFavoritesCache() {
-            if(!currentUserData) return;
-            if(favUnsub) favUnsub();
-            const q = query(collection(db, 'favorites'), where('user', '==', currentUserData), limit(100));
-            favUnsub = onSnapshot(q, snap => {
-                userFavoritesIds = [];
-                snap.forEach(doc => userFavoritesIds.push(doc.data().stickerId));
-                if(document.getElementById('view-favorites').classList.contains('active-view')) {
-                    loadFavoritesView();
-                }
-            });
-            registerCleanup(favUnsub);
-        }
+        let historyUnsub = null, userAvatarUnsub = null;
 
         function loadUserHistory() {
             if(!currentUserData) return;
@@ -1893,8 +832,9 @@
                         borderColor = 'var(--stat-red)';
                     }
                     let imgSrc = req.image || req.url || null;
+
                     let imgHtml = imgSrc
-                        ? `<img src="${escapeHTML(imgSrc)}" style="width:100%; height:100%; max-height:80px; object-fit:cover; border-radius:10px; border:1px solid var(--border-color); cursor:pointer;" onclick="openModal('${escapeHTML(imgSrc)}', 'Ref: ${escapeHTML(req.char).replace(/'/g, "\\'")}')" loading="lazy" class="lazy-image">`
+                        ? `<div style="position:relative; width:100%; height:100%;"><img src="${escapeHTML(imgSrc)}" style="width:100%; height:100%; max-height:80px; object-fit:cover; border-radius:10px; border:1px solid var(--border-color); cursor:pointer;" onclick="openModal('${escapeHTML(imgSrc)}', 'Ref: ${escapeHTML(req.char).replace(/'/g, "\\'")}')" loading="lazy" class="lazy-image"></div>`
                         : `<div class="no-img" style="height:80px; font-size:0.6rem;"><i class="ph-duotone ph-image-broken"></i><br>Tanpa Gambar</div>`;
                     html += `
                         <div class="req-item" style="border-left-color: ${borderColor}; padding: 15px; margin-bottom: 10px;">
@@ -1926,42 +866,6 @@
             registerCleanup(historyUnsub);
         }
 
-        function loadNotifications() {
-            if(!currentUserData) return;
-            if(notifUnsub) notifUnsub();
-            const q = query(collection(db, 'notifications'), where('user', '==', currentUserData), orderBy('createdAt', 'desc'), limit(10));
-            notifUnsub = onSnapshot(q, snap => {
-                const list = document.getElementById('notif-list-container');
-                const badge = document.getElementById('notif-badge');
-                if(snap.empty) {
-                    if(list) list.innerHTML = `<p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 10px 0;">Tidak ada notifikasi.</p>`;
-                    if(badge) badge.classList.remove('active');
-                    return;
-                }
-                let html = '';
-                unreadNotifCount = 0;
-                snap.forEach(doc => {
-                    const n = doc.data();
-                    if(!n.isRead) unreadNotifCount++;
-                    let c = n.isRead ? 'notif-item' : 'notif-item unread';
-                    let d = n.createdAt ? new Date(n.createdAt.toDate()).toLocaleDateString('id-ID', {day:'2-digit', month:'short'}) : 'Baru saja';
-                    html += `
-                        <div class="${c}">
-                            <span style="font-weight: 800; margin-bottom:2px;">Update Tiket!</span>
-                            ${escapeHTML(n.message)}
-                            <span class="notif-time">${d}</span>
-                        </div>
-                    `;
-                });
-                if(list) list.innerHTML = html;
-                if(badge) {
-                    if(unreadNotifCount > 0) badge.classList.add('active');
-                    else badge.classList.remove('active');
-                }
-            });
-            registerCleanup(notifUnsub);
-        }
-
         function loadUserAvatar() {
             if(!currentUserData) return;
             if(userAvatarUnsub) userAvatarUnsub();
@@ -1980,10 +884,6 @@
                         <button class="btn-nav-action" id="theme-toggle" onclick="toggleTheme()" title="Ganti Tema">
                             <i class="${document.documentElement.classList.contains('light-theme') ? 'ph-bold ph-moon' : 'ph-bold ph-sun-dim'}" id="theme-icon"></i>
                         </button>
-                        <button class="btn-nav-action" id="btn-notif" onclick="toggleNotif()" title="Notifikasi">
-                            <i class="ph-bold ph-bell"></i>
-                            <div class="notif-badge" id="notif-badge"></div>
-                        </button>
                         <span style="font-weight: 800; font-size: 0.85rem; color: var(--jelly-pink); display: flex; align-items: center; gap: 5px; cursor: default;">
                             ${avatarHtml} ${escapeHTML(currentUserData)}
                         </span>
@@ -1997,9 +897,6 @@
             registerCleanup(userAvatarUnsub);
         }
 
-        // ==========================================================================
-        // 10. AUTH STATE OBSERVER
-        // ==========================================================================
         onAuthStateChanged(auth, (user) => {
             const authOverlay = document.getElementById('form-auth-overlay');
             const reqUser = document.getElementById('reqUser');
@@ -2007,7 +904,6 @@
             const navAuthMenu = document.getElementById('nav-auth-menu');
             const navPrivates = [
                 document.getElementById('nav-history-menu'),
-                document.getElementById('nav-fav-menu'),
                 document.getElementById('nav-my-profile-menu')
             ];
             const adminMenu = document.getElementById('nav-admin-menu');
@@ -2018,13 +914,7 @@
                 const username = user.email.split('@')[0];
                 currentUserData = username;
                 cleanupAllListeners();
-                loadRecentDrops();
-                loadTrending();
-                loadTestimonials();
-                loadPacks();
-                loadUserFavoritesCache();
                 loadUserHistory();
-                loadNotifications();
                 loadUserAvatar();
 
                 if(authOverlay) authOverlay.style.display = 'none';
@@ -2051,12 +941,7 @@
                 }
             } else {
                 currentUserData = null;
-                userFavoritesIds = [];
                 cleanupAllListeners();
-                loadRecentDrops();
-                loadTrending();
-                loadTestimonials();
-                loadPacks();
 
                 const navRight = document.getElementById('nav-user-info');
                 if(navRight) {
@@ -2084,14 +969,9 @@
                 if (profAvatar) profAvatar.innerHTML = '<i class="ph-fill ph-user-circle" style="font-size: 4rem; color: var(--text-muted);"></i>';
 
                 document.getElementById('user-history-grid').innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">Loading riwayat tiket...</p>';
-                document.getElementById('favorites-grid').innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem;">Loading favorit...</p>';
-                document.getElementById('notif-list-container').innerHTML = '<p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 10px 0;">Tidak ada notifikasi.</p>';
             }
         });
 
-        // ==========================================================================
-        // 11. SIDEBAR & NAVIGATION
-        // ==========================================================================
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
         const views = document.querySelectorAll('.view-section');
@@ -2131,149 +1011,8 @@
                 updateAdminStats();
                 loadActivityLogs();
             }
-            if(viewId === 'view-gallery') closeFolder();
-            if(viewId === 'view-favorites') loadFavoritesView();
-            if(viewId === 'view-leaderboard') loadLeaderboardData();
         };
 
-        window.toggleNotif = function() {
-            const dd = document.getElementById('notif-dropdown');
-            dd.classList.toggle('show');
-            if (dd.classList.contains('show') && unreadNotifCount > 0 && currentUserData) {
-                const q = query(collection(db, 'notifications'), where('user', '==', currentUserData), where('isRead', '==', false), limit(20));
-                getDocs(q).then(snap => {
-                    const batch = writeBatch(db);
-                    snap.forEach(doc => batch.update(doc.ref, {isRead: true}));
-                    batch.commit();
-                });
-            }
-        };
-
-        document.addEventListener('click', function(e) {
-            if(!e.target.closest('#notif-dropdown') && !e.target.closest('#btn-notif')) {
-                const dd = document.getElementById('notif-dropdown');
-                if(dd) dd.classList.remove('show');
-            }
-        });
-
-        // ==========================================================================
-        // 12. LEADERBOARD
-        // ==========================================================================
-        async function loadLeaderboardData() {
-            const uGrid = document.getElementById('leaderboard-users');
-            const sGrid = document.getElementById('leaderboard-stickers');
-            try {
-                const q = query(collection(db, 'requests'), orderBy('createdAt', 'desc'), limit(200));
-                const reqSnap = await getDocs(q);
-                let uCount = {};
-                reqSnap.forEach(doc => { let u = doc.data().user; if(u) uCount[u] = (uCount[u] || 0) + 1; });
-                let uArr = Object.keys(uCount).map(k => ({user: k, count: uCount[k]})).sort((a,b) => b.count - a.count).slice(0, 5);
-                if(uArr.length === 0) {
-                    uGrid.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">Belum ada data request.</p>';
-                } else {
-                    let html = '';
-                    for(let i=0; i<uArr.length; i++) {
-                        let d = uArr[i];
-                        let colorClass = i===0 ? 'top-1' : (i===1 ? 'top-2' : (i===2 ? 'top-3' : ''));
-                        let av = `<i class="ph-fill ph-user-circle" style="font-size: 2rem; color: var(--text-muted);"></i>`;
-                        const uDoc = await getDoc(doc(db, 'users', d.user));
-                        if(uDoc.exists() && uDoc.data().avatar) av = `<img src="${escapeHTML(uDoc.data().avatar)}" class="rank-img lazy-image">`;
-                        html += `
-                            <div class="rank-card">
-                                <div class="rank-num ${colorClass}">${i+1}</div>
-                                ${av}
-                                <div class="rank-info">
-                                    <span class="rank-name">@${escapeHTML(d.user)}</span>
-                                    <span class="rank-score"><i class="ph-bold ph-paper-plane-tilt"></i> ${d.count} tiket dikirim</span>
-                                </div>
-                            </div>
-                        `;
-                    }
-                    uGrid.innerHTML = html;
-                    setTimeout(observeNewImages, 100);
-                }
-                const favSnap = await getDocs(collection(db, 'favorites'));
-                let fCount = {};
-                favSnap.forEach(doc => { let d = doc.data(); if(d.stickerId) { if(!fCount[d.stickerId]) fCount[d.stickerId] = {count:0, name:d.name, img:d.img}; fCount[d.stickerId].count++; } });
-                let fArr = Object.values(fCount).sort((a,b) => b.count - a.count).slice(0, 5);
-                if(fArr.length === 0) {
-                    sGrid.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">Belum ada stiker favorit.</p>';
-                } else {
-                    let html = '';
-                    fArr.forEach((d, i) => {
-                        let colorClass = i===0 ? 'top-1' : (i===1 ? 'top-2' : (i===2 ? 'top-3' : ''));
-                        html += `
-                            <div class="rank-card">
-                                <div class="rank-num ${colorClass}">${i+1}</div>
-                                <img src="${escapeHTML(d.img)}" class="rank-img lazy-image">
-                                <div class="rank-info">
-                                    <span class="rank-name">${escapeHTML(d.name)}</span>
-                                    <span class="rank-score" style="color:var(--stat-red);">
-                                        <i class="ph-fill ph-heart"></i> Disukai ${d.count} User
-                                    </span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    sGrid.innerHTML = html;
-                    setTimeout(observeNewImages, 100);
-                }
-            } catch(err) {
-                if(uGrid) uGrid.innerHTML = '<p>Error memuat data.</p>';
-            }
-        }
-
-        // ==========================================================================
-        // 13. FAVORITES & HISTORY
-        // ==========================================================================
-        window.toggleFav = async function(stickerId, name, img, event) {
-            event.stopPropagation();
-            if(!currentUserData) { showToast("Gagal", "Login dulu buat nyimpen favorit!"); return; }
-            const btn = event.currentTarget;
-            await logUserActivity(currentUserData, 'favorite_toggle', `${btn.classList.contains('active') ? 'Menghapus' : 'Menambahkan'} favorit: ${name}`);
-            if(btn.classList.contains('active')) {
-                btn.classList.remove('active');
-                const q = query(collection(db, 'favorites'), where('user','==',currentUserData), where('stickerId','==',stickerId), limit(1));
-                const snap = await getDocs(q);
-                snap.forEach(doc => deleteDoc(doc.ref));
-                showToast("Dihapus", "Stiker dihapus dari Favorit.");
-            } else {
-                btn.classList.add('active');
-                await addDoc(collection(db, 'favorites'), { user: currentUserData, stickerId: stickerId, name: name, img: img, createdAt: serverTimestamp() });
-                showToast("Disimpan!", "Masuk ke Koleksi Favorit.");
-            }
-        };
-
-        function loadFavoritesView() {
-            const grid = document.getElementById('favorites-grid');
-            if(!currentUserData) return;
-            const q = query(collection(db, 'favorites'), where('user', '==', currentUserData), limit(100));
-            getDocs(q).then(snap => {
-                if(snap.empty) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 20px;">Koleksimu masih kosong.</p>';
-                    return;
-                }
-                let html = '';
-                snap.forEach(doc => {
-                    const item = doc.data();
-                    html += `
-                        <div class="gal-card" style="position:relative;" onclick="openModal('${escapeHTML(item.img)}', '${escapeHTML(item.name).replace(/'/g, "\\'")}')">
-                            <button class="btn-fav active" onclick="toggleFav('${item.stickerId}', '${escapeHTML(item.name).replace(/'/g, "\\'")}', '${escapeHTML(item.img)}', event)">
-                                <i class="ph-fill ph-heart"></i>
-                            </button>
-                            <img src="${escapeHTML(item.img)}" alt="${escapeHTML(item.name)}" loading="lazy" class="lazy-image">
-                            <span class="gal-name">${escapeHTML(item.name)}</span>
-                        </div>
-                    `;
-                });
-                grid.innerHTML = html;
-                setTimeout(observeNewImages, 100);
-            });
-        }
-
-        // ==========================================================================
-        // 14. FORM REQUEST & TRACKING (tanpa validasi MIME/URL)
-        // ==========================================================================
         const fileInput = document.getElementById('reqFile');
         const urlInput = document.getElementById('reqUrl');
         const fileNameDisplay = document.getElementById('fileName');
@@ -2301,7 +1040,6 @@
             e.preventDefault();
             const char = document.getElementById('reqChar').value.trim();
             const user = document.getElementById('reqUser').value;
-            const email = document.getElementById('reqEmail').value.trim();
             const detail = document.getElementById('reqDetail').value.trim();
             const url = document.getElementById('reqUrl').value.trim();
             const date = getFormattedDate();
@@ -2310,7 +1048,7 @@
             if(!char) { showToast("Gagal", "Karakter / Subjek wajib diisi."); return; }
             if(char.length > 100) { showToast("Gagal", "Nama karakter maksimal 100 karakter."); return; }
             if(detail.length > 500) { showToast("Gagal", "Keterangan maksimal 500 karakter."); return; }
-            // Tidak ada validasi MIME/URL
+            
             try {
                 await logUserActivity(user, 'request_submit', `Membuat request untuk ${char}`);
                 let finalImage = null;
@@ -2324,7 +1062,7 @@
                     });
                 }
                 const docRef = await addDoc(collection(db, 'requests'), {
-                    char, user, email: email || null, detail: detail || null,
+                    char, user, detail: detail || null,
                     image: finalImage, url: url !== "" ? url : null, date, status: 'pending',
                     createdAt: serverTimestamp()
                 });
@@ -2342,129 +1080,10 @@
             }
         });
 
-        document.getElementById('trackForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const id = document.getElementById('trackId').value.trim();
-            const resDiv = document.getElementById('trackResult');
-            resDiv.style.display = 'block';
-            resDiv.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem; text-align: center;">Mencari data ke server...</p>';
-            try {
-                const docSnap = await getDoc(doc(db, 'requests', id));
-                if(!docSnap.exists()) {
-                    resDiv.innerHTML = `<div style="text-align:center; color: var(--stat-red);"><i class="ph-duotone ph-warning-circle" style="font-size: 2rem; margin-bottom: 5px;"></i><p style="font-weight: 700; font-size: 0.85rem;">Tiket #${escapeHTML(id)} tidak ditemukan.</p></div>`;
-                    return;
-                }
-                const data = docSnap.data();
-                let statusHtml = '';
-                if(data.status === 'pending') statusHtml = `<span style="background: rgba(255, 189, 46, 0.2); color: var(--stat-yellow); padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.7rem;"><i class="ph-bold ph-clock"></i> Masih Antre</span>`;
-                else if(data.status === 'done') statusHtml = `<span style="background: rgba(39, 201, 63, 0.2); color: var(--stat-green); padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.7rem;"><i class="ph-bold ph-check-circle"></i> Udah Jadi!</span>`;
-                else if(data.status === 'rejected') statusHtml = `<span style="background: rgba(255, 95, 86, 0.2); color: var(--stat-red); padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 0.7rem;"><i class="ph-bold ph-x-circle"></i> Ditolak Admin</span>`;
-                resDiv.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px;">
-                        <span style="font-weight: 900; color: var(--text-main); font-family: 'Nunito', sans-serif;">Tiket #${escapeHTML(id)}</span>
-                        ${statusHtml}
-                    </div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
-                        <strong style="color:var(--jelly-pink);">Stiker:</strong> ${escapeHTML(data.char)}<br>
-                        <strong style="color:var(--jelly-purple);">Username:</strong> ${escapeHTML(data.user)}<br>
-                        <strong>Tanggal:</strong> ${escapeHTML(data.date)}
-                    </div>
-                `;
-            } catch(err) {
-                console.error(err);
-                resDiv.innerHTML = `<p style="color: var(--stat-red); font-size: 0.8rem; text-align: center;">Terjadi kesalahan sistem.</p>`;
-            }
-        });
-
-        // ==========================================================================
-        // 15. GALLERY FUNCTIONS
-        // ==========================================================================
-        window.openFolder = function(packId, packTitle) {
-            document.getElementById('searchSticker').value = '';
-            document.getElementById('folder-title').innerText = packTitle;
-            const grid = document.getElementById('items-grid');
-            grid.innerHTML = '<div class="skeleton" style="height:100px; width:100px;"></div>'.repeat(6);
-            const q = query(collection(db, 'stickers'), where('packId', '==', packId), limit(200));
-            getDocs(q).then((snapshot) => {
-                grid.innerHTML = '';
-                if(snapshot.empty) {
-                    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Folder masih kosong.</p>`;
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    const item = doc.data();
-                    let favClass = userFavoritesIds.includes(doc.id) ? 'active' : '';
-                    grid.innerHTML += `
-                        <div class="gal-card" style="position:relative;" onclick="openModal('${escapeHTML(item.img)}', '${escapeHTML(item.name).replace(/'/g, "\\'")}', '${item.source ? escapeHTML(item.source) : ''}')">
-                            <button class="btn-fav ${favClass}" onclick="toggleFav('${doc.id}', '${escapeHTML(item.name).replace(/'/g, "\\'")}', '${escapeHTML(item.img)}', event)">
-                                <i class="ph-fill ph-heart"></i>
-                            </button>
-                            <img src="${escapeHTML(item.img)}" alt="${escapeHTML(item.name)}" loading="lazy" class="lazy-image">
-                            <span class="gal-name">${escapeHTML(item.name)}</span>
-                        </div>
-                    `;
-                });
-                setTimeout(observeNewImages, 100);
-            }).catch(err => {
-                console.error(err);
-                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--stat-red);">Gagal memuat stiker.</p>`;
-            });
-            document.getElementById('gal-folder-view').classList.remove('active-gal');
-            document.getElementById('gal-items-view').classList.add('active-gal');
-        };
-
-        window.closeFolder = function() {
-            document.getElementById('searchSticker').value = '';
-            document.getElementById('gal-items-view').classList.remove('active-gal');
-            document.getElementById('gal-folder-view').classList.add('active-gal');
-        };
-
-        document.getElementById('searchSticker').addEventListener('input', function(e) {
-            clearTimeout(searchTimeout);
-            const val = e.target.value.toLowerCase().trim();
-            const folderTitle = document.getElementById('folder-title');
-            const itemsGrid = document.getElementById('items-grid');
-            if(val === '') { closeFolder(); return; }
-            document.getElementById('gal-folder-view').classList.remove('active-gal');
-            document.getElementById('gal-items-view').classList.add('active-gal');
-            folderTitle.innerHTML = `<i class="ph-duotone ph-magnifying-glass"></i> Pencarian: "${escapeHTML(val)}"`;
-            searchTimeout = setTimeout(async () => {
-                if(currentUserData && val.length > 2) await logUserActivity(currentUserData, 'search', `Mencari: ${val}`);
-                if(!isStickersCached) {
-                    itemsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 0.85rem;">Mencari di database...</p>';
-                    const snap = await getDocs(collection(db, 'stickers'));
-                    allStickersCache = [];
-                    snap.forEach(doc => allStickersCache.push({id: doc.id, ...doc.data()}));
-                    isStickersCached = true;
-                }
-                const filtered = allStickersCache.filter(s => s.name.toLowerCase().includes(val));
-                if(filtered.length === 0) { itemsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--stat-red); font-size: 0.85rem;">Stiker tidak ditemukan.</p>`; return; }
-                let html = '';
-                filtered.forEach(s => {
-                    let favClass = userFavoritesIds.includes(s.id) ? 'active' : '';
-                    html += `
-                        <div class="gal-card" style="position:relative;" onclick="openModal('${escapeHTML(s.img)}', '${escapeHTML(s.name).replace(/'/g, "\\'")}', '${s.source ? escapeHTML(s.source) : ''}')">
-                            <button class="btn-fav ${favClass}" onclick="toggleFav('${s.id}', '${escapeHTML(s.name).replace(/'/g, "\\'")}', '${escapeHTML(s.img)}', event)">
-                                <i class="ph-fill ph-heart"></i>
-                            </button>
-                            <img src="${escapeHTML(s.img)}" alt="${escapeHTML(s.name)}" loading="lazy" class="lazy-image">
-                            <span class="gal-name">${escapeHTML(s.name)}</span>
-                        </div>
-                    `;
-                });
-                itemsGrid.innerHTML = html;
-                setTimeout(observeNewImages, 100);
-            }, 500);
-        });
-
-        // ==========================================================================
-        // 16. MODAL FUNCTIONS
-        // ==========================================================================
         window.openModal = function(imgSrc, title, sourceLink) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImg');
             const modalTitle = document.getElementById('modalTitle');
-            const btnSource = document.getElementById('btnSourceSticker');
             modalImg.src = imgSrc;
             modalImg.classList.add('lazy-image');
             modalTitle.innerText = title || 'Preview Sticker';
@@ -2477,15 +1096,6 @@
                 a.click();
             };
 
-            if (sourceLink && sourceLink.trim() !== '') {
-                btnSource.style.display = 'flex';
-                btnSource.onclick = function() {
-                    window.open(sourceLink, '_blank');
-                };
-            } else {
-                btnSource.style.display = 'none';
-            }
-
             setTimeout(() => { modalImg.classList.add('loaded'); }, 100);
         };
 
@@ -2495,9 +1105,6 @@
             }
         };
 
-        // ==========================================================================
-        // 17. MUSIC PLAYER
-        // ==========================================================================
         document.getElementById('play-btn')?.addEventListener('click', function() {
             const audio = document.getElementById('bg-audio');
             const icon = document.getElementById('play-icon');
@@ -2505,11 +1112,6 @@
             if(audio.paused) { audio.play(); icon.className = 'ph-fill ph-pause-circle'; player.classList.add('playing'); }
             else { audio.pause(); icon.className = 'ph-fill ph-play-circle'; player.classList.remove('playing'); }
         });
-
-        // ==========================================================================
-        // 18. ADMIN FUNCTIONS (REAL-TIME)
-        // ==========================================================================
-        let adminCurrentTab = 'pending';
 
         function setupAdminRealtime() {
             if (adminRequestsUnsub) adminRequestsUnsub();
@@ -2533,6 +1135,8 @@
         }
 
         async function renderAdminRequests() {
+            if (adminCurrentTab === 'overview') return; 
+            
             const container = document.getElementById('admin-request-list');
             if (!container) return;
             const q = query(collection(db, 'requests'), where('status', '==', adminCurrentTab), orderBy('createdAt', 'desc'), limit(100));
@@ -2568,7 +1172,7 @@
                         <div class="req-main">
                             <div class="req-info">
                                 <div class="req-title">${escapeHTML(req.char)}</div>
-                                <div class="req-user"><i class="ph-bold ph-user-circle"></i> ${escapeHTML(req.user)}${req.email ? ` <i class="ph-bold ph-envelope-simple"></i> ${escapeHTML(req.email)}` : ''}</div>
+                                <div class="req-user"><i class="ph-bold ph-user-circle"></i> ${escapeHTML(req.user)}</div>
                                 <div class="req-desc">${req.detail ? escapeHTML(req.detail) : '<i>Tidak ada keterangan tambahan.</i>'}</div>
                             </div>
                             <div class="req-media">${imgHtml}</div>
@@ -2583,34 +1187,20 @@
 
         window.changeAdminTab = function(tabName) {
             adminCurrentTab = tabName;
-            renderAdminRequests();
             document.querySelectorAll('.admin-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
 
             const overviewMgr = document.getElementById('admin-overview-mgr');
             const reqList = document.getElementById('admin-request-list');
-            const galMgr = document.getElementById('admin-gallery-mgr');
-            const dropMgr = document.getElementById('admin-drop-mgr');
-            const homeMgr = document.getElementById('admin-home-mgr');
             if(overviewMgr) overviewMgr.style.display = 'none';
             if(reqList) reqList.style.display = 'none';
-            if(galMgr) galMgr.style.display = 'none';
-            if(dropMgr) dropMgr.style.display = 'none';
-            if(homeMgr) homeMgr.style.display = 'none';
+            
             if(tabName === 'overview') {
                 overviewMgr.style.display = 'block';
                 loadActivityLogs();
-            } else if(tabName === 'gallery') {
-                galMgr.style.display = 'block';
-                loadAdminGalleryData();
-            } else if(tabName === 'drop') {
-                dropMgr.style.display = 'block';
-                loadAdminDropsData();
-            } else if(tabName === 'home') {
-                homeMgr.style.display = 'block';
-                loadAdminHomeData();
             } else {
                 reqList.style.display = 'block';
+                renderAdminRequests(); 
             }
         };
 
@@ -2623,12 +1213,6 @@
         window.updateStatus = async function(docId, newStatus, reqUser, reqChar) {
             try {
                 await updateDoc(doc(db, 'requests', docId), { status: newStatus });
-                let notifMsg = '';
-                if(newStatus === 'done') notifMsg = `Hore! Request stiker <strong>${escapeHTML(reqChar)}</strong> kamu udah selesai dibikin admin. Cek di galeri ya!`;
-                if(newStatus === 'rejected') notifMsg = `Maaf, request stiker <strong>${escapeHTML(reqChar)}</strong> kamu ditolak oleh admin (Mungkin fotonya kurang jelas).`;
-                if(notifMsg && reqUser) {
-                    await addDoc(collection(db, 'notifications'), { user: reqUser, message: notifMsg, isRead: false, createdAt: serverTimestamp() });
-                }
                 await logUserActivity(currentUserData, 'status_update', `Mengubah status tiket ${docId} menjadi ${newStatus}`);
                 showToast("Diperbarui!", newStatus === 'done' ? "Selesai" : (newStatus === 'rejected' ? "Ditolak" : "Dipulihkan"));
             } catch (error) {
@@ -2661,317 +1245,6 @@
             } catch (error) { console.error(error); }
         };
 
-        // Admin Gallery Functions
-        const addStickerFile2 = document.getElementById('addStickerFile');
-        const addStickerUrl2 = document.getElementById('addStickerUrl');
-        const addStickerFileName2 = document.getElementById('addStickerFileName');
-        if(addStickerFile2) {
-            addStickerFile2.addEventListener('change', function() {
-                if(this.files && this.files.length > 0) { addStickerFileName2.innerText = "📁 " + escapeHTML(this.files[0].name); addStickerUrl2.value = ''; }
-                else { addStickerFileName2.innerText = ""; }
-            });
-        }
-        if(addStickerUrl2) {
-            addStickerUrl2.addEventListener('input', function() {
-                if(this.value.trim() !== '') { addStickerFile2.value = ''; addStickerFileName2.innerText = ""; }
-            });
-        }
-        const addDropFile2 = document.getElementById('addDropFile');
-        const addDropUrl2 = document.getElementById('addDropUrl');
-        const addDropFileName2 = document.getElementById('addDropFileName');
-        if(addDropFile2) {
-            addDropFile2.addEventListener('change', function() {
-                if(this.files && this.files.length > 0) { addDropFileName2.innerText = "📁 " + escapeHTML(this.files[0].name); addDropUrl2.value = ''; }
-                else { addDropFileName2.innerText = ""; }
-            });
-        }
-        if(addDropUrl2) {
-            addDropUrl2.addEventListener('input', function() {
-                if(this.value.trim() !== '') { addDropFile2.value = ''; addDropFileName2.innerText = ""; }
-            });
-        }
-
-        async function loadAdminGalleryData() {
-            const snapshot = await getDocs(collection(db, 'packs'));
-            const select = document.getElementById('selectPack');
-            const packList = document.getElementById('admin-pack-list');
-            select.innerHTML = '<option value="">-- Pilih Folder --</option>';
-            if(snapshot.empty) {
-                packList.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:15px; background:var(--input-bg); border-radius:15px; border:1px dashed var(--border-color);">Belum ada folder pack yang dibuat.</p>`;
-                return;
-            }
-            let listHtml = '';
-            snapshot.forEach(doc => {
-                const pack = doc.data();
-                select.innerHTML += `<option value="${doc.id}">${escapeHTML(pack.title)}</option>`;
-                listHtml += `
-                    <div class="admin-panel-card" style="margin-bottom: 12px; padding: 15px; border-left: 4px solid var(--jelly-purple);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                            <div><h4 style="color: var(--text-main); font-family: 'Nunito', sans-serif; font-size: 1.05rem; margin-bottom: 2px;">${escapeHTML(pack.title)}</h4>
-                            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;"><i class="ph-bold ph-image"></i> ${pack.count || 0} Stiker | ID: ${doc.id}</span></div>
-                            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
-                                <button class="btn-act btn-act-copy" onclick="editPack('${doc.id}', '${escapeHTML(pack.title).replace(/'/g, "\\'")}')" style="padding: 6px 10px;"><i class="ph-bold ph-pencil-simple"></i> Nama</button>
-                                <button class="btn-act btn-act-reject" onclick="deletePack('${doc.id}')" style="padding: 6px 10px;"><i class="ph-bold ph-trash"></i> Hapus</button>
-                                <button class="btn-act btn-act-done" onclick="toggleStickerView('${doc.id}')" style="padding: 6px 10px;"><i class="ph-bold ph-caret-down"></i> Lihat Stiker</button>
-                            </div>
-                        </div>
-                        <div id="admin-stickers-${doc.id}" style="display:none; margin-top: 15px; border-top: 1px dashed var(--border-color); padding-top: 15px;"><p style="text-align:center; color:var(--text-muted); font-size:0.8rem;">Loading stiker...</p></div>
-                    </div>
-                `;
-            });
-            packList.innerHTML = listHtml;
-        }
-
-        async function loadAdminDropsData() {
-            const snapshot = await getDocs(query(collection(db, 'recent_drops'), orderBy('createdAt', 'desc'), limit(20)));
-            const dropsList = document.getElementById('admin-drops-list');
-            if(snapshot.empty) { dropsList.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8rem; width: 100%; text-align: center;">Belum ada drop.</p>`; return; }
-            let html = '';
-            snapshot.forEach(doc => {
-                const drop = doc.data();
-                html += `<div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px; text-align: center; width: 100px;">
-                    <img src="${escapeHTML(drop.img)}" style="width: 100%; height: 60px; object-fit: cover; border-radius: 8px; margin-bottom: 5px; border: 1px solid var(--border-color);" loading="lazy" class="lazy-image">
-                    <span style="display:block; font-size: 0.65rem; color: var(--text-main); font-weight: 800; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(drop.time)}</span>
-                    <button onclick="deleteDrop('${doc.id}')" class="btn-act btn-act-reject" style="width: 100%; padding: 4px; border-radius: 6px;"><i class="ph-bold ph-trash"></i></button>
-                </div>`;
-            });
-            dropsList.innerHTML = html;
-            setTimeout(observeNewImages, 100);
-        }
-
-        async function loadAdminHomeData() {
-            const trendingSnap = await getDocs(collection(db, 'trending'));
-            const listTrend = document.getElementById('admin-trending-list');
-            if(trendingSnap.empty) { listTrend.innerHTML = '<p style="color:var(--text-muted); font-size:0.8rem;">Kosong.</p>'; }
-            else {
-                let html = '';
-                trendingSnap.forEach(doc => { html += `<span class="trend-tag"><i class="ph-duotone ph-fire"></i> ${escapeHTML(doc.data().tag)} <button onclick="deleteTrending('${doc.id}')" style="background:none; border:none; color:var(--stat-red); cursor:pointer; margin-left:5px;"><i class="ph-bold ph-x"></i></button></span>`; });
-                listTrend.innerHTML = html;
-            }
-            const testimoniSnap = await getDocs(collection(db, 'testimonials'));
-            const listTesti = document.getElementById('admin-testimoni-list');
-            if(testimoniSnap.empty) { listTesti.innerHTML = '<p style="color:var(--text-muted); font-size:0.8rem;">Belum ada testimoni.</p>'; }
-            else {
-                let html = '';
-                testimoniSnap.forEach(doc => {
-                    const t = doc.data();
-                    html += `<div class="testi-box" style="margin-bottom:0;"><div class="testi-header"><div class="testi-avatar" style="background: ${t.color}; color:#fff;">${escapeHTML(t.name).charAt(0).toUpperCase()}</div><span class="testi-name">${escapeHTML(t.name)}</span><button onclick="deleteTestimoni('${doc.id}')" style="margin-left:auto; background:none; border:none; color:var(--stat-red); cursor:pointer;"><i class="ph-bold ph-trash"></i></button></div><p class="testi-text">"${escapeHTML(t.text)}"</p></div>`;
-                });
-                listTesti.innerHTML = html;
-            }
-        }
-
-        function attachAdminFormListeners() {
-            const formAddPack = document.getElementById('formAddPack');
-            if(formAddPack) {
-                formAddPack.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const id = document.getElementById('addPackId').value.trim().toLowerCase().replace(/\s+/g, '-');
-                    const title = document.getElementById('addPackTitle').value.trim();
-                    try {
-                        await setDoc(doc(db, 'packs', id), { title: title, icon: 'ph-folder-notch', count: 0 });
-                        await logUserActivity(currentUserData, 'add_pack', `Menambahkan folder pack: ${title}`);
-                        showToast("Sukses!", `Folder "${title}" berhasil dibuat.`);
-                        e.target.reset();
-                        loadPacks();
-                    } catch(err) { showToast("Error!", "Gagal buat folder: " + err.message); }
-                });
-            }
-            const formAddSticker = document.getElementById('formAddSticker');
-            if(formAddSticker) {
-                formAddSticker.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const packId = document.getElementById('selectPack').value;
-                    const name = document.getElementById('addStickerName').value.trim();
-                    const source = document.getElementById('addStickerSource').value.trim();
-                    const file = addStickerFile2.files[0];
-                    const url = addStickerUrl2.value.trim();
-                    if(!packId) { alert("Pilih folder tujuan!"); return; }
-                    if(!file && !url) { alert("Pilih gambar/link!"); return; }
-                    isStickersCached = false;
-                    try {
-                        if(file) {
-                            if(file.size > 2 * 1024 * 1024) { alert("Maks 2MB."); return; }
-                            const reader = new FileReader();
-                            reader.onload = async function(event) {
-                                await addDoc(collection(db, 'stickers'), { packId: packId, name: name, img: event.target.result, source: source });
-                                await updateDoc(doc(db, 'packs', packId), { count: increment(1) });
-                                await logUserActivity(currentUserData, 'add_sticker', `Menambahkan stiker: ${name}`);
-                                showToast("Sukses!", "Stiker di-upload.");
-                                e.target.reset();
-                                addStickerFileName2.innerText = "";
-                                loadAdminGalleryData();
-                            };
-                            reader.readAsDataURL(file);
-                        } else {
-                            await addDoc(collection(db, 'stickers'), { packId: packId, name: name, img: url, source: source });
-                            await updateDoc(doc(db, 'packs', packId), { count: increment(1) });
-                            await logUserActivity(currentUserData, 'add_sticker', `Menambahkan stiker: ${name}`);
-                            showToast("Sukses!", "Stiker di-upload.");
-                            e.target.reset();
-                            loadAdminGalleryData();
-                        }
-                    } catch(err) { showToast("Error!", err.message); }
-                });
-            }
-            const formAddDrop = document.getElementById('formAddDrop');
-            if(formAddDrop) {
-                formAddDrop.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const time = document.getElementById('addDropTime').value.trim();
-                    const file = addDropFile2.files[0];
-                    const url = addDropUrl2.value.trim();
-                    if(!file && !url) { alert("Pilih gambar/link!"); return; }
-                    try {
-                        if(file) {
-                            if(file.size > 2 * 1024 * 1024) { alert("Maks 2MB."); return; }
-                            const reader = new FileReader();
-                            reader.onload = async function(event) {
-                                await addDoc(collection(db, 'recent_drops'), { time: time, img: event.target.result, createdAt: serverTimestamp() });
-                                await logUserActivity(currentUserData, 'add_drop', `Menambahkan drop: ${time}`);
-                                showToast("Sukses!", "Drop ditambahkan.");
-                                e.target.reset();
-                                addDropFileName2.innerText = "";
-                                loadRecentDrops();
-                                loadAdminDropsData();
-                            };
-                            reader.readAsDataURL(file);
-                        } else {
-                            await addDoc(collection(db, 'recent_drops'), { time: time, img: url, createdAt: serverTimestamp() });
-                            await logUserActivity(currentUserData, 'add_drop', `Menambahkan drop: ${time}`);
-                            showToast("Sukses!", "Drop ditambahkan.");
-                            e.target.reset();
-                            loadRecentDrops();
-                            loadAdminDropsData();
-                        }
-                    } catch(err) { showToast("Error!", err.message); }
-                });
-            }
-            const formAddTrending = document.getElementById('formAddTrending');
-            if(formAddTrending) {
-                formAddTrending.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const tag = document.getElementById('addTrendingTag').value.trim();
-                    if(tag.length > 50) { alert("Tag maksimal 50 karakter."); return; }
-                    try {
-                        await addDoc(collection(db, 'trending'), { tag: tag });
-                        await logUserActivity(currentUserData, 'add_trending', `Menambahkan trending: ${tag}`);
-                        showToast("Sukses", "Trending ditambahkan.");
-                        e.target.reset();
-                        loadTrending();
-                        loadAdminHomeData();
-                    } catch(err) { showToast("Error", err.message); }
-                });
-            }
-            const formAddTestimoni = document.getElementById('formAddTestimoni');
-            if(formAddTestimoni) {
-                formAddTestimoni.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const name = document.getElementById('addTestiName').value.trim();
-                    const text = document.getElementById('addTestiText').value.trim();
-                    if(name.length > 30) { alert("Nama maksimal 30 karakter."); return; }
-                    if(text.length > 300) { alert("Testimoni maksimal 300 karakter."); return; }
-                    const colors = ['var(--jelly-grad)', 'linear-gradient(135deg, #3b82f6, #a88beb)', 'linear-gradient(135deg, #27c93f, #ffbd2e)', 'linear-gradient(135deg, #ff5f56, #ff7eb3)'];
-                    const randColor = colors[Math.floor(Math.random() * colors.length)];
-                    try {
-                        await addDoc(collection(db, 'testimonials'), { name: name, text: text, color: randColor });
-                        await logUserActivity(currentUserData, 'add_testimoni', `Menambahkan testimoni dari ${name}`);
-                        showToast("Sukses", "Testimoni ditambahkan.");
-                        e.target.reset();
-                        loadTestimonials();
-                        loadAdminHomeData();
-                    } catch(err) { showToast("Error", err.message); }
-                });
-            }
-        }
-
-        window.deleteTrending = async function(id) {
-            if(confirm("Hapus trending tag ini?")) { await deleteDoc(doc(db, 'trending', id)); await logUserActivity(currentUserData, 'delete_trending', 'Menghapus trending tag'); loadTrending(); loadAdminHomeData(); }
-        };
-        window.deleteTestimoni = async function(id) {
-            if(confirm("Hapus testimoni ini?")) { await deleteDoc(doc(db, 'testimonials', id)); await logUserActivity(currentUserData, 'delete_testimoni', 'Menghapus testimoni'); loadTestimonials(); loadAdminHomeData(); }
-        };
-        window.deleteDrop = async function(docId) {
-            if(confirm("Hapus drop ini?")) {
-                try { await deleteDoc(doc(db, 'recent_drops', docId)); await logUserActivity(currentUserData, 'delete_drop', 'Menghapus drop'); showToast("Dihapus!", "Drop dibuang."); loadRecentDrops(); loadAdminDropsData(); } catch(err) {}
-            }
-        };
-        window.editPack = async function(docId, oldTitle) {
-            let newTitle = prompt("Edit Nama Folder:", oldTitle);
-            if(newTitle !== null && newTitle.trim() !== "" && newTitle !== oldTitle) {
-                try { await updateDoc(doc(db, 'packs', docId), { title: newTitle.trim() }); await logUserActivity(currentUserData, 'edit_pack', `Mengubah nama folder: ${oldTitle} -> ${newTitle}`); showToast("Tersimpan!", "Nama diupdate."); loadPacks(); loadAdminGalleryData(); } catch(err) {}
-            }
-        };
-        window.deletePack = async function(docId) {
-            if(confirm("YAKIN HAPUS FOLDER INI? \n\nSemua stiker di dalamnya akan terhapus permanen!")) {
-                try {
-                    const stickersSnap = await getDocs(query(collection(db, 'stickers'), where('packId', '==', docId)));
-                    const batch = writeBatch(db);
-                    stickersSnap.forEach(doc => batch.delete(doc.ref));
-                    await batch.commit();
-                    await deleteDoc(doc(db, 'packs', docId));
-                    isStickersCached = false;
-                    await logUserActivity(currentUserData, 'delete_pack', `Menghapus folder: ${docId}`);
-                    showToast("Dihapus!", "Folder dibersihkan.");
-                    loadPacks();
-                    loadAdminGalleryData();
-                } catch(err) {}
-            }
-        };
-        window.toggleStickerView = function(packId) {
-            const div = document.getElementById(`admin-stickers-${packId}`);
-            if(div.style.display === 'none') { div.style.display = 'block'; loadStickersAdmin(packId, div); }
-            else { div.style.display = 'none'; }
-        };
-        async function loadStickersAdmin(packId, containerDiv) {
-            const snapshot = await getDocs(query(collection(db, 'stickers'), where('packId', '==', packId)));
-            if(snapshot.empty) { containerDiv.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:0.8rem;">Belum ada stiker.</p>`; return; }
-            let html = `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;">`;
-            snapshot.forEach(doc => {
-                const s = doc.data();
-                html += `<div style="background: var(--bg-color); padding: 8px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
-                    <img src="${escapeHTML(s.img)}" loading="lazy" style="width: 100%; aspect-ratio: 1; object-fit: contain; background: #000; border-radius: 8px; margin-bottom: 5px;" class="lazy-image">
-                    <span style="font-size: 0.65rem; font-weight: 800; display: block; margin-bottom: 8px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(s.name)}</span>
-                    <div style="display: flex; gap: 4px;">
-                        <button onclick="editStickerName('${doc.id}', '${escapeHTML(s.name).replace(/'/g, "\\'")}')" class="btn-act btn-act-edit" style="padding:4px; border-radius:6px;"><i class="ph-bold ph-pencil-simple"></i></button>
-                        <button onclick="deleteSticker('${doc.id}', '${packId}')" class="btn-act btn-act-reject" style="padding:4px; border-radius:6px;"><i class="ph-bold ph-trash"></i></button>
-                    </div>
-                </div>`;
-            });
-            containerDiv.innerHTML = html + `</div>`;
-            setTimeout(observeNewImages, 100);
-        }
-        window.editStickerName = async function(docId, oldName) {
-            let newName = prompt("Ubah Nama Stiker:", oldName);
-            if(newName !== null && newName.trim() !== "" && newName !== oldName) {
-                try {
-                    await updateDoc(doc(db, 'stickers', docId), { name: newName.trim() });
-                    isStickersCached = false;
-                    await logUserActivity(currentUserData, 'edit_sticker', `Mengubah nama stiker: ${oldName} -> ${newName}`);
-                    showToast("Tersimpan!", "Nama stiker diupdate.");
-                    const pId = (await getDoc(doc(db, 'stickers', docId))).data().packId;
-                    loadStickersAdmin(pId, document.getElementById(`admin-stickers-${pId}`));
-                } catch(err) {}
-            }
-        };
-        window.deleteSticker = async function(stickerId, packId) {
-            if(confirm("Hapus stiker ini permanen?")) {
-                try {
-                    await deleteDoc(doc(db, 'stickers', stickerId));
-                    await updateDoc(doc(db, 'packs', packId), { count: increment(-1) });
-                    isStickersCached = false;
-                    await logUserActivity(currentUserData, 'delete_sticker', `Menghapus stiker`);
-                    showToast("Dihapus!", "Stiker dibuang.");
-                    loadStickersAdmin(packId, document.getElementById(`admin-stickers-${packId}`));
-                    loadPacks();
-                    loadAdminGalleryData();
-                } catch(err) {}
-            }
-        };
-
-        // ==========================================================================
-        // 19. UPDATE AVATAR
-        // ==========================================================================
         const updateAvatarForm = document.getElementById('formUpdateAvatar');
         if(updateAvatarForm) {
             updateAvatarForm.addEventListener('submit', async function(e) {
@@ -3030,7 +1303,6 @@
                     let icon = 'ph-user-circle'; let iconColor = 'var(--jelly-pink)'; let bgColor = 'rgba(255, 126, 179, 0.15)';
                     if(log.action.includes('login') || log.action.includes('register')) { icon = 'ph-sign-in'; iconColor = 'var(--stat-blue)'; bgColor = 'rgba(59, 130, 246, 0.15)'; }
                     else if(log.action.includes('request') || log.action.includes('add')) { icon = 'ph-paper-plane-tilt'; iconColor = 'var(--stat-green)'; bgColor = 'rgba(39, 201, 63, 0.15)'; }
-                    else if(log.action.includes('favorite')) { icon = 'ph-heart'; iconColor = 'var(--stat-red)'; bgColor = 'rgba(255, 95, 86, 0.15)'; }
                     else if(log.action.includes('preview')) { icon = 'ph-image'; iconColor = 'var(--stat-yellow)'; bgColor = 'rgba(255, 189, 46, 0.15)'; }
                     else if(log.action.includes('search')) { icon = 'ph-magnifying-glass'; iconColor = 'var(--jelly-purple)'; bgColor = 'rgba(168, 139, 235, 0.15)'; }
                     else if(log.action.includes('delete')) { icon = 'ph-trash'; iconColor = 'var(--stat-red)'; bgColor = 'rgba(255, 95, 86, 0.15)'; }
@@ -3040,9 +1312,6 @@
             } catch(err) { console.error(err); }
         }
 
-        // ==========================================================================
-        // 20. CLEAR ALL ACTIVITY LOGS (Fungsi Baru)
-        // ==========================================================================
         window.clearAllActivityLogs = async function() {
             if(confirm("YAKIN HAPUS SEMUA LOG? \n\nSemua riwayat aktivitas user akan dihapus secara permanen dari database!")) {
                 try {
@@ -3054,18 +1323,16 @@
                         return;
                     }
 
-                    // Menggunakan writeBatch untuk menghapus data secara masal
                     const batch = writeBatch(db);
                     snapshot.forEach(doc => {
                         batch.delete(doc.ref);
                     });
                     await batch.commit();
 
-                    // Catat aktivitas pembersihan ini sebagai log pertama yang baru
                     await logUserActivity(currentUserData, 'clear_logs', 'Membersihkan semua riwayat aktivitas server');
                     
                     showToast("Dibersihkan!", "Semua log berhasil dihapus.");
-                    loadActivityLogs(); // Refresh tampilan log
+                    loadActivityLogs();
                 } catch (error) {
                     console.error(error);
                     showToast("Error!", "Gagal membersihkan log: " + error.message);
@@ -3073,16 +1340,8 @@
             }
         };
 
-        // ==========================================================================
-        // 21. INITIALIZATION
-        // ==========================================================================
         window.onload = function() {
-            loadRecentDrops();
-            loadTrending();
-            loadTestimonials();
-            loadPacks();
             initLazyLoading();
-            attachAdminFormListeners();
         };
     </script>    
 </body>
