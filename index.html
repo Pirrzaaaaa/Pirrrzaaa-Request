@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ryuuzaa Stickers | Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="https://unpkg.com/browser-image-compression@2.0.0/dist/browser-image-compression.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 
     <style>
         /* =========================================================
@@ -57,7 +64,15 @@
             font-family: 'Inter', sans-serif;
             font-size: 15px;
             -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeSpeed;
             transition: background-color 0.35s ease, color 0.25s ease;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
         }
         h1, h2, h3, h4, .brand, .btn-submit, .btn-nav { font-family: 'Nunito', sans-serif; }
         a { text-decoration: none; color: inherit; }
@@ -77,8 +92,7 @@
             padding: 10px 18px; border-radius: 30px;
             width: calc(100% - 30px); max-width: 800px;
             position: fixed; top: 15px; left: 50%; z-index: 1000;
-            transform: translateX(-50%) translateZ(0);
-            will-change: transform;
+            transform: translateX(-50%);
             transition: background-color 0.35s ease, border-color 0.35s ease;
         }
         .nav-left { display: flex; align-items: center; gap: 12px; }
@@ -235,7 +249,7 @@
         ========================================================= */
         .hero { padding: 35px 0 25px; text-align: center; }
         .hero-icon-wrap { display: flex; justify-content: center; gap: 14px; margin-bottom: 10px; }
-        .hero-icon-wrap i { font-size: 2.5rem; color: var(--jelly-purple); animation: float 3s ease-in-out infinite; will-change: transform; }
+        .hero-icon-wrap i { font-size: 2.5rem; color: var(--jelly-purple); animation: float 3s ease-in-out infinite; }
         .hero-icon-wrap i:nth-child(2) { color: var(--jelly-pink); animation-delay: 0.5s; font-size: 2.8rem; }
         .hero-icon-wrap i:nth-child(3) { color: var(--stat-blue); animation-delay: 1s; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -306,7 +320,6 @@
             position: absolute; inset: 0; background: var(--overlay-bg);
             z-index: 10; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            backdrop-filter: blur(6px);
             border-radius: 25px;
             transition: opacity 0.3s ease, background-color 0.35s ease;
         }
@@ -373,6 +386,8 @@
             opacity: 0; transform: translateY(12px);
             animation: slideUpFade 0.35s ease forwards;
             transition: transform 0.25s ease, border-color 0.2s ease, background-color 0.35s ease;
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 80px;
         }
         @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
         .activity-log-item:hover { transform: translateY(-3px); border-color: var(--jelly-pink); background: var(--input-bg); }
@@ -397,7 +412,13 @@
         .tab-btn.active { background: var(--card-bg); color: var(--jelly-purple); box-shadow: 0 4px 15px rgba(168,139,235,0.18); border-color: var(--jelly-purple); transform: translateY(-2px); }
         .admin-panel-card { background: var(--input-bg); border-radius: 22px; padding: 22px; border: 2px solid var(--border-color); display: flex; flex-direction: column; transition: background-color 0.35s ease, border-color 0.35s ease; }
 
-        .req-item { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 18px; padding: 14px; margin-bottom: 14px; transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.35s ease; }
+        .req-item {
+            background: var(--card-bg); border: 2px solid var(--border-color);
+            border-radius: 18px; padding: 14px; margin-bottom: 14px;
+            transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.35s ease;
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 200px;
+        }
         .req-item:hover { border-color: var(--jelly-purple); transform: translateY(-2px); }
         .req-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px; }
         .req-id { font-weight: 900; font-family: 'Nunito', sans-serif; color: var(--jelly-pink); }
@@ -429,21 +450,25 @@
             padding: 8px 14px; background: var(--card-bg);
             border: 2px solid var(--border-color); border-radius: 25px;
             z-index: 1000; box-shadow: 0 5px 20px var(--shadow-color);
-            transform: translateZ(0); will-change: transform;
             transition: border-color 0.2s ease, background-color 0.35s ease;
         }
         .music-player:hover { border-color: var(--jelly-purple); }
         .play-btn { font-size: 1.4rem; display: flex; align-items: center; color: var(--text-main); background: none; border: none; cursor: pointer; transition: color 0.2s ease; }
         .play-btn:hover { color: var(--jelly-pink); }
         .track-info { display: flex; flex-direction: column; width: 78px; overflow: hidden; }
-        .track-name { font-size: 0.65rem; font-weight: 800; color: var(--jelly-purple); font-family: 'Nunito', sans-serif; white-space: nowrap; animation: scrollText 7s linear infinite; }
+        .track-name { font-size: 0.65rem; font-weight: 800; color: var(--jelly-purple); font-family: 'Nunito', sans-serif; white-space: nowrap; }
+        .playing .track-name { animation: scrollText 7s linear infinite; will-change: transform; }
         .artist-name { font-size: 0.55rem; color: var(--text-muted); font-weight: 600; }
         .equalizer { display: flex; gap: 2px; align-items: flex-end; height: 10px; }
-        .bar { width: 2px; height: 2px; background: var(--text-muted); border-radius: 2px; transition: height 0.2s ease; }
-        .playing .bar { background: var(--jelly-pink); animation: bounceBar 0.7s infinite alternate; }
+        .bar {
+            width: 2px; height: 10px; background: var(--text-muted); border-radius: 2px;
+            transform: scaleY(0.2); transform-origin: bottom;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .playing .bar { background: var(--jelly-pink); animation: bounceBar 0.7s infinite alternate; will-change: transform; }
         .playing .bar:nth-child(2) { animation-delay: 0.15s; }
         .playing .bar:nth-child(3) { animation-delay: 0.3s; }
-        @keyframes bounceBar { 0% { height: 2px; } 100% { height: 10px; } }
+        @keyframes bounceBar { 0% { transform: scaleY(0.2); } 100% { transform: scaleY(1); } }
         @keyframes scrollText { 0% { transform: translateX(0); } 50% { transform: translateX(-60%); } 100% { transform: translateX(0); } }
 
         /* =========================================================
@@ -539,10 +564,10 @@
     </style>
 </head>
 <body>
-    <audio id="success-sound" preload="auto">
+    <audio id="success-sound" preload="none">
         <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=success-1-6297.mp3" type="audio/mpeg">
     </audio>
-    <audio id="pop-sound" preload="auto">
+    <audio id="pop-sound" preload="none">
         <source src="https://cdn.yupra.my.id/yp/j6obfe08.mp3" type="audio/mpeg">
     </audio>
 
@@ -980,18 +1005,6 @@
             } catch (err) { console.log("Gagal log aktivitas:", err); }
         }
 
-        async function compressImage(file, maxSizeMB = 0.2) {
-            const options = { maxSizeMB, maxWidthOrHeight: 800, useWebWorker: true };
-            try {
-                const compressed = await imageCompression(file, options);
-                return await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => resolve(e.target.result);
-                    reader.readAsDataURL(compressed);
-                });
-            } catch (error) { return null; }
-        }
-
         // =========================================================
         //  THEME TOGGLE
         // =========================================================
@@ -1222,7 +1235,7 @@
                         </div>`;
                 });
                 grid.innerHTML = html;
-                setTimeout(() => observeImages(grid), 100);
+                requestAnimationFrame(() => observeImages(grid));
             });
             registerCleanup(historyUnsub);
         }
@@ -1231,11 +1244,15 @@
         //  USER AVATAR
         // =========================================================
         let userAvatarUnsub = null;
+        let lastRenderedAvatar = null;
         function loadUserAvatar() {
             if (!currentUserData) return;
             if (userAvatarUnsub) userAvatarUnsub();
+            lastRenderedAvatar = null;
             userAvatarUnsub = onSnapshot(doc(db, 'users', currentUserData), docSnap => {
                 const avatar = docSnap.exists() && docSnap.data().avatar ? docSnap.data().avatar : '';
+                if (avatar === lastRenderedAvatar) return;
+                lastRenderedAvatar = avatar;
                 const avatarThumb = avatar
                     ? `<img src="${escapeHTML(avatar)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--jelly-pink);" class="lazy-image">`
                     : `<i class="ph-fill ph-user-circle" style="font-size:1.5rem;"></i>`;
@@ -1264,7 +1281,7 @@
                         </button>
                     `;
                 }
-                setTimeout(observeImages, 100);
+                requestAnimationFrame(() => observeImages());
             });
             registerCleanup(userAvatarUnsub);
         }
@@ -1387,7 +1404,7 @@
             sidebar.classList.remove('active');
             sidebarOverlay.classList.remove('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(observeImages, 300);
+            requestAnimationFrame(() => observeImages());
             if (viewId === 'view-admin' && document.getElementById('admin-dashboard').style.display === 'block') {
                 updateAdminStats();
                 loadActivityLogs();
@@ -1575,12 +1592,17 @@
         // =========================================================
         //  ADMIN - REALTIME & STATS
         // =========================================================
+        let adminCachedDocs = [];
+        let adminStatsDebounceTimer = null;
         function setupAdminRealtime() {
             if (adminRequestsUnsub) adminRequestsUnsub();
             const q = query(collection(db, 'requests'), orderBy('createdAt', 'desc'), limit(100));
-            adminRequestsUnsub = onSnapshot(q, () => {
-                renderAdminRequests();
-                updateAdminStats();
+            adminRequestsUnsub = onSnapshot(q, (snap) => {
+                adminCachedDocs = [];
+                snap.forEach(d => adminCachedDocs.push({ id: d.id, ...d.data() }));
+                if (adminCurrentTab !== 'overview') renderAdminRequests();
+                if (adminStatsDebounceTimer) clearTimeout(adminStatsDebounceTimer);
+                adminStatsDebounceTimer = setTimeout(updateAdminStats, 500);
             });
             registerCleanup(adminRequestsUnsub);
         }
@@ -1604,9 +1626,18 @@
             if (adminCurrentTab === 'overview') return;
             const container = document.getElementById('admin-request-list');
             if (!container) return;
-            const q = query(collection(db, 'requests'), where('status', '==', adminCurrentTab), orderBy('createdAt', 'desc'), limit(100));
-            const snapshot = await getDocs(q);
-            if (snapshot.empty) {
+
+            let docs;
+            if (adminCachedDocs.length) {
+                docs = adminCachedDocs.filter(d => d.status === adminCurrentTab);
+            } else {
+                const q = query(collection(db, 'requests'), where('status', '==', adminCurrentTab), orderBy('createdAt', 'desc'), limit(100));
+                const snapshot = await getDocs(q);
+                docs = [];
+                snapshot.forEach(d => docs.push({ id: d.id, ...d.data() }));
+            }
+
+            if (!docs.length) {
                 container.innerHTML = `<div style="text-align:center;background:var(--input-bg);padding:35px;border-radius:20px;border:1px dashed var(--border-color);">
                     <i class="ph-duotone ph-folder-open" style="font-size:3rem;color:var(--text-muted);margin-bottom:10px;display:block;"></i>
                     <p style="color:var(--text-muted);font-size:0.9rem;font-weight:700;">Tidak ada tiket di kategori ini.</p>
@@ -1614,8 +1645,7 @@
                 return;
             }
             let html = '';
-            snapshot.forEach(d => {
-                const req = d.data();
+            docs.forEach(req => {
                 const imgSrc = req.image || req.url || null;
                 const imgHtml = imgSrc
                     ? `<img src="${escapeHTML(imgSrc)}" alt="Ref" loading="lazy" onclick="openModal('${escapeHTML(imgSrc)}','Referensi: ${escapeHTML(req.char).replace(/'/g, "\\'")}')" class="lazy-image">`
@@ -1624,14 +1654,14 @@
                 const isRejected = req.status === 'rejected';
                 const btnCopy = `<button class="btn-act btn-act-copy" onclick="copyReqInfo('${escapeHTML(req.char).replace(/'/g, "\\'")}','${escapeHTML(req.user).replace(/'/g, "\\'")}','${escapeHTML(req.detail || '').replace(/'/g, "\\'")}')"><i class="ph-bold ph-copy"></i> Copy</button>`;
                 let actionsHtml = isDone
-                    ? `${btnCopy}<button class="btn-act btn-act-revert" onclick="updateStatus('${d.id}','pending','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-arrow-u-up-left"></i> Batal</button><button class="btn-act btn-act-reject" onclick="deleteReq('${d.id}')"><i class="ph-bold ph-trash"></i> Hapus</button>`
+                    ? `${btnCopy}<button class="btn-act btn-act-revert" onclick="updateStatus('${req.id}','pending','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-arrow-u-up-left"></i> Batal</button><button class="btn-act btn-act-reject" onclick="deleteReq('${req.id}')"><i class="ph-bold ph-trash"></i> Hapus</button>`
                     : (isRejected
-                        ? `${btnCopy}<button class="btn-act btn-act-revert" onclick="updateStatus('${d.id}','pending','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-arrow-counter-clockwise"></i> Pulihkan</button><button class="btn-act btn-act-reject" onclick="deleteReq('${d.id}')"><i class="ph-bold ph-trash"></i> Hapus</button>`
-                        : `${btnCopy}<button class="btn-act btn-act-edit" onclick="editReq('${d.id}')"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button class="btn-act btn-act-reject" onclick="updateStatus('${d.id}','rejected','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-x"></i> Tolak</button><button class="btn-act btn-act-done" onclick="updateStatus('${d.id}','done','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-check"></i> Selesai</button>`);
+                        ? `${btnCopy}<button class="btn-act btn-act-revert" onclick="updateStatus('${req.id}','pending','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-arrow-counter-clockwise"></i> Pulihkan</button><button class="btn-act btn-act-reject" onclick="deleteReq('${req.id}')"><i class="ph-bold ph-trash"></i> Hapus</button>`
+                        : `${btnCopy}<button class="btn-act btn-act-edit" onclick="editReq('${req.id}')"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button class="btn-act btn-act-reject" onclick="updateStatus('${req.id}','rejected','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-x"></i> Tolak</button><button class="btn-act btn-act-done" onclick="updateStatus('${req.id}','done','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-check"></i> Selesai</button>`);
                 html += `
                     <div class="req-item">
                         <div class="req-top">
-                            <span class="req-id">#REQ-${d.id.slice(-4)}</span>
+                            <span class="req-id">#REQ-${req.id.slice(-4)}</span>
                             <span class="req-date"><i class="ph-bold ph-clock"></i> ${escapeHTML(req.date) || 'No date'}</span>
                         </div>
                         <div class="req-main">
@@ -1646,7 +1676,7 @@
                     </div>`;
             });
             container.innerHTML = html;
-            setTimeout(() => observeImages(container), 100);
+            requestAnimationFrame(() => observeImages(container));
         }
 
         window.changeAdminTab = function (tabName) {
