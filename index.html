@@ -4,159 +4,394 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ryuuzaa Stickers | Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="https://unpkg.com/browser-image-compression@2.0.0/dist/browser-image-compression.js"></script>
+
+    <meta name="theme-color" content="#070b18">
+    <meta name="description" content="Ryuuzaa Stickers Hub — kirim request sticker favoritmu. Cepat, gratis, dan rapih.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
+    <link rel="dns-prefetch" href="https://firestore.googleapis.com">
+    <link rel="dns-prefetch" href="https://cdn.yupra.my.id">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Phosphor icons: deferred via media swap so the ~1MB icon CSS doesn't block first paint -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+        <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    </noscript>
 
     <style>
-        /* =========================================================
-           1. TEMA VARIABEL
+                /* =========================================================
+           1. TEMA VARIABEL (ELEGANT DARK GLASS)
         ========================================================= */
         :root {
-            --bg-color: #130f16;
-            --card-bg: #1c1722;
-            --input-bg: #272030;
-            --text-main: #ffffff;
-            --text-muted: #a39cb3;
-            --jelly-pink: #ff7eb3;
-            --jelly-purple: #a88beb;
-            --jelly-grad: linear-gradient(135deg, var(--jelly-pink), var(--jelly-purple));
-            --border-color: #362c42;
-            --toast-bg: #241d2e;
-            --shadow-color: rgba(0,0,0,0.5);
-            --overlay-bg: rgba(19,15,22,0.88);
-            --stat-blue: #3b82f6;
-            --stat-green: #27c93f;
-            --stat-yellow: #ffbd2e;
-            --stat-red: #ff5f56;
-            --stat-gray: #6b7280;
-        }
-        :root.light-theme {
-            --bg-color: #f8f3ff;
-            --card-bg: #ffffff;
-            --input-bg: #f0eaf5;
-            --text-main: #1f1a2e;
-            --text-muted: #6b5b7c;
-            --jelly-pink: #ff4d94;
-            --jelly-purple: #8b6fd8;
-            --jelly-grad: linear-gradient(135deg, #ff4d94, #8b6fd8);
-            --border-color: #d6c6f0;
-            --toast-bg: #ffffff;
-            --shadow-color: rgba(0,0,0,0.1);
-            --overlay-bg: rgba(255,255,255,0.92);
+            /* Base — deep navy with subtle indigo undertone (less harsh than pure black) */
+            --bg-color: #070b18;
+            --bg-color-2: #0c1226;
+            --surface-1: rgba(17, 22, 42, 0.62);
+            --surface-2: rgba(22, 28, 52, 0.55);
+            --card-bg: rgba(17, 22, 42, 0.55);
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --text-main: #f4f6fb;
+            --text-soft: #d6dbe8;
+            --text-muted: #a3acc2;        /* lebih terang biar enak dibaca */
+            --text-faint: #7a8295;
+
+            --primary-blue: #4f8bff;       /* sedikit lebih lembut dari #3b82f6 */
+            --secondary-blue: #a78bfa;     /* ungu pastel */
+            --accent-cyan: #38bdf8;
+            --accent-pink: #f472b6;
+            --blue-grad: linear-gradient(135deg, #4f8bff 0%, #7c6cff 55%, #a78bfa 100%);
+            --soft-grad: linear-gradient(135deg, rgba(79,139,255,0.18), rgba(167,139,250,0.18));
+            --border-color: rgba(255, 255, 255, 0.07);
+            --border-strong: rgba(255, 255, 255, 0.12);
+            --toast-bg: rgba(17, 22, 42, 0.92);
+            --shadow-color: rgba(0, 0, 0, 0.45);
+
+            --stat-blue: #4f8bff;
+            --stat-green: #34d399;
+            --stat-yellow: #fbbf24;
+            --stat-red: #f87171;
+
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 26px;
         }
 
+        /* TIPOGRAFI & SELEKSI TEKS */
+        ::selection { background: var(--secondary-blue); color: #ffffff; }
+        ::-moz-selection { background: var(--secondary-blue); color: #ffffff; }
+
         /* =========================================================
-           2. RESET & BASE
+           2. RESET, BASE & AMBIENT ORBS (BIAR GAK POLOS)
         ========================================================= */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
         html { overflow-x: hidden; }
+        
         body {
             background-color: var(--bg-color);
+            /* Static gradient — NO filter:blur, NO animation. Cheap on mobile. */
+            background-image:
+                radial-gradient(ellipse 60% 40% at 0% 0%, rgba(79,139,255,0.15), transparent 70%),
+                radial-gradient(ellipse 60% 40% at 100% 100%, rgba(167,139,250,0.12), transparent 70%),
+                linear-gradient(180deg, var(--bg-color) 0%, var(--bg-color-2) 100%);
+            background-attachment: fixed;
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             font-size: 15px;
+            line-height: 1.55;
             -webkit-font-smoothing: antialiased;
-            transition: background-color 0.35s ease, color 0.25s ease;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+            min-height: 100vh;
+            z-index: 0;
         }
+
+        /* Hard kill expensive animations & transitions for users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
         h1, h2, h3, h4, .brand, .btn-submit, .btn-nav { font-family: 'Nunito', sans-serif; }
         a { text-decoration: none; color: inherit; }
-        .container { max-width: 800px; margin: 0 auto; padding: 0 15px; padding-top: 85px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 15px; padding-top: 95px; position: relative; z-index: 1; }
 
-        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: var(--jelly-purple); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--blue-grad); border-radius: 10px; }
 
         /* =========================================================
-           3. NAVBAR
+           3. NAVBAR (GLASSMORPHISM)
         ========================================================= */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            padding: 10px 18px; border-radius: 30px;
+            /* Solid bg — backdrop-filter dihapus (penyebab utama lag di HP) */
+            background: #11162a;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            padding: 11px 18px; border-radius: 20px;
             width: calc(100% - 30px); max-width: 800px;
             position: fixed; top: 15px; left: 50%; z-index: 1000;
-            transform: translateX(-50%) translateZ(0);
-            will-change: transform;
-            transition: background-color 0.35s ease, border-color 0.35s ease;
+            transform: translateX(-50%);
         }
-        .nav-left { display: flex; align-items: center; gap: 12px; }
+        nav::after {
+            content: ""; position: absolute; left: 16px; right: 16px; bottom: -1px;
+            height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            pointer-events: none;
+        }
+        .brand-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-grad); box-shadow: 0 0 10px rgba(79,139,255,0.7); display: inline-block; margin-right: 4px; }
+        .nav-tagline { font-size: 0.65rem; font-weight: 700; color: var(--text-faint); letter-spacing: 0.8px; text-transform: uppercase; margin-top: 1px; }
+        @media (max-width: 480px) { .nav-tagline { display: none; } }
+        .nav-left { display: flex; align-items: center; gap: 14px; }
         .nav-right { display: flex; align-items: center; gap: 10px; }
         .menu-toggle {
             font-size: 1.6rem; color: var(--text-main); cursor: pointer;
-            display: flex; align-items: center;
-            background: none; border: none;
+            display: flex; align-items: center; background: none; border: none;
             transition: color 0.2s ease, transform 0.2s ease;
         }
-        .menu-toggle:hover { color: var(--jelly-pink); transform: scale(1.1); }
-        .brand { font-size: 1.2rem; font-weight: 900; color: var(--text-main); letter-spacing: 0.5px; transition: color 0.25s; }
+        .menu-toggle:hover { color: var(--secondary-blue); transform: scale(1.1); }
+        .brand { font-size: 1.25rem; font-weight: 900; color: var(--text-main); letter-spacing: 0.5px; }
 
-        .btn-nav-action {
-            background: none; border: none; color: var(--text-main);
-            font-size: 1.3rem; cursor: pointer; display: flex; align-items: center;
-            transition: color 0.2s ease;
-        }
-        .btn-nav-action:hover { color: var(--jelly-pink); }
-        #theme-toggle {
-            background: none; border: none; color: var(--text-main);
-            font-size: 1.3rem; cursor: pointer; display: flex; align-items: center;
-            transition: color 0.2s ease, transform 0.3s ease;
-        }
-        #theme-toggle:hover { color: var(--jelly-pink); transform: rotate(20deg); }
         .btn-nav-login {
-            background: var(--jelly-grad); color: white; border: none;
-            padding: 6px 15px; border-radius: 15px; font-weight: 800; font-size: 0.8rem;
+            background: var(--blue-grad); color: white; border: none;
+            padding: 8px 16px; border-radius: 12px; font-weight: 800; font-size: 0.85rem;
             cursor: pointer; font-family: 'Nunito', sans-serif;
-            display: flex; align-items: center; gap: 5px;
+            display: flex; align-items: center; gap: 6px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .btn-nav-login:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(168,139,235,0.35); }
+        .btn-nav-login:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
 
+        /* =========================================================
+           4. UNIFIED CARD (REPLACE ONLY THIS CLASS IN SECTION 8)
+        ========================================================= */
+        .unified-card {
+            background: #11162a;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            position: relative;
+            margin-top: 10px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+        }
+        /* subtle top accent line — static, free */
+        .unified-card::before {
+            content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(79,139,255,0.5), rgba(167,139,250,0.5), transparent);
+            opacity: 0.6;
+        }
+
+        /* ---------- Reusable section header / eyebrow / chips ---------- */
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: 'Nunito', sans-serif; font-weight: 800;
+            font-size: 0.66rem; text-transform: uppercase; letter-spacing: 1.4px;
+            color: var(--secondary-blue);
+            background: rgba(167,139,250,0.10);
+            border: 1px solid rgba(167,139,250,0.25);
+            padding: 5px 11px; border-radius: 999px;
+        }
+        .section-eyebrow::before {
+            content: ""; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--secondary-blue);
+            box-shadow: 0 0 8px var(--secondary-blue);
+        }
+        .section-head { margin: 22px 0 14px; text-align: center; }
+        .section-head .section-title { margin-bottom: 6px; }
+        .section-subtitle {
+            color: var(--text-muted); font-size: 0.85rem; font-weight: 500;
+            max-width: 560px; margin: 0 auto; line-height: 1.55;
+        }
+
+        /* Card sub-header (judul + sub-judul di dalam card) */
+        .card-head-block {
+            display: flex; flex-direction: column; gap: 4px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .card-head-block .card-eyebrow {
+            font-family: 'Nunito', sans-serif; font-weight: 800;
+            font-size: 0.62rem; letter-spacing: 1.4px; text-transform: uppercase;
+            color: var(--accent-cyan);
+        }
+        .card-head-block h3 {
+            font-family: 'Nunito', sans-serif; font-weight: 900;
+            font-size: 1.05rem; color: var(--text-main); line-height: 1.25;
+        }
+        .card-head-block p {
+            color: var(--text-muted); font-size: 0.8rem; line-height: 1.5; font-weight: 500;
+        }
+
+        /* Info chips (rapih banget — kecil-kecil di bawah hero) */
+        .info-chips {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+            margin-top: 16px;
+        }
+        .info-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.72rem;
+            color: var(--text-soft);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-color);
+            padding: 6px 11px; border-radius: 999px;
+            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+        .info-chip i { font-size: 0.95rem; color: var(--accent-cyan); }
+        .info-chip:nth-child(2) i { color: var(--accent-pink); }
+        .info-chip:nth-child(3) i { color: var(--stat-green); }
+        .info-chip:hover { border-color: var(--border-strong); background: rgba(255,255,255,0.06); }
+
+        /* Sticker vibe showcase — row of cute icons biar gak polos */
+        .sticker-showcase {
+            margin-top: 18px;
+            padding: 16px 14px;
+            background: var(--surface-1);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            display: flex; flex-direction: column; gap: 10px; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .sticker-showcase::before {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(79,139,255,0.06), transparent 50%, rgba(244,114,182,0.06));
+            pointer-events: none;
+        }
+        .sticker-showcase > * { position: relative; z-index: 1; }
+        .sticker-showcase .label {
+            font-family: 'Nunito', sans-serif; font-weight: 800;
+            font-size: 0.7rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1.4px;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .sticker-showcase .label i { color: var(--accent-pink); font-size: 0.95rem; }
+        .vibe-row {
+            display: grid; grid-template-columns: repeat(8, 1fr);
+            gap: 6px; width: 100%;
+        }
+        .vibe-icon {
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .vibe-icon:hover { transform: translateY(-2px); border-color: var(--border-strong); background: rgba(255,255,255,0.06); }
+        .vibe-icon:nth-child(1) { color: #ffd166; }
+        .vibe-icon:nth-child(2) { color: #f472b6; }
+        .vibe-icon:nth-child(3) { color: #4f8bff; }
+        .vibe-icon:nth-child(4) { color: #38bdf8; }
+        .vibe-icon:nth-child(5) { color: #a78bfa; }
+        .vibe-icon:nth-child(6) { color: #ff9f6b; }
+        .vibe-icon:nth-child(7) { color: #34d399; }
+        .vibe-icon:nth-child(8) { color: #fb7185; }
+        @media (max-width: 480px) {
+            .vibe-row { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* "Cara Kerja" 3-step strip */
+        .steps-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+            margin-top: 18px;
+        }
+        .step-item {
+            position: relative;
+            background: var(--surface-1);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg); padding: 14px 14px 14px 14px;
+            display: flex; flex-direction: column; gap: 6px;
+            overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .step-item::before {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(160deg, rgba(79,139,255,0.08), transparent 60%);
+            pointer-events: none;
+        }
+        .step-item:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+        .step-num {
+            font-family: 'Nunito', sans-serif; font-weight: 900;
+            font-size: 0.7rem; letter-spacing: 1.2px; color: var(--secondary-blue);
+            text-transform: uppercase;
+        }
+        .step-item h4 {
+            font-family: 'Nunito', sans-serif; font-weight: 800;
+            font-size: 0.88rem; color: var(--text-main); line-height: 1.25;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .step-item h4 i { color: var(--primary-blue); font-size: 1rem; }
+        .step-item p {
+            color: var(--text-muted); font-size: 0.74rem; line-height: 1.5;
+        }
+        @media (max-width: 600px) {
+            .steps-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Admin header (judul halaman + sub-judul + meta) */
+        .admin-header {
+            display: flex; flex-direction: column; gap: 6px;
+            padding: 18px 22px;
+            background: linear-gradient(120deg, rgba(79,139,255,0.10), rgba(167,139,250,0.06));
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            margin-top: 12px; margin-bottom: 4px;
+            position: relative; overflow: hidden;
+        }
+        .admin-header::before {
+            content: ""; position: absolute; right: -40px; top: -40px;
+            width: 180px; height: 180px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(79,139,255,0.25), transparent 70%);
+            pointer-events: none;
+        }
+        .admin-header .meta-row { display: flex; align-items: center; gap: 8px; }
+        .admin-header .meta-row .section-eyebrow { color: var(--accent-cyan); background: rgba(56,189,248,0.10); border-color: rgba(56,189,248,0.25); }
+        .admin-header .meta-row .section-eyebrow::before { background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
+        .admin-header h2 {
+            font-family: 'Nunito', sans-serif; font-weight: 900;
+            font-size: 1.35rem; color: var(--text-main); line-height: 1.2;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .admin-header h2 i { color: var(--primary-blue); font-size: 1.55rem; }
+        .admin-header p {
+            color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; max-width: 580px;
+        }
         /* =========================================================
            4. SIDEBAR
         ========================================================= */
         .sidebar-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-            z-index: 1999; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            z-index: 1999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         .sidebar-overlay.active { opacity: 1; pointer-events: all; }
         .sidebar {
             position: fixed; top: 0; left: -285px; width: 275px; height: 100vh;
             background: var(--card-bg); border-right: 2px solid var(--border-color);
-            z-index: 2000; padding: 25px 18px;
-            display: flex; flex-direction: column; gap: 6px;
-            overflow-y: auto;
-            will-change: left;
-            transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.35s ease, border-color 0.35s ease;
+            z-index: 2000; padding: 25px 18px; display: flex; flex-direction: column; gap: 6px;
+            overflow-y: auto; will-change: left;
+            transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .sidebar.active { left: 0; }
+        .sidebar.active { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
         .sidebar-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-        .sidebar-logo { font-size: 1.35rem; font-weight: 900; color: var(--jelly-pink); font-family: 'Nunito', sans-serif; }
+        .sidebar-logo { font-size: 1.35rem; font-weight: 900; color: var(--primary-blue); font-family: 'Nunito', sans-serif; text-shadow: 0 0 10px rgba(0,122,255,0.3); }
         .close-sidebar {
             font-size: 1.4rem; cursor: pointer; color: var(--text-muted);
             background: var(--input-bg); border: 1px solid var(--border-color);
-            border-radius: 10px; width: 34px; height: 34px;
-            display: flex; align-items: center; justify-content: center;
-            transition: color 0.2s, background 0.2s;
+            border-radius: 10px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+            transition: color 0.2s, background 0.2s, transform 0.2s;
         }
-        .close-sidebar:hover { color: var(--jelly-pink); background: rgba(255,126,179,0.12); }
+        .close-sidebar:hover { color: var(--secondary-blue); background: rgba(0, 198, 255, 0.12); }
+        .close-sidebar:active { transform: scale(0.9); }
+        
         .sidebar-label {
             font-size: 0.65rem; font-weight: 800; color: var(--text-muted);
-            text-transform: uppercase; letter-spacing: 1.2px;
-            margin-top: 12px; margin-bottom: 4px; padding-left: 6px;
+            text-transform: uppercase; letter-spacing: 1.2px; margin-top: 12px; margin-bottom: 4px; padding-left: 6px;
         }
         .sidebar-link {
             padding: 11px 15px; background: var(--input-bg); border-radius: 12px;
             font-weight: 700; font-size: 0.9rem; color: var(--text-main);
-            display: flex; align-items: center; gap: 12px; cursor: pointer;
-            border: 2px solid transparent; text-align: left; width: 100%;
+            display: flex; align-items: center; gap: 12px; cursor: pointer; border: 2px solid transparent; text-align: left; width: 100%;
             transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
         }
-        .sidebar-link i { font-size: 1.25rem; color: var(--jelly-purple); transition: color 0.2s; flex-shrink: 0; }
-        .sidebar-link:hover { background: rgba(168,139,235,0.12); border-color: var(--jelly-purple); transform: translateX(3px); }
-        .sidebar-link.active-menu { background: var(--jelly-grad); color: #fff; border-color: transparent; }
+        .sidebar-link i { font-size: 1.25rem; color: var(--secondary-blue); transition: color 0.2s; flex-shrink: 0; }
+        .sidebar-link:hover { background: rgba(0, 122, 255, 0.12); border-color: var(--primary-blue); transform: translateX(3px); }
+        .sidebar-link:active { transform: scale(0.98); }
+        .sidebar-link.active-menu { background: var(--blue-grad); color: #fff; border-color: transparent; box-shadow: 0 4px 15px rgba(0,122,255,0.2); }
         .sidebar-link.active-menu i { color: #fff; }
         .sidebar-link.danger-link:hover { background: rgba(255,95,86,0.12); border-color: var(--stat-red); color: var(--stat-red); }
         .sidebar-link.danger-link i { color: var(--stat-red); }
@@ -164,17 +399,33 @@
         /* =========================================================
            5. VIEW SYSTEM
         ========================================================= */
-        .view-section {
-            display: none; padding-bottom: 80px;
-            opacity: 0; transform: translateX(20px) scale(0.99);
-        }
+        .view-section { display: none; padding-bottom: 80px; }
         .view-section.active-view {
-            display: block;
-            animation: swipeIn 0.38s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+            display: block; animation: viewFade 0.32s ease-out both;
         }
-        @keyframes swipeIn {
-            0%   { opacity: 0; transform: translateX(20px) scale(0.99); }
-            100% { opacity: 1; transform: translateX(0) scale(1); }
+        @keyframes viewFade {
+            from { opacity: 0; transform: translate3d(0, 10px, 0); }
+            to   { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        /* Stagger — each direct child section muncul satu-per-satu, smooth, single-fire */
+        .view-section.active-view > * {
+            animation: itemFadeUp 0.42s ease-out both;
+            animation-delay: 0.06s;
+        }
+        .view-section.active-view > *:nth-child(2) { animation-delay: 0.12s; }
+        .view-section.active-view > *:nth-child(3) { animation-delay: 0.18s; }
+        .view-section.active-view > *:nth-child(4) { animation-delay: 0.24s; }
+        .view-section.active-view > *:nth-child(5) { animation-delay: 0.30s; }
+        .view-section.active-view > *:nth-child(6) { animation-delay: 0.36s; }
+        .view-section.active-view > *:nth-child(7) { animation-delay: 0.42s; }
+        @keyframes itemFadeUp {
+            from { opacity: 0; transform: translate3d(0, 14px, 0); }
+            to   { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        /* Skip stagger kalau user minta reduce-motion */
+        @media (prefers-reduced-motion: reduce) {
+            .view-section.active-view,
+            .view-section.active-view > * { animation: none !important; }
         }
 
         /* =========================================================
@@ -183,145 +434,185 @@
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.88);
             z-index: 9999; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; padding: 20px;
-            transition: opacity 0.28s ease;
+            opacity: 0; pointer-events: none; padding: 20px; transition: opacity 0.28s ease;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
         .modal-content {
             background: var(--card-bg); padding: 18px; border-radius: 22px;
-            border: 2px solid var(--jelly-purple); max-width: 400px; width: 100%;
-            text-align: center; position: relative;
-            transform: scale(0.82);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.35s ease;
+            border: 2px solid var(--primary-blue); max-width: 400px; width: 100%;
+            text-align: center; position: relative; transform: scale(0.82);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 15px 40px var(--shadow-color);
         }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-content img { width: 100%; border-radius: 12px; margin-bottom: 10px; object-fit: contain; max-height: 50vh; background: var(--bg-color); transition: filter 0.4s ease; }
-        .modal-content img.lazy-image { filter: blur(10px); }
-        .modal-content img.lazy-image.loaded { filter: blur(0); }
+        .modal-content img { width: 100%; border-radius: 12px; margin-bottom: 10px; object-fit: contain; max-height: 50vh; background: var(--bg-color); transition: opacity 0.25s ease; }
+        .modal-content img.lazy-image { opacity: 0.5; }
+        .modal-content img.lazy-image.loaded { opacity: 1; }
         .modal-title { font-size: 1.05rem; font-weight: 900; color: var(--text-main); font-family: 'Nunito', sans-serif; }
         .modal-close {
             position: absolute; top: -14px; right: -14px;
             width: 34px; height: 34px; background: var(--stat-red); color: white;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; font-size: 1.1rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid var(--card-bg);
+            cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid var(--card-bg);
             transition: transform 0.2s ease;
         }
         .modal-close:hover { transform: scale(1.1) rotate(8deg); }
+        .modal-close:active { transform: scale(0.9); }
         .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
         .btn-modal {
             flex: 1; padding: 10px; border-radius: 12px; font-weight: 800;
-            font-size: 0.8rem; border: none; cursor: pointer;
-            font-family: 'Nunito', sans-serif;
+            font-size: 0.8rem; border: none; cursor: pointer; font-family: 'Nunito', sans-serif;
             display: flex; align-items: center; justify-content: center; gap: 6px;
             transition: transform 0.2s ease, background 0.2s ease;
         }
+        .btn-modal:active { transform: scale(0.95); }
         .btn-modal-dl { background: var(--stat-blue); color: #fff; }
         .btn-modal-dl:hover { background: #2563eb; transform: translateY(-2px); }
         .btn-donate {
-            display: inline-flex; justify-content: center; align-items: center; gap: 8px;
-            background: #ffbd2e; color: #000; font-weight: 900;
-            padding: 14px 20px; border-radius: 20px; text-transform: uppercase;
-            letter-spacing: 0.5px; border: none; font-family: 'Nunito', sans-serif;
+            display: flex; justify-content: flex-start; align-items: center; gap: 14px;
+            background: linear-gradient(135deg, #fff9e6, #ffd166);
+            color: #1a1a1a; font-weight: 900;
+            padding: 14px 18px; border-radius: 18px;
+            border: 1px solid rgba(255,209,102,0.5);
+            font-family: 'Nunito', sans-serif;
             cursor: pointer; width: 100%; margin-top: 15px; text-decoration: none;
-            box-shadow: 0 4px 15px rgba(255,189,46,0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            box-shadow: 0 4px 14px rgba(255,193,7,0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative; overflow: hidden;
         }
-        .btn-donate:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(255,189,46,0.5); background: #ffc93d; }
+        .btn-donate > i:first-child {
+            font-size: 1.7rem; color: #7a4a00; flex-shrink: 0;
+            width: 44px; height: 44px; border-radius: 12px;
+            background: rgba(255,255,255,0.5);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .btn-donate .donate-text {
+            display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; text-align: left;
+        }
+        .btn-donate .donate-title {
+            font-size: 0.9rem; font-weight: 900; color: #1a1a1a; letter-spacing: 0.2px;
+            text-transform: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .btn-donate .donate-sub {
+            font-size: 0.68rem; font-weight: 700; color: #5a4400; opacity: 0.75;
+            text-transform: none; letter-spacing: 0.1px;
+        }
+        .btn-donate .donate-arrow {
+            font-size: 1rem; color: #5a4400; opacity: 0.6; flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+        .btn-donate:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(255,193,7,0.28); }
+        .btn-donate:hover .donate-arrow { transform: translate(2px, -2px); }
+        .btn-donate:active { transform: scale(0.98); }
 
         /* =========================================================
            7. HERO
         ========================================================= */
-        .hero { padding: 35px 0 25px; text-align: center; }
-        .hero-icon-wrap { display: flex; justify-content: center; gap: 14px; margin-bottom: 10px; }
-        .hero-icon-wrap i { font-size: 2.5rem; color: var(--jelly-purple); animation: float 3s ease-in-out infinite; will-change: transform; }
-        .hero-icon-wrap i:nth-child(2) { color: var(--jelly-pink); animation-delay: 0.5s; font-size: 2.8rem; }
-        .hero-icon-wrap i:nth-child(3) { color: var(--stat-blue); animation-delay: 1s; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .hero-title { font-size: clamp(2rem, 5.5vw, 3rem); font-weight: 900; line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.5px; }
-        .hero-title span { background: var(--jelly-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
-        .hero-desc { color: var(--text-muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto; font-weight: 500; line-height: 1.6; }
+        .hero { padding: 30px 0 8px; text-align: center; }
+        .hero-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 12px; border-radius: 999px;
+            background: rgba(79,139,255,0.10);
+            border: 1px solid rgba(79,139,255,0.25);
+            font-family: 'Nunito', sans-serif; font-weight: 800;
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.4px;
+            color: var(--accent-cyan); margin-bottom: 14px;
+        }
+        .hero-eyebrow i { font-size: 0.85rem; color: var(--accent-cyan); }
+        .hero-icon-wrap { display: flex; justify-content: center; gap: 14px; margin-bottom: 6px; }
+        .hero-icon-wrap i { font-size: 2.4rem; color: var(--secondary-blue); }
+        .hero-icon-wrap i:nth-child(2) { color: var(--primary-blue); font-size: 2.7rem; }
+        .hero-icon-wrap i:nth-child(3) { color: var(--accent-pink); }
+        .hero-title { font-size: clamp(2rem, 5.6vw, 3rem); font-weight: 900; line-height: 1.15; margin-bottom: 12px; letter-spacing: -0.6px; }
+        .hero-title span {
+            background: var(--blue-grad);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+            display: inline-block;
+            filter: drop-shadow(0 4px 18px rgba(79,139,255,0.35));
+        }
+        .hero-desc { color: var(--text-muted); font-size: 0.92rem; max-width: 540px; margin: 0 auto; font-weight: 500; line-height: 1.6; }
+        .hero-desc strong { color: var(--text-soft); font-weight: 700; }
 
         /* =========================================================
            8. CARDS & FORMS
         ========================================================= */
         .btn-submit {
-            width: 100%; background: var(--jelly-grad); color: white;
+            width: 100%; background: var(--blue-grad); color: white;
             padding: 14px; border-radius: 18px; font-weight: 800; font-size: 0.95rem;
             display: flex; justify-content: center; align-items: center; gap: 8px;
-            border: none; cursor: pointer; margin-top: 12px;
-            font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
+            border: none; cursor: pointer; margin-top: 12px; font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(168,139,235,0.25); }
-        .btn-submit:active { transform: translateY(0); }
-        .section-wrap { margin-bottom: 40px; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(0, 122, 255, 0.4); }
+        .btn-submit:active { transform: scale(0.96) translateY(0); box-shadow: 0 0 10px rgba(0, 122, 255, 0.3); }
+        
         .section-title {
             text-align: center; font-size: 1.3rem; font-weight: 900;
             margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 8px;
         }
-        .section-title i { color: var(--jelly-pink); font-size: 1.6rem; }
+        .section-title i { color: var(--primary-blue); font-size: 1.6rem; text-shadow: 0 0 10px rgba(0,122,255,0.4); }
 
-        .unified-card {
-            background: var(--card-bg); border: 2px solid var(--border-color);
-            border-radius: 25px; padding: 25px; position: relative;
-            margin-top: 10px; width: 100%; overflow: hidden;
-            transition: background-color 0.35s ease, border-color 0.35s ease;
-        }
-        .mac-dots { display: flex; gap: 6px; margin-bottom: 20px; justify-content: center; }
+        /* (.unified-card defined earlier in section 4 — keep one source of truth) */
+        .mac-dots { display: flex; gap: 6px; margin-bottom: 16px; justify-content: center; }
         .dot { width: 10px; height: 10px; border-radius: 50%; }
         .dot-r { background: var(--stat-red); } .dot-y { background: var(--stat-yellow); } .dot-g { background: var(--stat-green); }
 
         .form-group { margin-bottom: 15px; text-align: left; }
-        .form-label { display: flex; align-items: center; gap: 6px; font-weight: 800; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-main); font-family: 'Nunito', sans-serif; }
-        .badge-req { background: rgba(255,77,77,0.15); color: var(--stat-red); font-size: 0.6rem; padding: 2px 6px; border-radius: 8px; text-transform: uppercase; font-weight: 700; border: 1px solid var(--stat-red); }
-        .badge-opt { background: var(--input-bg); color: var(--text-muted); font-size: 0.6rem; padding: 2px 6px; border-radius: 8px; text-transform: uppercase; font-weight: 700; border: 1px solid var(--border-color); }
+        .form-label { display: flex; align-items: center; gap: 8px; font-weight: 800; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-main); font-family: 'Nunito', sans-serif; }
+        .form-label > i {
+            font-size: 1.1rem;
+            color: var(--primary-blue);
+            flex-shrink: 0;
+            background: rgba(79,139,255,0.12);
+            padding: 5px;
+            border-radius: 8px;
+            line-height: 1;
+        }
+        /* Color-code icon per field type */
+        .form-label > i.ph-mask-happy   { color: #f472b6; background: rgba(244,114,182,0.12); }
+        .form-label > i.ph-note-pencil  { color: #a78bfa; background: rgba(167,139,250,0.12); }
+        .form-label > i.ph-image-square { color: #38bdf8; background: rgba(56,189,248,0.12); }
+        .badge-req { background: rgba(79, 139, 255, 0.15); color: #c4d3ff; font-size: 0.58rem; padding: 3px 7px; border-radius: 8px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.4px; border: 1px solid rgba(79,139,255,0.45); }
+        .badge-opt { background: var(--input-bg); color: var(--text-faint); font-size: 0.58rem; padding: 3px 7px; border-radius: 8px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.4px; border: 1px solid var(--border-color); }
+        .form-hint { font-size: 0.7rem; color: var(--text-faint); margin-top: 6px; line-height: 1.4; }
         .form-input, .form-textarea, .form-select {
             width: 100%; padding: 12px 15px; border-radius: 14px;
             background: var(--input-bg); border: 2px solid transparent;
             color: var(--text-main); font-size: 0.85rem; font-weight: 500;
-            transition: border-color 0.2s ease, background 0.2s ease;
+            transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
         }
-        .form-input:focus, .form-textarea:focus { border-color: var(--jelly-pink); background: var(--bg-color); }
+        .form-input:focus, .form-textarea:focus { 
+            border-color: var(--primary-blue); 
+            background: var(--bg-color); 
+            box-shadow: 0 0 15px rgba(0, 122, 255, 0.15); 
+        }
         .form-textarea { height: 80px; resize: none; border-radius: 14px; }
-        .media-box { background: var(--input-bg); padding: 12px; border-radius: 15px; border: 2px dashed var(--border-color); }
+        .media-box { background: var(--input-bg); padding: 12px; border-radius: 15px; border: 2px dashed var(--border-color); transition: border-color 0.2s ease; }
+        .media-box:hover { border-color: var(--text-muted); }
         .file-upload-wrapper {
             position: relative; width: 100%; height: 40px; border-radius: 12px;
-            background: var(--card-bg); border: 2px solid var(--jelly-purple);
+            background: var(--card-bg); border: 2px solid var(--primary-blue);
             display: flex; justify-content: center; align-items: center;
-            gap: 8px; color: var(--jelly-purple); font-weight: 800;
-            font-family: 'Nunito', sans-serif; font-size: 0.8rem;
-            cursor: pointer; overflow: hidden; margin-bottom: 8px;
-            transition: background 0.2s ease;
+            gap: 8px; color: var(--secondary-blue); font-weight: 800; font-family: 'Nunito', sans-serif; font-size: 0.8rem;
+            cursor: pointer; overflow: hidden; margin-bottom: 8px; transition: background 0.2s ease, transform 0.2s ease;
         }
-        .file-upload-wrapper:hover { background: rgba(168,139,235,0.12); }
+        .file-upload-wrapper:hover { background: rgba(0, 122, 255, 0.12); }
+        .file-upload-wrapper:active { transform: scale(0.98); }
         .file-upload-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
         .fileNameDisplay { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-align: center; display: block; margin-bottom: 8px; word-break: break-all; }
         .separator { text-align: center; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 8px; position: relative; }
         .separator::before, .separator::after { content: ''; position: absolute; top: 50%; width: 35%; height: 1px; background: var(--border-color); }
         .separator::before { left: 0; } .separator::after { right: 0; }
 
-        .form-auth-overlay {
-            position: absolute; inset: 0; background: var(--overlay-bg);
-            z-index: 10; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(6px);
-            border-radius: 25px;
-            transition: opacity 0.3s ease, background-color 0.35s ease;
-        }
-        .form-auth-overlay i { font-size: 3.5rem; color: var(--jelly-pink); margin-bottom: 10px; animation: float 3s infinite; }
-
         .image-preview-container {
             position: relative; width: 100%; min-height: 120px;
             background: var(--bg-color); border-radius: 12px;
             border: 2px dashed var(--border-color); margin-bottom: 15px;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden;
-            transition: border-color 0.2s ease, background-color 0.35s ease;
+            display: flex; justify-content: center; align-items: center; overflow: hidden;
         }
-        .image-preview-container img { max-width: 100%; max-height: 150px; object-fit: contain; opacity: 0; transform: scale(0.92); transition: opacity 0.3s ease, transform 0.3s ease, filter 0.35s ease; filter: blur(8px); }
-        .image-preview-container img.loaded { opacity: 1; transform: scale(1); filter: blur(0); }
+        .image-preview-container img { max-width: 100%; max-height: 150px; object-fit: contain; opacity: 0; transition: opacity 0.25s ease; }
+        .image-preview-container img.loaded { opacity: 1; }
         .image-preview-container .preview-placeholder { position: absolute; color: var(--text-muted); font-size: 0.8rem; display: flex; flex-direction: column; align-items: center; gap: 5px; opacity: 0.7; pointer-events: none; transition: opacity 0.3s ease; }
         .image-preview-container.has-image .preview-placeholder { opacity: 0; }
 
@@ -329,224 +620,545 @@
            9. PROFIL
         ========================================================= */
         .profile-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
-        .profile-banner { width: 100%; height: 100px; background: var(--jelly-grad); opacity: 0.4; }
+        .profile-banner { width: 100%; height: 100px; background: var(--blue-grad); opacity: 0.2; }
         .profile-header { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: -45px; padding: 0 20px 20px; position: relative; z-index: 2; }
-        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; border: 4px solid var(--card-bg); background: var(--input-bg); overflow: hidden; margin: 0 auto 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; transition: border-color 0.35s ease; }
+        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; border: 4px solid var(--card-bg); background: var(--input-bg); overflow: hidden; margin: 0 auto 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; }
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; transition: filter 0.4s ease; }
-        .profile-avatar img.lazy-image { filter: blur(8px); }
-        .profile-avatar img.lazy-image.loaded { filter: blur(0); }
         .profile-info h3 { font-size: 1.3rem; font-weight: 900; color: var(--text-main); margin-bottom: 4px; }
-        .profile-info p { font-size: 0.8rem; color: var(--jelly-purple); font-weight: 700; background: rgba(168,139,235,0.15); padding: 3px 10px; border-radius: 10px; display: inline-block; }
+        .profile-info p { font-size: 0.8rem; color: var(--secondary-blue); font-weight: 700; background: rgba(0, 198, 255, 0.15); padding: 3px 10px; border-radius: 10px; display: inline-block; }
         .profile-body { padding: 0 20px 25px; }
-        .skill-box { background: var(--input-bg); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border-color); transition: background-color 0.35s ease, border-color 0.35s ease; }
+        .skill-box { background: var(--input-bg); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border-color); }
         .skill-title { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px; }
         .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .skill-tag { background: var(--card-bg); border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 5px; transition: background-color 0.35s ease, border-color 0.35s ease; }
+        .skill-tag { background: var(--card-bg); border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 5px; }
         .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .bento-item { background: var(--input-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s ease, border-color 0.2s ease; }
+        .bento-item { background: var(--input-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease; }
         .bento-item i { font-size: 1.4rem; color: var(--text-main); transition: color 0.2s ease; }
         .bento-text { font-size: 0.8rem; font-weight: 700; color: var(--text-main); transition: color 0.2s ease; }
-        .bento-item:hover { background: var(--jelly-grad); border-color: transparent; }
+        .bento-item:hover { background: var(--blue-grad); border-color: transparent; box-shadow: 0 5px 15px rgba(0,122,255,0.3); }
         .bento-item:hover .bento-text, .bento-item:hover i { color: #fff; }
+        .bento-item:active { transform: scale(0.95); }
 
         /* =========================================================
-           10. ADMIN PANEL
+           10. ADMIN PANEL  (rapi · simetris · konsisten)
         ========================================================= */
-        .admin-login-area { text-align: center; padding: 40px 20px; margin-top: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .admin-login-area {
+            text-align: center; padding: 48px 24px; margin-top: 15px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+        }
         #admin-dashboard { display: none; margin-top: 15px; }
-        .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 25px; }
-        .stat-box { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 15px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: background-color 0.35s ease, transform 0.2s ease; }
-        .stat-box:hover { transform: translateY(-2px); }
-        .stat-box i { font-size: 1.6rem; }
-        .stat-box h4 { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; }
-        .stat-box span { font-size: 1.5rem; font-weight: 900; font-family: 'Nunito', sans-serif; }
-        .stat-total i, .stat-total span { color: var(--text-main); }
-        .stat-pending i, .stat-pending span { color: var(--stat-yellow); }
-        .stat-done i, .stat-done span { color: var(--stat-green); }
-        .stat-rejected i, .stat-rejected span { color: var(--stat-red); }
 
-        .activity-log-list { max-height: 450px; overflow-y: auto; padding: 5px 10px 10px 5px; display: flex; flex-direction: column; gap: 14px; }
-        .activity-log-item {
-            background: var(--card-bg); border-radius: 18px; padding: 18px 20px;
-            border: 2px solid transparent; display: flex; align-items: center;
-            justify-content: space-between; gap: 16px;
-            opacity: 0; transform: translateY(12px);
-            animation: slideUpFade 0.35s ease forwards;
-            transition: transform 0.25s ease, border-color 0.2s ease, background-color 0.35s ease;
+        /* Layout grid utama supaya jarak antar bagian konsisten */
+        .admin-grid { display: flex; flex-direction: column; gap: 18px; }
+
+        /* ---------- TABS (pill dengan grid 4 kolom simetris) ---------- */
+        .admin-tabs-wrapper {
+            background: var(--input-bg); padding: 6px;
+            border-radius: 18px; border: 1px solid var(--border-color);
+            margin-bottom: 0;
         }
-        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
-        .activity-log-item:hover { transform: translateY(-3px); border-color: var(--jelly-pink); background: var(--input-bg); }
-        .activity-log-content { display: flex; align-items: center; gap: 14px; flex: 1; }
-        .activity-log-icon { display: flex; justify-content: center; align-items: center; min-width: 46px; height: 46px; border-radius: 14px; font-size: 1.5rem; }
-        .activity-log-text { display: flex; flex-direction: column; gap: 4px; line-height: 1.4; }
-        .activity-log-text strong { color: var(--text-main); font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; }
-        .activity-log-text span { color: var(--text-muted); font-size: 0.82rem; font-weight: 600; }
-        .activity-time { font-size: 0.72rem; color: var(--jelly-purple); font-weight: 800; background: rgba(168,139,235,0.12); padding: 6px 12px; border-radius: 10px; white-space: nowrap; font-family: 'Nunito', sans-serif; }
-
-        .admin-tabs-wrapper { background: var(--input-bg); padding: 7px; border-radius: 20px; border: 2px solid var(--border-color); margin-bottom: 22px; transition: background-color 0.35s ease, border-color 0.35s ease; }
-        .admin-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .admin-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
         .tab-btn {
-            padding: 10px 8px; border-radius: 14px; border: 2px solid transparent;
-            background: transparent; color: var(--text-muted);
-            font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif;
-            font-size: 0.8rem; display: flex; justify-content: center; align-items: center; gap: 6px;
-            white-space: nowrap;
-            transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            padding: 11px 8px; border-radius: 13px; border: 1px solid transparent; background: transparent;
+            color: var(--text-muted); font-weight: 800; cursor: pointer;
+            font-family: 'Nunito', sans-serif; font-size: 0.78rem;
+            display: flex; justify-content: center; align-items: center; gap: 6px; white-space: nowrap;
+            transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
         }
-        .tab-btn:hover { color: var(--jelly-pink); background: var(--bg-color); }
-        .tab-btn.active { background: var(--card-bg); color: var(--jelly-purple); box-shadow: 0 4px 15px rgba(168,139,235,0.18); border-color: var(--jelly-purple); transform: translateY(-2px); }
-        .admin-panel-card { background: var(--input-bg); border-radius: 22px; padding: 22px; border: 2px solid var(--border-color); display: flex; flex-direction: column; transition: background-color 0.35s ease, border-color 0.35s ease; }
+        .tab-btn i { font-size: 1rem; }
+        .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.04); }
+        .tab-btn:active { transform: scale(0.97); }
+        .tab-btn.active {
+            background: var(--blue-grad); color: #fff; border-color: transparent;
+            box-shadow: 0 6px 16px rgba(0,122,255,0.25);
+        }
 
-        .req-item { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 18px; padding: 14px; margin-bottom: 14px; transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.35s ease; }
-        .req-item:hover { border-color: var(--jelly-purple); transform: translateY(-2px); }
-        .req-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px; }
-        .req-id { font-weight: 900; font-family: 'Nunito', sans-serif; color: var(--jelly-pink); }
-        .req-date { font-size: 0.7rem; color: var(--text-muted); }
-        .req-main { display: flex; gap: 14px; flex-wrap: wrap; }
-        .req-info { flex: 1; }
-        .req-title { font-weight: 800; font-size: 1rem; color: var(--text-main); margin-bottom: 5px; }
-        .req-user { font-size: 0.78rem; font-weight: 600; color: var(--jelly-purple); margin-bottom: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
-        .req-desc { font-size: 0.78rem; color: var(--text-muted); background: var(--input-bg); padding: 9px; border-radius: 10px; font-style: italic; }
-        .req-media { width: 80px; min-width: 80px; background: var(--input-bg); border-radius: 12px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        .req-media img { width: 100%; max-height: 80px; object-fit: contain; cursor: pointer; transition: transform 0.2s ease; }
-        .req-media img:hover { transform: scale(1.05); }
-        .req-media .no-img { text-align: center; font-size: 0.6rem; color: var(--text-muted); }
-        .req-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; justify-content: flex-end; }
-        .btn-act { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 12px; border-radius: 18px; font-weight: 700; font-size: 0.7rem; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
-        .btn-act:hover { background: var(--card-bg); }
-        .btn-act-copy:hover { border-color: var(--stat-blue); color: var(--stat-blue); }
-        .btn-act-edit:hover { border-color: var(--stat-yellow); color: var(--stat-yellow); }
-        .btn-act-reject:hover { border-color: var(--stat-red); color: var(--stat-red); }
-        .btn-act-done:hover { border-color: var(--stat-green); color: var(--stat-green); }
-        .btn-act-revert:hover { border-color: var(--jelly-purple); color: var(--jelly-purple); }
+        /* ---------- STAT GRID (4 kotak simetris — center aligned) ---------- */
+        .admin-stats {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 10px; margin-bottom: 0;
+        }
+        .stat-box {
+            position: relative;
+            background: var(--input-bg); border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 16px 10px 14px;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            gap: 10px; min-height: 124px; overflow: hidden;
+            text-align: center;
+        }
+        /* color bar di top — simetris untuk semua box */
+        .stat-box::before {
+            content: ""; position: absolute; left: 0; right: 0; top: 0;
+            height: 3px; background: var(--text-muted);
+        }
+        .stat-box .stat-icon {
+            width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.15rem; background: rgba(255,255,255,0.04);
+        }
+        .stat-box i { font-size: 1.15rem; line-height: 1; }
+        .stat-box span {
+            font-size: 1.7rem; font-weight: 900; font-family: 'Nunito', sans-serif;
+            color: var(--text-main); line-height: 1;
+        }
+        .stat-box h4 {
+            font-size: 0.62rem; color: var(--text-muted);
+            text-transform: uppercase; font-weight: 800; letter-spacing: 0.7px;
+            margin: 0; line-height: 1;
+        }
+        /* column-reverse: angka di atas, label di bawah, walau HTML order h4 -> span */
+        .stat-box .stat-foot { display: flex; flex-direction: column-reverse; align-items: center; gap: 4px; width: 100%; }
+        .stat-total::before    { background: var(--primary-blue); }
+        .stat-pending::before  { background: var(--stat-yellow); }
+        .stat-done::before     { background: var(--stat-green); }
+        .stat-rejected::before { background: var(--stat-red); }
+        .stat-total .stat-icon    { color: var(--primary-blue);  background: rgba(79,139,255,0.14); }
+        .stat-pending .stat-icon  { color: var(--stat-yellow);   background: rgba(255,189,46,0.14); }
+        .stat-done .stat-icon     { color: var(--stat-green);    background: rgba(39,201,63,0.14); }
+        .stat-rejected .stat-icon { color: var(--stat-red);      background: rgba(255,95,86,0.14); }
+
+        /* ---------- CARD UTAMA PANEL ---------- */
+        .admin-panel-card {
+            background: var(--input-bg); border-radius: 20px; padding: 20px;
+            border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 14px;
+        }
+        .admin-card-head {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 12px; padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .admin-card-title {
+            display: flex; align-items: center; gap: 10px;
+            font-family: 'Nunito', sans-serif; font-weight: 900;
+            font-size: 1rem; color: var(--text-main); margin: 0;
+        }
+        .admin-card-title i {
+            color: var(--primary-blue); font-size: 1.25rem;
+            background: rgba(0,122,255,0.12); padding: 6px;
+            border-radius: 10px; line-height: 1;
+        }
+        .admin-card-action {
+            background: transparent; border: 1px solid var(--border-color);
+            color: var(--text-muted); padding: 7px 11px; border-radius: 11px;
+            font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.72rem;
+            display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.1s ease;
+        }
+        .admin-card-action:hover { color: var(--stat-red); border-color: var(--stat-red); background: rgba(255,95,86,0.08); }
+        .admin-card-action:active { transform: scale(0.96); }
+
+        /* ---------- ACTIVITY LOG (rapi, kiri-stripe, kanan-time) ---------- */
+        .activity-log-list {
+            max-height: 460px; overflow-y: auto;
+            padding: 2px; display: flex; flex-direction: column; gap: 10px;
+        }
+        .activity-log-item {
+            position: relative;
+            background: var(--card-bg); border-radius: 14px; padding: 14px 16px 14px 18px;
+            border: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between; gap: 14px;
+            transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+        }
+        .activity-log-item::before {
+            content: ""; position: absolute; left: 0; top: 12px; bottom: 12px;
+            width: 3px; border-radius: 0 4px 4px 0;
+            background: var(--accent, var(--primary-blue)); opacity: 0.9;
+        }
+        .activity-log-item:hover { border-color: var(--primary-blue); background: rgba(0,122,255,0.04); }
+        .activity-log-content { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+        .activity-log-icon {
+            flex: 0 0 auto;
+            display: flex; justify-content: center; align-items: center;
+            width: 40px; height: 40px; border-radius: 12px;
+            font-size: 1.2rem;
+            background: rgba(0,122,255,0.10); color: var(--secondary-blue);
+        }
+        .activity-log-text { display: flex; flex-direction: column; gap: 3px; line-height: 1.35; min-width: 0; }
+        .activity-log-text strong {
+            color: var(--text-main); font-family: 'Nunito', sans-serif;
+            font-weight: 800; font-size: 0.9rem;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .activity-log-text span {
+            color: var(--text-muted); font-size: 0.78rem; font-weight: 600;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .activity-time {
+            flex: 0 0 auto;
+            font-size: 0.7rem; color: var(--secondary-blue); font-weight: 800;
+            background: rgba(0, 198, 255, 0.10); padding: 6px 10px; border-radius: 9px;
+            white-space: nowrap; font-family: 'Nunito', sans-serif;
+            border: 1px solid rgba(0, 198, 255, 0.18);
+        }
+
+        /* ---------- REQUEST ITEM (tiket) — seragam dgn stat-box / activity log ---------- */
+        #admin-request-list { display: flex; flex-direction: column; gap: 10px; }
+        .req-item {
+            position: relative;
+            background: var(--input-bg); border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 14px 16px 14px 18px; margin-bottom: 0;
+            display: flex; flex-direction: column; gap: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+        /* Left color stripe — identik dgn activity-log-item */
+        .req-item::before {
+            content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 3px; background: var(--accent, var(--primary-blue));
+        }
+        .req-item:hover { border-color: var(--primary-blue); background: rgba(79,139,255,0.04); }
+        .req-top {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 10px; flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px; margin-bottom: 0;
+        }
+        .req-top-left { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .req-id {
+            font-family: 'Courier New', monospace; font-weight: 900;
+            color: var(--secondary-blue);
+            background: rgba(0,122,255,0.12); padding: 4px 10px; border-radius: 8px;
+            font-size: 0.78rem; letter-spacing: 0.3px;
+            border: 1px solid rgba(0,122,255,0.25);
+        }
+        .req-status {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-family: 'Nunito', sans-serif; font-weight: 800;
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px;
+            padding: 4px 9px; border-radius: 999px;
+            border: 1px solid currentColor;
+        }
+        .req-status i { font-size: 0.85rem; }
+        .req-status.pending  { color: var(--stat-yellow); background: rgba(255,189,46,0.10); }
+        .req-status.done     { color: var(--stat-green);  background: rgba(39,201,63,0.10); }
+        .req-status.rejected { color: var(--stat-red);    background: rgba(255,95,86,0.10); }
+        .req-date {
+            font-size: 0.7rem; color: var(--text-muted); font-weight: 700;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .req-main { display: flex; gap: 14px; flex-wrap: nowrap; align-items: stretch; }
+        .req-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+        .req-title {
+            font-family: 'Nunito', sans-serif; font-weight: 900;
+            font-size: 1rem; color: var(--text-main); margin-bottom: 0;
+            line-height: 1.25; word-break: break-word;
+        }
+        .req-user {
+            font-size: 0.76rem; font-weight: 700; color: var(--secondary-blue);
+            margin-bottom: 0; display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(0,198,255,0.08); border: 1px solid rgba(0,198,255,0.18);
+            padding: 4px 10px; border-radius: 999px; align-self: flex-start;
+            max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .req-desc {
+            font-size: 0.78rem; color: var(--text-muted);
+            background: var(--card-bg); padding: 10px 12px;
+            border-radius: 12px; font-style: italic; line-height: 1.5;
+            border: 1px solid var(--border-color);
+        }
+        .req-media {
+            width: 96px; min-width: 96px; height: 96px;
+            background: var(--card-bg); border-radius: 14px;
+            border: 1px solid var(--border-color);
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; align-self: flex-start;
+        }
+        .req-media img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.25s ease; }
+        .req-media img:hover { transform: scale(1.06); }
+        .req-media .no-img {
+            text-align: center; font-size: 0.6rem; color: var(--text-muted);
+            font-weight: 700; padding: 8px;
+        }
+
+        /* Aksi tiket — grid simetris, tombol sama lebar & tinggi */
+        .req-actions {
+            display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+        .btn-act {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            color: var(--text-main); padding: 8px 10px; border-radius: 10px;
+            font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.72rem;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            white-space: nowrap;
+        }
+        .btn-act i { font-size: 0.95rem; }
+        .btn-act:hover { background: rgba(255,255,255,0.05); }
+        .btn-act:active { transform: scale(0.96); }
+        @media (max-width: 520px) {
+            .req-actions { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(2, 1fr); }
+        }
+        .btn-act-copy:hover   { border-color: var(--stat-blue);     color: var(--stat-blue);     background: rgba(59,130,246,0.08); }
+        .btn-act-edit:hover   { border-color: var(--stat-yellow);   color: var(--stat-yellow);   background: rgba(255,189,46,0.08); }
+        .btn-act-reject:hover { border-color: var(--stat-red);      color: var(--stat-red);      background: rgba(255,95,86,0.08); }
+        .btn-act-done:hover   { border-color: var(--stat-green);    color: var(--stat-green);    background: rgba(39,201,63,0.08); }
+        .btn-act-revert:hover { border-color: var(--secondary-blue);color: var(--secondary-blue);background: rgba(0,198,255,0.08); }
+
+        /* Empty state untuk daftar tiket */
+        .req-empty {
+            text-align: center; background: var(--input-bg);
+            padding: 36px 20px; border-radius: 18px;
+            border: 1px dashed var(--border-color);
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .req-empty i { font-size: 2.6rem; color: var(--text-muted); }
+        .req-empty p { color: var(--text-muted); font-size: 0.85rem; font-weight: 700; margin: 0; }
+
 
         /* =========================================================
-           11. MUSIC PLAYER
+           11. MUSIC WIDGET (SMOOTH POP-UP)
         ========================================================= */
-        .music-player {
-            position: fixed; bottom: 20px; left: 20px;
-            display: flex; align-items: center; gap: 10px;
-            padding: 8px 14px; background: var(--card-bg);
-            border: 2px solid var(--border-color); border-radius: 25px;
-            z-index: 1000; box-shadow: 0 5px 20px var(--shadow-color);
-            transform: translateZ(0); will-change: transform;
-            transition: border-color 0.2s ease, background-color 0.35s ease;
+        .music-widget {
+            position: fixed; bottom: 20px; left: 20px; z-index: 1000;
         }
-        .music-player:hover { border-color: var(--jelly-purple); }
-        .play-btn { font-size: 1.4rem; display: flex; align-items: center; color: var(--text-main); background: none; border: none; cursor: pointer; transition: color 0.2s ease; }
-        .play-btn:hover { color: var(--jelly-pink); }
-        .track-info { display: flex; flex-direction: column; width: 78px; overflow: hidden; }
-        .track-name { font-size: 0.65rem; font-weight: 800; color: var(--jelly-purple); font-family: 'Nunito', sans-serif; white-space: nowrap; animation: scrollText 7s linear infinite; }
-        .artist-name { font-size: 0.55rem; color: var(--text-muted); font-weight: 600; }
-        .equalizer { display: flex; gap: 2px; align-items: flex-end; height: 10px; }
-        .bar { width: 2px; height: 2px; background: var(--text-muted); border-radius: 2px; transition: height 0.2s ease; }
-        .playing .bar { background: var(--jelly-pink); animation: bounceBar 0.7s infinite alternate; }
-        .playing .bar:nth-child(2) { animation-delay: 0.15s; }
-        .playing .bar:nth-child(3) { animation-delay: 0.3s; }
-        @keyframes bounceBar { 0% { height: 2px; } 100% { height: 10px; } }
-        @keyframes scrollText { 0% { transform: translateX(0); } 50% { transform: translateX(-60%); } 100% { transform: translateX(0); } }
+
+        /* --- MINI PLAYER (Kapsul Mengambang) --- */
+        .mini-player {
+            background: var(--card-bg); border: 2px solid var(--border-color);
+            border-radius: 30px; padding: 6px 14px 6px 6px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            cursor: pointer;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease, border-color 0.2s ease;
+            position: relative; z-index: 2;
+        }
+        .mini-player:hover { border-color: var(--secondary-blue); transform: translateY(-3px); }
+        .mini-player:active { transform: scale(0.95); }
+        
+        .music-widget.open .mini-player {
+            opacity: 0; pointer-events: none; transform: scale(0.8) translateY(20px);
+        }
+
+        .mini-disc {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--input-bg); display: flex; justify-content: center; align-items: center;
+            color: var(--primary-blue); font-size: 1.2rem;
+        }
+        .playing .mini-disc { color: var(--secondary-blue); }
+
+        .mini-info { display: flex; flex-direction: column; width: 85px; overflow: hidden; }
+        .mini-title { font-size: 0.7rem; font-weight: 800; color: var(--text-main); white-space: nowrap; font-family: 'Nunito', sans-serif; }
+        /* scrollText animation removed — was causing constant repaints on mobile */
+        
+        .btn-play-mini {
+            background: none; border: none; color: var(--text-main); font-size: 1.6rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: color 0.2s, transform 0.2s;
+        }
+        .btn-play-mini:hover { color: var(--primary-blue); }
+        .btn-play-mini:active { transform: scale(0.8); }
+
+        /* --- EXPANDED PLAYER (Pop-Up Widget) --- */
+        .expanded-player {
+            position: absolute; bottom: 0; left: 0;
+            width: 270px; background: var(--card-bg);
+            border: 2px solid var(--primary-blue); border-radius: 28px;
+            padding: 22px; box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transform: scale(0.8) translateY(30px); transform-origin: bottom left;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1; display: flex; flex-direction: column; align-items: center;
+        }
+        .music-widget.open .expanded-player {
+            opacity: 1; visibility: visible; pointer-events: all;
+            transform: scale(1) translateY(0);
+        }
+
+        .exp-header {
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 18px; color: var(--text-muted); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
+        }
+        .btn-close-exp {
+            background: var(--input-bg); border: none; color: var(--text-main);
+            width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 1.2rem; transition: background 0.2s, transform 0.2s;
+        }
+        .btn-close-exp:hover { background: var(--stat-red); color: #fff; }
+        .btn-close-exp:active { transform: scale(0.8); }
+
+        .exp-disc-wrap {
+            width: 130px; height: 130px; border-radius: 50%;
+            background: radial-gradient(circle, #1a1a1a 20%, #050505 80%);
+            border: 4px solid var(--input-bg); margin-bottom: 18px;
+            display: flex; justify-content: center; align-items: center; position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .exp-disc-wrap::after {
+            content: ''; position: absolute; width: 25px; height: 25px;
+            background: var(--primary-blue); border-radius: 50%; border: 4px solid var(--card-bg);
+            transition: background 0.4s ease;
+        }
+        .playing .exp-disc-wrap { border-color: var(--primary-blue); box-shadow: 0 0 18px rgba(79,139,255,0.25); }
+        .playing .exp-disc-wrap::after { background: var(--secondary-blue); }
+        /* Disc spin HANYA saat widget open + playing. Kalau mini (collapsed) atau paused = diam.
+           GPU compositor (transform), single element, jalan cuma saat visible = cheap. */
+        .music-widget.open.playing .exp-disc-wrap {
+            animation: discSpin 6s linear infinite;
+        }
+        @keyframes discSpin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        .exp-title { font-size: 1.15rem; font-weight: 900; color: var(--text-main); font-family: 'Nunito', sans-serif; text-align: center; margin-bottom: 4px; }
+        .exp-artist { font-size: 0.75rem; color: var(--secondary-blue); font-weight: 700; text-align: center; margin-bottom: 18px; }
+
+        .exp-eq { display: flex; gap: 4px; height: 18px; align-items: flex-end; margin-bottom: 22px; }
+        .eq-bar { width: 3px; height: 100%; background: var(--text-muted); border-radius: 2px; transform: scaleY(0.2); transform-origin: bottom; transition: transform 0.2s, background 0.2s; }
+        /* Equalizer — paused = static pattern, open+playing = bounce (cuma 5 bar, visible doang) */
+        .playing .eq-bar { background: var(--primary-blue); }
+        .playing .eq-bar:nth-child(1) { transform: scaleY(0.4); }
+        .playing .eq-bar:nth-child(2) { transform: scaleY(0.8); }
+        .playing .eq-bar:nth-child(3) { transform: scaleY(1.0); }
+        .playing .eq-bar:nth-child(4) { transform: scaleY(0.7); }
+        .playing .eq-bar:nth-child(5) { transform: scaleY(0.5); }
+        .music-widget.open.playing .eq-bar {
+            animation: eqBounce 0.8s ease-in-out infinite alternate;
+        }
+        .music-widget.open.playing .eq-bar:nth-child(1) { animation-delay: 0.0s; }
+        .music-widget.open.playing .eq-bar:nth-child(2) { animation-delay: 0.15s; }
+        .music-widget.open.playing .eq-bar:nth-child(3) { animation-delay: 0.30s; }
+        .music-widget.open.playing .eq-bar:nth-child(4) { animation-delay: 0.20s; }
+        .music-widget.open.playing .eq-bar:nth-child(5) { animation-delay: 0.10s; }
+        @keyframes eqBounce {
+            0%   { transform: scaleY(0.3); }
+            100% { transform: scaleY(1); }
+        }
+
+        .exp-controls { display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%; }
+        .btn-ctrl { background: none; border: none; color: var(--text-muted); font-size: 1.6rem; cursor: pointer; transition: color 0.2s, transform 0.2s; }
+        .btn-ctrl:hover { color: var(--text-main); }
+        .btn-ctrl:active { transform: scale(0.8); }
+        
+        .btn-play-main {
+            width: 58px; height: 58px; border-radius: 50%;
+            background: var(--blue-grad); color: #fff; border: none;
+            display: flex; justify-content: center; align-items: center; font-size: 2.2rem;
+            cursor: pointer; box-shadow: 0 8px 20px rgba(0,122,255,0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-play-main:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 25px rgba(0,122,255,0.5); }
+        .btn-play-main:active { transform: scale(0.95); }
+
+        /* spinVinyl, bounceBar, scrollText keyframes removed — were continuously running and burning battery on mobile */
+
 
         /* =========================================================
            12. TOAST
         ========================================================= */
         #toast {
             position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%);
-            background: var(--toast-bg); border: 2px solid var(--jelly-pink);
+            background: var(--toast-bg); border: 2px solid var(--primary-blue);
             color: var(--text-main); padding: 12px 18px; border-radius: 18px;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 10px 30px rgba(255,126,179,0.35);
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0, 122, 255, 0.35);
             z-index: 9999; font-size: 0.85rem; width: max-content; max-width: 90%;
             font-family: 'Nunito', sans-serif; font-weight: 800; overflow: hidden;
-            will-change: bottom;
-            transition: bottom 0.38s cubic-bezier(0.68,-0.55,0.265,1.55), background-color 0.35s ease;
+            will-change: bottom; transition: bottom 0.38s cubic-bezier(0.68,-0.55,0.265,1.55);
         }
         #toast.show { bottom: 25px; }
-        #toast i { font-size: 1.4rem; color: var(--jelly-pink); }
-        .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--jelly-grad); width: 100%; transform-origin: left; transform: scaleX(0); }
+        #toast i { font-size: 1.4rem; color: var(--primary-blue); }
+        .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--blue-grad); width: 100%; transform-origin: left; transform: scaleX(0); }
         #toast.show .toast-progress { animation: progress 2.8s linear forwards; }
         @keyframes progress { 100% { transform: scaleX(1); } }
 
         /* =========================================================
            13. SKELETON & FOOTER
         ========================================================= */
-        footer { text-align: center; padding: 25px 15px 80px; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; border-top: 1px solid var(--border-color); margin-top: 30px; line-height: 1.6; transition: border-color 0.35s ease; }
-        .skeleton { background: linear-gradient(90deg, var(--input-bg) 25%, var(--card-bg) 50%, var(--input-bg) 75%); background-size: 200% 100%; animation: shimmer 1.6s infinite; border-radius: 8px; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        footer {
+            text-align: center; padding: 28px 18px 90px;
+            font-size: 0.75rem; color: var(--text-muted); font-weight: 600;
+            border-top: 1px solid var(--border-color); margin-top: 36px; line-height: 1.7;
+            position: relative; z-index: 1;
+        }
+        footer .foot-divider { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        footer .foot-divider::before, footer .foot-divider::after {
+            content: ""; width: 28px; height: 1px; background: var(--border-strong);
+        }
+        footer .foot-divider span { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.65rem; letter-spacing: 1.6px; text-transform: uppercase; color: var(--text-faint); }
+        footer strong { color: var(--text-soft); }
+        footer .foot-meta { display: inline-flex; gap: 14px; align-items: center; margin-top: 8px; font-size: 0.7rem; color: var(--text-faint); }
+        footer .foot-meta i { color: var(--accent-cyan); }
+
+        /* Focus styles untuk aksesibilitas */
+        button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+            outline: 2px solid rgba(79,139,255,0.55);
+            outline-offset: 2px;
+        }
+
+        /* Hindari layout cost untuk view yg gak aktif (smooth pas pindah halaman) */
+        .view-section:not(.active-view) {
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 600px;
+        }
 
         /* =========================================================
-           14. AUTH VIEW (LOGIN PAGE)
+           14. AUTH VIEW (LOGIN ADMIN PAGE)
         ========================================================= */
         .auth-card {
-            max-width: 420px; margin: 30px auto 0;
-            padding: 40px 30px;
+            max-width: 420px; margin: 30px auto 0; padding: 40px 30px;
             background: var(--card-bg); border: 2px solid var(--border-color);
-            border-radius: 28px; text-align: center;
-            transition: background-color 0.35s ease, border-color 0.35s ease;
+            border-radius: 28px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
         .auth-brand-icon {
-            width: 72px; height: 72px; border-radius: 22px;
-            background: var(--jelly-grad);
+            width: 72px; height: 72px; border-radius: 22px; background: var(--blue-grad);
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 18px; font-size: 2.2rem; color: #fff;
-            box-shadow: 0 8px 25px rgba(168,139,235,0.4);
+            margin: 0 auto 18px; font-size: 2.2rem; color: #fff; box-shadow: 0 8px 25px rgba(0, 122, 255, 0.4);
         }
         .auth-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; font-family: 'Nunito', sans-serif; }
         .auth-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 28px; font-weight: 600; line-height: 1.5; }
         .auth-input-group { position: relative; margin-bottom: 14px; }
         .auth-input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--text-muted); pointer-events: none; }
         .auth-input {
-            width: 100%; padding: 13px 15px 13px 42px;
-            border-radius: 15px; background: var(--input-bg);
-            border: 2px solid transparent; color: var(--text-main);
-            font-size: 0.9rem; font-weight: 700; font-family: 'Nunito', sans-serif;
-            text-align: center; letter-spacing: 0.5px;
-            transition: border-color 0.2s ease, background 0.2s ease;
+            width: 100%; padding: 13px 15px 13px 42px; border-radius: 15px; background: var(--input-bg);
+            border: 2px solid transparent; color: var(--text-main); font-size: 0.9rem; font-weight: 700; font-family: 'Nunito', sans-serif;
+            text-align: center; letter-spacing: 0.5px; transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
         }
-        .auth-input:focus { border-color: var(--jelly-pink); background: var(--bg-color); }
+        .auth-input:focus { border-color: var(--primary-blue); background: var(--bg-color); box-shadow: 0 0 15px rgba(0,122,255,0.15); }
         .auth-input::placeholder { font-weight: 600; letter-spacing: 0; color: var(--text-muted); }
-        .auth-divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
-        .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
-        .auth-divider span { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; white-space: nowrap; }
-        .auth-toggle-wrap { margin-top: 22px; font-size: 0.82rem; color: var(--text-muted); border-top: 1px dashed var(--border-color); padding-top: 18px; }
-        .auth-toggle-btn { background: none; border: none; color: var(--jelly-purple); font-weight: 900; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.88rem; transition: color 0.2s ease; }
-        .auth-toggle-btn:hover { color: var(--jelly-pink); }
         .auth-btn-submit {
-            width: 100%; background: var(--jelly-grad); color: white;
+            width: 100%; background: var(--blue-grad); color: white;
             padding: 13px 20px; border-radius: 15px; font-weight: 900; font-size: 1rem;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            border: none; cursor: pointer; font-family: 'Nunito', sans-serif;
-            text-transform: uppercase; letter-spacing: 0.8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex; justify-content: center; align-items: center; gap: 8px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif;
+            text-transform: uppercase; letter-spacing: 0.8px; transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .auth-btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(168,139,235,0.35); }
-        .auth-btn-submit:active { transform: translateY(0); }
+        .auth-btn-submit:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(0, 122, 255, 0.4); }
+        .auth-btn-submit:active { transform: scale(0.96) translateY(0); box-shadow: 0 0 10px rgba(0, 122, 255, 0.3); }
 
         /* =========================================================
            15. RESPONSIVE
         ========================================================= */
         @media (max-width: 600px) {
-            .req-main { flex-direction: column; gap: 10px; }
-            .req-media { width: 100%; }
-            .req-media img, .no-img { height: 140px; max-height: 140px; }
+            .req-main { flex-direction: column; gap: 12px; }
+            .req-media { width: 100%; min-width: 0; height: 160px; }
+            .req-media img { height: 100%; }
+            .req-media .no-img { height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
             .admin-stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .btn-act { flex: 1; justify-content: center; }
-            .admin-tabs { grid-template-columns: repeat(2, 1fr); }
-            .tab-btn { font-size: 0.72rem; padding: 9px 6px; gap: 4px; }
-            .activity-log-item { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
-            .activity-time { margin-left: 60px; }
+            .stat-box { min-height: 100px; padding: 12px; }
+            .stat-box span { font-size: 1.45rem; }
+            .req-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; justify-content: stretch; }
+            .btn-act { justify-content: center; }
+            .admin-tabs { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+            .tab-btn { font-size: 0.74rem; padding: 10px 6px; gap: 5px; }
+            .activity-log-item { flex-direction: column; align-items: flex-start; padding: 14px 16px 14px 18px; gap: 10px; }
+            .activity-log-content { width: 100%; }
+            .activity-time { margin-left: 52px; }
+            .admin-card-head { gap: 8px; }
+            .admin-card-action { padding: 6px 10px; font-size: 0.7rem; }
             .auth-card { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
-    <audio id="success-sound" preload="auto">
+    <audio id="success-sound" preload="none">
         <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=success-1-6297.mp3" type="audio/mpeg">
     </audio>
-    <audio id="pop-sound" preload="auto">
+    <audio id="pop-sound" preload="none">
         <source src="https://cdn.yupra.my.id/yp/j6obfe08.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- MODAL LIGHTBOX -->
     <div id="imageModal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal(event)"><i class="ph-bold ph-x"></i></span>
@@ -558,26 +1170,23 @@
         </div>
     </div>
 
-    <!-- NAVBAR -->
     <nav>
         <div class="nav-left">
-            <button class="menu-toggle" id="btn-menu"><i class="ph-bold ph-list"></i></button>
-            <div class="brand">✦ Stickers</div>
+            <button class="menu-toggle" id="btn-menu" aria-label="Buka menu"><i class="ph-bold ph-list"></i></button>
+            <div style="display:flex;flex-direction:column;line-height:1;">
+                <div class="brand"><span class="brand-dot"></span>Ryuuzaa Stickers</div>
+                <span class="nav-tagline">Sticker Request Hub</span>
+            </div>
         </div>
         <div class="nav-right" id="nav-user-info">
-            <button id="theme-toggle" onclick="toggleTheme()" title="Ganti Tema">
-                <i class="ph-bold ph-sun-dim" id="theme-icon"></i>
-            </button>
-            <button class="btn-nav-login" onclick="switchView('view-auth', this)">
-                <i class="ph-bold ph-sign-in"></i> Login
+            <button class="btn-nav-login" onclick="switchView('view-auth', this)" id="nav-login-btn">
+                <i class="ph-bold ph-shield"></i> Admin
             </button>
         </div>
     </nav>
 
-    <!-- SIDEBAR OVERLAY -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-top">
             <div class="sidebar-logo"> Stickers Hub </div>
@@ -585,24 +1194,16 @@
         </div>
 
         <div class="sidebar-label">Menu Utama</div>
-        <button class="sidebar-link" onclick="switchView('view-home', this)">
+        <button class="sidebar-link active-menu" onclick="switchView('view-home', this)">
             <i class="ph-duotone ph-house"></i> Beranda
         </button>
         <button class="sidebar-link" onclick="switchView('view-profile', this)">
             <i class="ph-duotone ph-user-gear"></i> Profil Admin
         </button>
 
-        <div class="sidebar-label" id="label-private" style="display:none;">Area Pribadi</div>
-        <button class="sidebar-link" onclick="switchView('view-history', this)" id="nav-history-menu" style="display:none;">
-            <i class="ph-duotone ph-clock-counter-clockwise"></i> Riwayat Tiketku
-        </button>
-        <button class="sidebar-link" onclick="switchView('view-my-profile', this)" id="nav-my-profile-menu" style="display:none;">
-            <i class="ph-duotone ph-user-circle"></i> Profil Saya
-        </button>
-
         <div class="sidebar-label" id="label-system" style="margin-top: auto;">Sistem</div>
         <button class="sidebar-link" onclick="switchView('view-auth', this)" id="nav-auth-menu">
-            <i class="ph-duotone ph-sign-in"></i> Login / Daftar
+            <i class="ph-duotone ph-shield-check"></i> Login Admin
         </button>
         <button class="sidebar-link" onclick="switchView('view-admin', this)" id="nav-admin-menu" style="display:none;">
             <i class="ph-duotone ph-shield-check"></i> Panel Admin
@@ -612,104 +1213,76 @@
         </button>
     </div>
 
-    <!-- CONTAINER UTAMA -->
     <div class="container">
 
-        <!-- === VIEW: LOGIN / AUTH (DEFAULT / PERTAMA) === -->
-        <main id="view-auth" class="view-section active-view">
-            <div class="auth-card">
-                <div class="auth-brand-icon">
-                    <i class="ph-bold ph-fingerprint"></i>
-                </div>
-                <h2 class="auth-title" id="authTitle">Login Akun</h2>
-                <p class="auth-desc" id="authDesc">Masukkan username kamu buat lanjut.</p>
-
-                <form id="authForm" style="display:flex;flex-direction:column;gap:0;">
-                    <input type="hidden" id="authMode" value="login">
-                    <div class="auth-input-group">
-                        <i class="ph-bold ph-at auth-input-icon"></i>
-                        <input type="text" id="authUser" class="auth-input"
-                            placeholder="Username (tanpa spasi)" required autocomplete="username">
-                    </div>
-                    <button type="submit" class="auth-btn-submit" id="authBtnSubmit">
-                        <i class="ph-bold ph-sign-in"></i> Masuk Sekarang
-                    </button>
-                </form>
-
-                <div class="auth-toggle-wrap">
-                    <span id="authToggleText">Belum punya akun?</span>
-                    <button class="auth-toggle-btn" onclick="toggleAuthMode()">Daftar di sini</button>
-                </div>
-            </div>
-        </main>
-
-        <!-- === VIEW: PROFIL SAYA === -->
-        <main id="view-my-profile" class="view-section">
-            <h2 class="section-title" style="margin-top:20px;">
-                <i class="ph-duotone ph-user-circle"></i> Profil Saya
-            </h2>
-            <div class="unified-card profile-card" style="max-width:500px;margin:0 auto;">
-                <div class="profile-banner"></div>
-                <div class="profile-header">
-                    <div class="profile-avatar" id="my-profile-avatar-preview">
-                        <i class="ph-fill ph-user-circle" style="font-size:4rem;color:var(--text-muted);"></i>
-                    </div>
-                    <div class="profile-info">
-                        <h3 id="my-profile-username">Username</h3>
-                        <p>Member Ryuuzaa Hub</p>
-                    </div>
-                </div>
-                <div class="profile-body" style="padding:20px;">
-                    <div style="background:var(--bg-color);border:1px solid var(--border-color);border-radius:15px;padding:15px;margin-bottom:15px;">
-                        <h4 style="font-size:0.85rem;color:var(--text-main);margin-bottom:10px;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:6px;">
-                            <i class="ph-bold ph-camera"></i> Ubah Foto Profil
-                        </h4>
-                        <form id="formUpdateAvatar" style="display:flex;flex-direction:column;gap:10px;">
-                            <div class="file-upload-wrapper" style="height:35px;margin-bottom:0;">
-                                <i class="ph-duotone ph-upload-simple"></i> Pilih Foto dari Galeri
-                                <input type="file" id="updateAvatarFile" accept="image/*">
-                            </div>
-                            <span id="updateAvatarFileName" class="fileNameDisplay" style="margin:0;"></span>
-                            <div class="separator" style="margin:5px 0;">ATAU</div>
-                            <input type="url" id="updateAvatarUrl" class="form-input" placeholder="Paste Link URL Gambar..." style="padding:10px;">
-                            <button type="submit" class="btn-submit" style="padding:10px;margin-top:5px;">
-                                <i class="ph-bold ph-floppy-disk"></i> Simpan Foto Profil
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- === VIEW: HOME / BERANDA === -->
-        <main id="view-home" class="view-section">
+        <main id="view-home" class="view-section active-view">
             <section class="hero">
+                <span class="hero-eyebrow"><i class="ph-fill ph-sparkle"></i> Sticker Request Hub</span>
                 <div class="hero-icon-wrap">
                     <i class="ph-duotone ph-planet"></i>
                     <i class="ph-duotone ph-ghost"></i>
                     <i class="ph-duotone ph-game-controller"></i>
                 </div>
-                <h1 class="hero-title">Ryuuuzaaa Stickers<br><span>Present</span></h1>
-                <p class="hero-desc">Kirim ide sticker favoritmu sekarang. Semua jadi satu di sini!</p>
+                <h1 class="hero-title">Ryuuzaa Stickers<br><span>Present</span></h1>
+                <p class="hero-desc">
+                    Kirim ide <strong>sticker favoritmu</strong> sekarang.
+                    Cepet, gratis, dan dipantau langsung sama admin Ryuuzaa.
+                </p>
+                <div class="info-chips" aria-hidden="true">
+                    <span class="info-chip"><i class="ph-fill ph-lightning"></i> Realtime Update</span>
+                    <span class="info-chip"><i class="ph-fill ph-heart"></i> 100% Gratis</span>
+                    <span class="info-chip"><i class="ph-fill ph-shield-check"></i> Aman & Privat</span>
+                </div>
             </section>
 
-            <div class="unified-card" style="padding:0;margin-top:20px;">
-                <div id="form-auth-overlay" class="form-auth-overlay">
-                    <i class="ph-duotone ph-lock-key"></i>
-                    <h3 style="color:#fff;font-family:'Nunito',sans-serif;font-size:1.3rem;margin-bottom:5px;">Akses Terkunci</h3>
-                    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:20px;">Kamu harus login buat request stiker.</p>
-                    <button class="btn-submit" style="width:auto;padding:12px 28px;box-shadow:0 5px 18px rgba(255,126,179,0.4);" onclick="switchView('view-auth', this)">
-                        <i class="ph-bold ph-sign-in"></i> Login Sekarang
-                    </button>
+            <!-- Sticker vibe showcase — kasih gambaran sticker apa aja yang bisa di-request -->
+            <section class="sticker-showcase" aria-label="Sticker apa aja yang bisa kamu request">
+                <span class="label"><i class="ph-fill ph-sticker"></i> Vibe Sticker yang Bisa Kamu Request</span>
+                <div class="vibe-row">
+                    <div class="vibe-icon" title="Cute"><i class="ph-duotone ph-smiley-wink"></i></div>
+                    <div class="vibe-icon" title="Anime / Karakter"><i class="ph-duotone ph-mask-happy"></i></div>
+                    <div class="vibe-icon" title="Game"><i class="ph-duotone ph-game-controller"></i></div>
+                    <div class="vibe-icon" title="Hewan / Maskot"><i class="ph-duotone ph-cat"></i></div>
+                    <div class="vibe-icon" title="Magical"><i class="ph-duotone ph-sparkle"></i></div>
+                    <div class="vibe-icon" title="Music / K-Pop"><i class="ph-duotone ph-music-notes"></i></div>
+                    <div class="vibe-icon" title="Cinta / Couple"><i class="ph-duotone ph-heart"></i></div>
+                    <div class="vibe-icon" title="Lainnya"><i class="ph-duotone ph-confetti"></i></div>
                 </div>
+            </section>
 
+            <!-- Cara Kerja - 3 step strip biar gak polos -->
+            <section aria-label="Cara kerja">
+                <div class="steps-grid">
+                    <div class="step-item">
+                        <span class="step-num">Step 01</span>
+                        <h4><i class="ph-duotone ph-pencil-line"></i> Isi Form</h4>
+                        <p>Tulis nama kamu, karakter, dan detail sticker yang diinginkan.</p>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-num">Step 02</span>
+                        <h4><i class="ph-duotone ph-paper-plane-tilt"></i> Kirim Tiket</h4>
+                        <p>Tiket otomatis masuk ke antrian admin Ryuuzaa untuk diproses.</p>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-num">Step 03</span>
+                        <h4><i class="ph-duotone ph-check-circle"></i> Tunggu Hasil</h4>
+                        <p>Admin akan kerjain & update statusnya — santai aja, pasti dibales.</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="unified-card" style="padding:0;margin-top:22px;">
                 <div style="padding:25px;">
                     <div class="mac-dots">
                         <div class="dot dot-r"></div>
                         <div class="dot dot-y"></div>
                         <div class="dot dot-g"></div>
                     </div>
-                    <p style="text-align:center;color:var(--text-muted);font-size:0.85rem;margin-bottom:20px;">Silakan isi formulir tiket request di bawah ini.</p>
+                    <div class="card-head-block" style="text-align:center; align-items:center;">
+                        <span class="card-eyebrow">Form Request</span>
+                        <h3>Buat Tiket Sticker Baru</h3>
+                        <p>Isi data di bawah dengan jelas. Field bertanda <strong style="color:var(--text-soft);">Wajib</strong> harus diisi semua.</p>
+                    </div>
 
                     <div class="image-preview-container" id="imagePreviewContainer">
                         <img id="imagePreview" src="">
@@ -721,19 +1294,19 @@
 
                     <form id="stickerForm">
                         <div class="form-group">
-                            <label class="form-label">Username <span class="badge-req">Otomatis</span></label>
-                            <input type="text" id="reqUser" class="form-input" style="opacity:0.7;font-weight:800;color:var(--jelly-pink);" readonly>
+                            <label class="form-label"><i class="ph-duotone ph-user-circle"></i> Nama Kamu <span class="badge-req">Wajib</span></label>
+                            <input type="text" id="reqUser" class="form-input" placeholder="Masukkan nama panggilan kamu..." required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Karakter / Subjek <span class="badge-req">Wajib</span></label>
+                            <label class="form-label"><i class="ph-duotone ph-mask-happy"></i> Karakter / Subjek <span class="badge-req">Wajib</span></label>
                             <input type="text" id="reqChar" class="form-input" placeholder="Tulis nama karakter / sticker..." required maxlength="100">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Keterangan Tambahan <span class="badge-opt">Opsional</span></label>
+                            <label class="form-label"><i class="ph-duotone ph-note-pencil"></i> Keterangan Tambahan <span class="badge-opt">Opsional</span></label>
                             <textarea id="reqDetail" class="form-textarea" placeholder="Pose, teks dalam sticker, dll..." maxlength="500"></textarea>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Media Referensi <span class="badge-opt">Opsional</span></label>
+                            <label class="form-label"><i class="ph-duotone ph-image-square"></i> Media Referensi <span class="badge-opt">Opsional</span></label>
                             <div class="media-box">
                                 <div class="file-upload-wrapper">
                                     <i class="ph-duotone ph-upload-simple"></i> Upload dari Galeri
@@ -752,26 +1325,54 @@
             </div>
 
             <a href="https://teer.id/whvnbxtgclq8zwisrc6r" target="_blank" class="btn-donate">
-                <i class="ph-bold ph-coffee"></i> Traktir Admin Kopi ☕
+                <i class="ph-duotone ph-coffee"></i>
+                <span class="donate-text">
+                    <span class="donate-title">Traktir Admin Kopi ☕</span>
+                    <span class="donate-sub">Opsional · dukung Ryuuzaa biar makin semangat</span>
+                </span>
+                <i class="ph-bold ph-arrow-up-right donate-arrow"></i>
             </a>
         </main>
 
-        <!-- === VIEW: RIWAYAT === -->
-        <main id="view-history" class="view-section">
-            <h2 class="section-title" style="margin-top:20px;">
-                <i class="ph-duotone ph-clock-counter-clockwise"></i> Riwayat Tiketku
-            </h2>
-            <p style="text-align:center;color:var(--text-muted);font-size:0.85rem;margin-bottom:25px;">Kumpulan request stiker yang pernah kamu buat.</p>
-            <div id="user-history-grid" style="display:flex;flex-direction:column;gap:14px;">
-                <p style="text-align:center;color:var(--text-muted);font-size:0.85rem;">Loading riwayat tiket...</p>
+        <main id="view-auth" class="view-section">
+            <div class="section-head" style="margin-top:12px;">
+                <span class="section-eyebrow"><i class="ph-bold ph-shield-check"></i> Restricted Area</span>
+            </div>
+            <div class="auth-card">
+                <div class="auth-brand-icon">
+                    <i class="ph-bold ph-fingerprint"></i>
+                </div>
+                <h2 class="auth-title" id="authTitle">Login Admin</h2>
+                <p class="auth-desc" id="authDesc">
+                    Halaman ini khusus pengelola sistem Ryuuzaa.
+                    Masuk dulu untuk membuka panel & manajemen tiket.
+                </p>
+
+                <form id="authForm" style="display:flex;flex-direction:column;gap:0;">
+                    <div class="auth-input-group">
+                        <i class="ph-bold ph-at auth-input-icon"></i>
+                        <input type="text" id="authUser" class="auth-input"
+                            placeholder="Username Admin" required autocomplete="username">
+                    </div>
+                    <button type="submit" class="auth-btn-submit" id="authBtnSubmit">
+                        <i class="ph-bold ph-sign-in"></i> Masuk Sekarang
+                    </button>
+                </form>
+                <p style="margin-top:18px;font-size:0.72rem;color:var(--text-faint);font-weight:600;line-height:1.5;">
+                    <i class="ph-bold ph-info" style="color:var(--accent-cyan);"></i>
+                    Bukan admin? Tutup halaman ini dan kembali ke beranda untuk request sticker.
+                </p>
             </div>
         </main>
 
-        <!-- === VIEW: PROFIL ADMIN === -->
         <main id="view-profile" class="view-section">
-            <h2 class="section-title" style="margin-top:20px;">
-                <i class="ph-duotone ph-user-gear"></i> Profil Admin
-            </h2>
+            <div class="section-head">
+                <span class="section-eyebrow"><i class="ph-bold ph-user-circle"></i> Tentang Admin</span>
+                <h2 class="section-title" style="margin-top:8px;">
+                    <i class="ph-duotone ph-user-gear"></i> Profil Admin
+                </h2>
+                <p class="section-subtitle">Kenalan dulu sama orang di balik layar Ryuuzaa Stickers — siapa tau bisa kolab atau ngobrol santai.</p>
+            </div>
             <div class="unified-card profile-card">
                 <div class="profile-banner"></div>
                 <div class="profile-header">
@@ -795,8 +1396,8 @@
                     <div class="skill-box">
                         <div class="skill-title">Hobbies & Interests</div>
                         <div class="skill-tags">
-                            <span class="skill-tag"><i class="ph-fill ph-game-controller" style="color:var(--jelly-purple);"></i> Push Rank MLBB</span>
-                            <span class="skill-tag"><i class="ph-fill ph-sword" style="color:var(--jelly-pink);"></i> Action Anime (HxH, JJK)</span>
+                            <span class="skill-tag"><i class="ph-fill ph-game-controller" style="color:var(--secondary-blue);"></i> Push Rank MLBB</span>
+                            <span class="skill-tag"><i class="ph-fill ph-sword" style="color:var(--primary-blue);"></i> Action Anime (HxH, JJK)</span>
                         </div>
                     </div>
                     <div class="skill-title" style="margin-top:20px;margin-bottom:10px;color:var(--text-main);font-family:'Nunito',sans-serif;">Connect With Me:</div>
@@ -813,11 +1414,18 @@
             </div>
         </main>
 
-        <!-- === VIEW: ADMIN === -->
         <main id="view-admin" class="view-section">
-            <h2 class="section-title" style="margin-top:20px;">
-                <i class="ph-duotone ph-shield-check"></i> Administrator Area
-            </h2>
+            <div class="section-head" style="margin-bottom:8px;">
+                <span class="section-eyebrow"><i class="ph-bold ph-shield-star"></i> Control Center</span>
+            </div>
+
+            <div class="admin-header" id="admin-header" style="display:none;">
+                <div class="meta-row">
+                    <span class="section-eyebrow" id="admin-section-eyebrow"><i class="ph-bold ph-squares-four"></i> Dashboard</span>
+                </div>
+                <h2 id="admin-section-title"><i class="ph-duotone ph-gauge"></i> Ringkasan Aktivitas</h2>
+                <p id="admin-section-desc">Pantau seluruh tiket request sticker — total, pending, selesai, ditolak — semua di satu tempat.</p>
+            </div>
 
             <div class="unified-card admin-login-area" id="admin-access-denied">
                 <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
@@ -830,73 +1438,130 @@
             </div>
 
             <div id="admin-dashboard">
-                <div class="admin-tabs-wrapper">
-                    <div class="admin-tabs">
-                        <button class="tab-btn active" id="tab-overview" onclick="changeAdminTab('overview')">
-                            <i class="ph-bold ph-squares-four"></i> Dashboard
-                        </button>
-                        <button class="tab-btn" id="tab-pending" onclick="changeAdminTab('pending')">
-                            <i class="ph-bold ph-envelope-simple-open"></i> Tiket Baru
-                        </button>
-                        <button class="tab-btn" id="tab-done" onclick="changeAdminTab('done')">
-                            <i class="ph-bold ph-check-circle"></i> Selesai
-                        </button>
-                        <button class="tab-btn" id="tab-rejected" onclick="changeAdminTab('rejected')">
-                            <i class="ph-bold ph-x-circle"></i> Ditolak
-                        </button>
-                    </div>
-                </div>
-
-                <div id="admin-overview-mgr">
-                    <div class="admin-stats">
-                        <div class="stat-box stat-total"><i class="ph-duotone ph-files"></i><h4>Total</h4><span id="statTotal">0</span></div>
-                        <div class="stat-box stat-pending"><i class="ph-duotone ph-hourglass-high"></i><h4>Menunggu</h4><span id="statPending">0</span></div>
-                        <div class="stat-box stat-done"><i class="ph-duotone ph-check-circle"></i><h4>Selesai</h4><span id="statDone">0</span></div>
-                        <div class="stat-box stat-rejected"><i class="ph-duotone ph-x-circle"></i><h4>Ditolak</h4><span id="statRejected">0</span></div>
-                    </div>
-
-                    <div class="admin-panel-card" style="margin-bottom:20px;">
-                        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px dashed var(--border-color);padding-bottom:15px;margin-bottom:15px;">
-                            <h3 style="display:flex;align-items:center;gap:8px;">
-                                <i class="ph-duotone ph-clock-counter-clockwise" style="color:var(--jelly-pink);font-size:1.4rem;"></i> Aktivitas Terbaru
-                            </h3>
-                            <button onclick="clearAllActivityLogs()" class="btn-act btn-act-reject" style="padding:7px 12px;border-radius:12px;">
-                                <i class="ph-bold ph-trash"></i> Bersihkan Log
+                <div class="admin-grid">
+                    <div class="admin-tabs-wrapper">
+                        <div class="admin-tabs">
+                            <button class="tab-btn active" id="tab-overview" onclick="changeAdminTab('overview')">
+                                <i class="ph-bold ph-squares-four"></i> Dashboard
+                            </button>
+                            <button class="tab-btn" id="tab-pending" onclick="changeAdminTab('pending')">
+                                <i class="ph-bold ph-envelope-simple-open"></i> Tiket
+                            </button>
+                            <button class="tab-btn" id="tab-done" onclick="changeAdminTab('done')">
+                                <i class="ph-bold ph-check-circle"></i> Selesai
+                            </button>
+                            <button class="tab-btn" id="tab-rejected" onclick="changeAdminTab('rejected')">
+                                <i class="ph-bold ph-x-circle"></i> Ditolak
                             </button>
                         </div>
-                        <div class="activity-log-list" id="activityLogList">
-                            <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;">Loading aktivitas...</p>
+                    </div>
+
+                    <div id="admin-overview-mgr" class="admin-grid">
+                        <div class="admin-stats">
+                            <div class="stat-box stat-total">
+                                <div class="stat-icon"><i class="ph-duotone ph-files"></i></div>
+                                <div class="stat-foot"><h4>Total</h4><span id="statTotal">0</span></div>
+                            </div>
+                            <div class="stat-box stat-pending">
+                                <div class="stat-icon"><i class="ph-duotone ph-hourglass-high"></i></div>
+                                <div class="stat-foot"><h4>Menunggu</h4><span id="statPending">0</span></div>
+                            </div>
+                            <div class="stat-box stat-done">
+                                <div class="stat-icon"><i class="ph-duotone ph-check-circle"></i></div>
+                                <div class="stat-foot"><h4>Selesai</h4><span id="statDone">0</span></div>
+                            </div>
+                            <div class="stat-box stat-rejected">
+                                <div class="stat-icon"><i class="ph-duotone ph-x-circle"></i></div>
+                                <div class="stat-foot"><h4>Ditolak</h4><span id="statRejected">0</span></div>
+                            </div>
+                        </div>
+
+                        <div class="admin-panel-card">
+                            <div class="admin-card-head">
+                                <h3 class="admin-card-title">
+                                    <i class="ph-duotone ph-clock-counter-clockwise"></i> Aktivitas Terbaru
+                                </h3>
+                                <button onclick="clearAllActivityLogs()" class="admin-card-action">
+                                    <i class="ph-bold ph-trash"></i> Bersihkan
+                                </button>
+                            </div>
+                            <div class="activity-log-list" id="activityLogList">
+                                <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;font-weight:600;padding:20px 0;">Loading aktivitas...</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div id="admin-request-list" style="display:none;"></div>
+                    <div id="admin-request-list" style="display:none;"></div>
+                </div>
             </div>
         </main>
 
-    </div><!-- /.container -->
+    </div>
 
-    <!-- MUSIC PLAYER -->
-    <div class="music-player" id="music-player">
-        <button class="play-btn" id="play-btn"><i class="ph-fill ph-play-circle" id="play-icon"></i></button>
-        <div class="track-info">
-            <span class="track-name">Ryuuzaa Vibes</span>
-            <span class="artist-name">Lofi Anime Mix</span>
+    <div class="music-widget" id="music-widget">
+        
+        <div class="mini-player" onclick="toggleMusicWidget(event)">
+            <div class="mini-disc">
+                <i class="ph-duotone ph-music-notes"></i>
+            </div>
+            <div class="mini-info">
+                <span class="mini-title">Ryuuzaa Vibes</span>
+            </div>
+            <button class="btn-play-mini" id="play-btn-mini" onclick="togglePlayMusic(event)">
+                <i class="ph-fill ph-play-circle" id="icon-play-mini"></i>
+            </button>
         </div>
-        <div class="equalizer" id="equalizer">
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+
+        <div class="expanded-player" onclick="(function(e){e.stopPropagation();})(event)">
+            <div class="exp-header">
+                <span>Sedang Diputar</span>
+                <button class="btn-close-exp" onclick="toggleMusicWidget(event)">
+                    <i class="ph-bold ph-caret-down"></i>
+                </button>
+            </div>
+            
+            <div class="exp-disc-wrap">
+                <i class="ph-duotone ph-disc" style="font-size:4rem; color:var(--text-muted);"></i>
+            </div>
+            
+            <div class="exp-title">Ryuuzaa Vibes</div>
+            <div class="exp-artist">Lofi Anime Mix</div>
+            
+            <div class="exp-eq" id="equalizer">
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+            </div>
+
+            <div class="exp-controls">
+                <button class="btn-ctrl"><i class="ph-fill ph-skip-back"></i></button>
+                <button class="btn-play-main" onclick="togglePlayMusic(event)">
+                    <i class="ph-fill ph-play" id="icon-play-main" style="margin-left: 4px;"></i>
+                </button>
+                <button class="btn-ctrl"><i class="ph-fill ph-skip-forward"></i></button>
+            </div>
         </div>
-        <audio id="bg-audio" loop preload="auto">
+
+        <audio id="bg-audio" loop preload="none">
             <source src="https://cdn.yupra.my.id/yp/66g3hns6" type="audio/mpeg">
         </audio>
     </div>
 
     <footer>
-        <strong>✧ 𝙎𝙩𝙞𝙘𝙠𝙚𝙧𝙨 ʚ𝙛𝙞𝙧𝙯 🍓 ➜</strong> &copy; 2026.<br>
-        <span style="margin-top:4px;display:inline-block;">Managed by Pirrrzaaa ( Ryuuzaa )</span>
+        <div class="foot-divider"><span>Ryuuzaa Stickers Hub</span></div>
+        <div>
+            <strong>✧ 𝙎𝙩𝙞𝙘𝙠𝙚𝙧𝙨 ʚ𝙛𝙞𝙧𝙯 🍓 ➜</strong> &copy; 2026 — All rights reserved.
+        </div>
+        <div style="margin-top:4px;">Managed with <i class="ph-fill ph-heart" style="color:var(--accent-pink);"></i> by <strong>Pirrrzaaa ( Ryuuzaa )</strong></div>
+        <div class="foot-meta">
+            <span><i class="ph-bold ph-globe"></i> Online</span>
+            <span><i class="ph-bold ph-clock"></i> Live 24/7</span>
+            <span><i class="ph-bold ph-code"></i> Built with Firebase</span>
+        </div>
     </footer>
 
-    <!-- TOAST -->
     <div id="toast">
         <i class="ph-fill ph-check-circle"></i>
         <div>
@@ -913,8 +1578,7 @@
             query, where, orderBy, limit, onSnapshot, serverTimestamp, writeBatch, getCountFromServer, setDoc
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import {
-            getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-            onAuthStateChanged, signOut
+            getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -980,43 +1644,6 @@
             } catch (err) { console.log("Gagal log aktivitas:", err); }
         }
 
-        async function compressImage(file, maxSizeMB = 0.2) {
-            const options = { maxSizeMB, maxWidthOrHeight: 800, useWebWorker: true };
-            try {
-                const compressed = await imageCompression(file, options);
-                return await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => resolve(e.target.result);
-                    reader.readAsDataURL(compressed);
-                });
-            } catch (error) { return null; }
-        }
-
-        // =========================================================
-        //  THEME TOGGLE
-        // =========================================================
-        window.toggleTheme = function () {
-            const root = document.documentElement;
-            const isLight = root.classList.toggle('light-theme');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            // Update all theme icons (nav can be re-rendered)
-            document.querySelectorAll('#theme-icon').forEach(icon => {
-                icon.className = isLight ? 'ph-bold ph-moon' : 'ph-bold ph-sun-dim';
-            });
-            showToast("Tema", isLight ? "Mode terang diaktifkan" : "Mode gelap diaktifkan");
-        };
-
-        (function initTheme() {
-            const saved = localStorage.getItem('theme');
-            const icon = document.getElementById('theme-icon');
-            if (saved === 'light') {
-                document.documentElement.classList.add('light-theme');
-                if (icon) icon.className = 'ph-bold ph-moon';
-            } else {
-                if (icon) icon.className = 'ph-bold ph-sun-dim';
-            }
-        })();
-
         // =========================================================
         //  IMAGE PREVIEW
         // =========================================================
@@ -1029,7 +1656,6 @@
                     preview.src = e.target.result;
                     preview.classList.add('loaded');
                     container.classList.add('has-image');
-                    if (currentUserData) logUserActivity(currentUserData, 'upload_preview', 'Preview upload gambar');
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -1075,43 +1701,15 @@
         }
 
         // =========================================================
-        //  AUTH MODE TOGGLE
-        // =========================================================
-        window.toggleAuthMode = function () {
-            const modeInput = document.getElementById('authMode');
-            const title = document.getElementById('authTitle');
-            const desc = document.getElementById('authDesc');
-            const btn = document.getElementById('authBtnSubmit');
-            const toggleText = document.getElementById('authToggleText');
-            const toggleBtn = document.querySelector('.auth-toggle-btn');
-
-            if (modeInput.value === 'login') {
-                modeInput.value = 'register';
-                title.innerText = 'Buat Akun Baru';
-                desc.innerText = 'Daftarkan username kamu sekarang, gratis!';
-                btn.innerHTML = '<i class="ph-bold ph-user-plus"></i> Daftar Akun';
-                toggleText.innerText = 'Sudah punya akun?';
-                toggleBtn.innerText = 'Login di sini';
-            } else {
-                modeInput.value = 'login';
-                title.innerText = 'Login Akun';
-                desc.innerText = 'Masukkan username kamu buat lanjut.';
-                btn.innerHTML = '<i class="ph-bold ph-sign-in"></i> Masuk Sekarang';
-                toggleText.innerText = 'Belum punya akun?';
-                toggleBtn.innerText = 'Daftar di sini';
-            }
-        };
-
-        // =========================================================
-        //  AUTH FORM SUBMIT (USERNAME ONLY)
+        //  AUTH FORM SUBMIT (ADMIN ONLY)
         // =========================================================
         document.getElementById('authForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const mode = document.getElementById('authMode').value;
             const rawUser = document.getElementById('authUser').value.trim().toLowerCase().replace(/\s+/g, '');
-            if (rawUser.length < 3) { showToast("Gagal", "Username minimal 3 karakter!"); return; }
-            if (rawUser.length > 20) { showToast("Gagal", "Username maksimal 20 karakter!"); return; }
-            if (!/^[a-z0-9_]+$/.test(rawUser)) { showToast("Gagal", "Hanya huruf kecil, angka, dan underscore!"); return; }
+            if (rawUser !== 'ryuuzaa') {
+                showToast("Gagal", "Username bukan admin!");
+                return;
+            }
 
             const emailHack = rawUser + '@ryuuzaa.hub';
             const internalPass = getInternalPass(rawUser);
@@ -1121,33 +1719,15 @@
             btn.innerHTML = '<i class="ph-bold ph-spinner" style="animation:spin 0.8s linear infinite;"></i> Memproses...';
 
             try {
-                if (mode === 'register') {
-                    await createUserWithEmailAndPassword(auth, emailHack, internalPass);
-                    await setDoc(doc(db, 'users', rawUser), { avatar: '', createdAt: serverTimestamp() });
-                    await logUserActivity(rawUser, 'register', 'Mendaftar akun baru');
-                    showToast("Daftar Berhasil!", "Selamat datang di Ryuuzaa Hub! 🎉");
-                } else {
-                    await signInWithEmailAndPassword(auth, emailHack, internalPass);
-                    await logUserActivity(rawUser, 'login', 'Login ke sistem');
-                    showToast("Login Berhasil!", `Halo @${rawUser}! 👋`);
-                }
+                await signInWithEmailAndPassword(auth, emailHack, internalPass);
+                await logUserActivity(rawUser, 'login', 'Login ke Panel Admin');
+                showToast("Login Berhasil!", `Selamat datang kembali, Admin! 👋`);
                 document.getElementById('authForm').reset();
             } catch (err) {
-                if (err.code === 'auth/email-already-in-use') {
-                    showToast("Gagal", "Username sudah dipakai, coba lain.");
-                } else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-                    showToast("Gagal", "Username tidak ditemukan atau belum terdaftar.");
-                } else if (err.code === 'auth/too-many-requests') {
-                    showToast("Tunggu sebentar", "Terlalu banyak percobaan, coba lagi nanti.");
-                } else {
-                    showToast("Gagal", err.message);
-                }
+                showToast("Gagal", "Akses ditolak atau kredensial salah.");
             } finally {
                 btn.disabled = false;
-                const isReg = document.getElementById('authMode').value === 'register';
-                btn.innerHTML = isReg
-                    ? '<i class="ph-bold ph-user-plus"></i> Daftar Akun'
-                    : '<i class="ph-bold ph-sign-in"></i> Masuk Sekarang';
+                btn.innerHTML = '<i class="ph-bold ph-sign-in"></i> Masuk Sekarang';
             }
         });
 
@@ -1160,196 +1740,75 @@
         //  LOGOUT
         // =========================================================
         window.logoutAccount = async function () {
-            if (confirm("Yakin mau keluar dari akun?")) {
+            if (confirm("Yakin mau keluar dari sesi Admin?")) {
                 await logUserActivity(currentUserData, 'logout', 'Logout dari sistem');
                 cleanupAllListeners();
                 await signOut(auth);
-                showToast("Logout", "Sampai jumpa lagi! 👋");
-                switchView('view-auth', null);
+                showToast("Logout", "Sesi admin berakhir.");
+                switchView('view-home', null);
             }
         };
-
-        // =========================================================
-        //  USER HISTORY
-        // =========================================================
-        let historyUnsub = null;
-        function loadUserHistory() {
-            if (!currentUserData) return;
-            if (historyUnsub) historyUnsub();
-            const q = query(collection(db, 'requests'), where('user', '==', currentUserData), limit(50));
-            historyUnsub = onSnapshot(q, snap => {
-                const grid = document.getElementById('user-history-grid');
-                if (snap.empty) {
-                    grid.innerHTML = `<div style="text-align:center;background:var(--input-bg);padding:35px;border-radius:20px;border:1px dashed var(--border-color);">
-                        <i class="ph-duotone ph-receipt" style="font-size:3rem;color:var(--text-muted);margin-bottom:10px;display:block;"></i>
-                        <p style="color:var(--text-muted);font-size:0.9rem;font-weight:700;">Belum ada riwayat tiket.</p>
-                    </div>`;
-                    return;
-                }
-                let arr = [];
-                snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
-                arr.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
-                let html = '';
-                arr.forEach(req => {
-                    let statusHtml = '', borderColor = 'var(--stat-yellow)';
-                    if (req.status === 'pending') {
-                        statusHtml = `<span style="background:rgba(255,189,46,0.18);color:var(--stat-yellow);padding:4px 10px;border-radius:8px;font-weight:800;font-size:0.7rem;"><i class="ph-bold ph-clock"></i> Masih Antre</span>`;
-                    } else if (req.status === 'done') {
-                        statusHtml = `<span style="background:rgba(39,201,63,0.18);color:var(--stat-green);padding:4px 10px;border-radius:8px;font-weight:800;font-size:0.7rem;"><i class="ph-bold ph-check-circle"></i> Udah Jadi!</span>`;
-                        borderColor = 'var(--stat-green)';
-                    } else if (req.status === 'rejected') {
-                        statusHtml = `<span style="background:rgba(255,95,86,0.18);color:var(--stat-red);padding:4px 10px;border-radius:8px;font-weight:800;font-size:0.7rem;"><i class="ph-bold ph-x-circle"></i> Ditolak</span>`;
-                        borderColor = 'var(--stat-red)';
-                    }
-                    const imgSrc = req.image || req.url || null;
-                    const imgHtml = imgSrc
-                        ? `<img src="${escapeHTML(imgSrc)}" style="width:100%;height:100%;max-height:80px;object-fit:cover;border-radius:10px;border:1px solid var(--border-color);cursor:pointer;" onclick="openModal('${escapeHTML(imgSrc)}','Ref: ${escapeHTML(req.char).replace(/'/g, "\\'")}')" loading="lazy" class="lazy-image">`
-                        : `<div class="no-img" style="height:80px;font-size:0.6rem;padding:10px;text-align:center;color:var(--text-muted);"><i class="ph-duotone ph-image-broken" style="font-size:1.5rem;display:block;margin-bottom:4px;"></i>Tanpa Gambar</div>`;
-                    html += `
-                        <div class="req-item" style="border-left:3px solid ${borderColor};">
-                            <div class="req-top">
-                                <span class="req-id">Tiket #${escapeHTML(req.id.slice(-6))}</span>
-                                ${statusHtml}
-                            </div>
-                            <div class="req-main">
-                                <div class="req-info">
-                                    <div class="req-title">${escapeHTML(req.char)}</div>
-                                    <div class="req-desc">${req.detail ? escapeHTML(req.detail) : '<i>Tidak ada keterangan tambahan.</i>'}</div>
-                                    <div style="font-size:0.7rem;color:var(--text-muted);margin-top:8px;"><i class="ph-bold ph-calendar-blank"></i> ${escapeHTML(req.date)}</div>
-                                </div>
-                                <div class="req-media">${imgHtml}</div>
-                            </div>
-                        </div>`;
-                });
-                grid.innerHTML = html;
-                setTimeout(() => observeImages(grid), 100);
-            });
-            registerCleanup(historyUnsub);
-        }
-
-        // =========================================================
-        //  USER AVATAR
-        // =========================================================
-        let userAvatarUnsub = null;
-        function loadUserAvatar() {
-            if (!currentUserData) return;
-            if (userAvatarUnsub) userAvatarUnsub();
-            userAvatarUnsub = onSnapshot(doc(db, 'users', currentUserData), docSnap => {
-                const avatar = docSnap.exists() && docSnap.data().avatar ? docSnap.data().avatar : '';
-                const avatarThumb = avatar
-                    ? `<img src="${escapeHTML(avatar)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--jelly-pink);" class="lazy-image">`
-                    : `<i class="ph-fill ph-user-circle" style="font-size:1.5rem;"></i>`;
-
-                const profUsername = document.getElementById('my-profile-username');
-                const profAvatar = document.getElementById('my-profile-avatar-preview');
-                if (profUsername) profUsername.innerText = escapeHTML(currentUserData);
-                if (profAvatar) {
-                    profAvatar.innerHTML = avatar
-                        ? `<img src="${escapeHTML(avatar)}" style="width:100%;height:100%;object-fit:cover;" class="lazy-image">`
-                        : `<i class="ph-fill ph-user-circle" style="font-size:4rem;color:var(--text-muted);"></i>`;
-                }
-
-                const navRight = document.getElementById('nav-user-info');
-                if (navRight) {
-                    const isLight = document.documentElement.classList.contains('light-theme');
-                    navRight.innerHTML = `
-                        <button id="theme-toggle" onclick="toggleTheme()" title="Ganti Tema" style="background:none;border:none;color:var(--text-main);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;transition:color 0.2s,transform 0.3s;">
-                            <i class="${isLight ? 'ph-bold ph-moon' : 'ph-bold ph-sun-dim'}" id="theme-icon"></i>
-                        </button>
-                        <span style="font-weight:800;font-size:0.82rem;color:var(--jelly-pink);display:flex;align-items:center;gap:6px;cursor:default;">
-                            ${avatarThumb} <span style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">@${escapeHTML(currentUserData)}</span>
-                        </span>
-                        <button onclick="logoutAccount()" style="background:var(--input-bg);border:1px solid var(--border-color);color:var(--stat-red);cursor:pointer;padding:6px 8px;border-radius:10px;display:flex;align-items:center;transition:background 0.2s;" title="Logout">
-                            <i class="ph-bold ph-sign-out"></i>
-                        </button>
-                    `;
-                }
-                setTimeout(observeImages, 100);
-            });
-            registerCleanup(userAvatarUnsub);
-        }
 
         // =========================================================
         //  AUTH STATE CHANGED
         // =========================================================
         onAuthStateChanged(auth, (user) => {
-            const authOverlay = document.getElementById('form-auth-overlay');
-            const reqUser = document.getElementById('reqUser');
-            const labelPrivate = document.getElementById('label-private');
             const navAuthMenu = document.getElementById('nav-auth-menu');
             const navLogoutMenu = document.getElementById('nav-logout-menu');
-            const navPrivates = [
-                document.getElementById('nav-history-menu'),
-                document.getElementById('nav-my-profile-menu')
-            ];
             const adminMenu = document.getElementById('nav-admin-menu');
             const adminDash = document.getElementById('admin-dashboard');
             const adminDenied = document.getElementById('admin-access-denied');
+            const navLoginBtn = document.getElementById('nav-login-btn');
 
             if (user) {
                 const username = user.email.split('@')[0];
-                currentUserData = username;
-                cleanupAllListeners();
-                loadUserHistory();
-                loadUserAvatar();
-
-                if (authOverlay) authOverlay.style.display = 'none';
-                if (reqUser) reqUser.value = username;
-                if (labelPrivate) labelPrivate.style.display = 'block';
-                navPrivates.forEach(n => { if (n) n.style.display = 'flex'; });
-                if (navAuthMenu) navAuthMenu.style.display = 'none';
-                if (navLogoutMenu) navLogoutMenu.style.display = 'flex';
-
                 if (username.toLowerCase() === 'ryuuzaa') {
+                    currentUserData = username;
+                    cleanupAllListeners();
+
+                    if (navAuthMenu) navAuthMenu.style.display = 'none';
+                    if (navLogoutMenu) navLogoutMenu.style.display = 'flex';
                     if (adminMenu) adminMenu.style.display = 'flex';
                     if (adminDenied) adminDenied.style.display = 'none';
                     if (adminDash) adminDash.style.display = 'block';
+                    const adminHdr = document.getElementById('admin-header');
+                    if (adminHdr) adminHdr.style.display = 'flex';
+                    
+                    if (navLoginBtn) {
+                        navLoginBtn.innerHTML = '<i class="ph-bold ph-sign-out"></i> Keluar';
+                        navLoginBtn.classList.add('btn-logout');
+                        navLoginBtn.onclick = logoutAccount;
+                    }
+
                     setupAdminRealtime();
                     loadActivityLogs();
                     updateAdminStats();
-                } else {
-                    if (adminMenu) adminMenu.style.display = 'none';
-                    if (adminDenied) adminDenied.style.display = 'flex';
-                    if (adminDash) adminDash.style.display = 'none';
-                }
 
-                // Jika user sudah login dan masih di view-auth, arahkan ke home
-                const viewAuth = document.getElementById('view-auth');
-                if (viewAuth && viewAuth.classList.contains('active-view')) {
-                    switchView('view-home', null);
+                    // Pindah ke dashboard admin otomatis jika dari view login
+                    const viewAuth = document.getElementById('view-auth');
+                    if (viewAuth && viewAuth.classList.contains('active-view')) {
+                        switchView('view-admin', adminMenu);
+                    }
+                } else {
+                    signOut(auth);
                 }
             } else {
                 currentUserData = null;
                 cleanupAllListeners();
 
-                const navRight = document.getElementById('nav-user-info');
-                if (navRight) {
-                    const isLight = document.documentElement.classList.contains('light-theme');
-                    navRight.innerHTML = `
-                        <button id="theme-toggle" onclick="toggleTheme()" title="Ganti Tema" style="background:none;border:none;color:var(--text-main);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;transition:color 0.2s,transform 0.3s;">
-                            <i class="${isLight ? 'ph-bold ph-moon' : 'ph-bold ph-sun-dim'}" id="theme-icon"></i>
-                        </button>
-                        <button class="btn-nav-login" onclick="switchView('view-auth', this)">
-                            <i class="ph-bold ph-sign-in"></i> Login
-                        </button>
-                    `;
-                }
-
-                if (authOverlay) authOverlay.style.display = 'flex';
-                if (reqUser) reqUser.value = '';
-                if (labelPrivate) labelPrivate.style.display = 'none';
-                navPrivates.forEach(n => { if (n) n.style.display = 'none'; });
                 if (adminMenu) adminMenu.style.display = 'none';
                 if (navAuthMenu) navAuthMenu.style.display = 'flex';
                 if (navLogoutMenu) navLogoutMenu.style.display = 'none';
                 if (adminDenied) adminDenied.style.display = 'flex';
                 if (adminDash) adminDash.style.display = 'none';
+                const adminHdr2 = document.getElementById('admin-header');
+                if (adminHdr2) adminHdr2.style.display = 'none';
 
-                const profUsername = document.getElementById('my-profile-username');
-                const profAvatar = document.getElementById('my-profile-avatar-preview');
-                if (profUsername) profUsername.innerText = 'Username';
-                if (profAvatar) profAvatar.innerHTML = '<i class="ph-fill ph-user-circle" style="font-size:4rem;color:var(--text-muted);"></i>';
-                document.getElementById('user-history-grid').innerHTML = '<p style="text-align:center;color:var(--text-muted);font-size:0.85rem;">Loading riwayat tiket...</p>';
+                if (navLoginBtn) {
+                    navLoginBtn.innerHTML = '<i class="ph-bold ph-shield"></i> Admin';
+                    navLoginBtn.classList.remove('btn-logout');
+                    navLoginBtn.onclick = () => switchView('view-auth', navAuthMenu);
+                }
             }
         });
 
@@ -1387,7 +1846,7 @@
             sidebar.classList.remove('active');
             sidebarOverlay.classList.remove('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(observeImages, 300);
+            requestAnimationFrame(() => observeImages());
             if (viewId === 'view-admin' && document.getElementById('admin-dashboard').style.display === 'block') {
                 updateAdminStats();
                 loadActivityLogs();
@@ -1405,7 +1864,7 @@
             fileInput.addEventListener('change', function () {
                 if (this.files && this.files.length > 0) {
                     fileNameDisplay.innerText = "📁 " + escapeHTML(this.files[0].name);
-                    fileNameDisplay.style.color = "var(--jelly-pink)";
+                    fileNameDisplay.style.color = "var(--primary-blue)";
                     urlInput.value = '';
                 } else { fileNameDisplay.innerText = ""; }
             });
@@ -1425,17 +1884,18 @@
         }
 
         // =========================================================
-        //  STICKER FORM SUBMIT
+        //  STICKER FORM SUBMIT (ANONYMOUS REQUEST)
         // =========================================================
         document.getElementById('stickerForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const char = document.getElementById('reqChar').value.trim();
-            const user = document.getElementById('reqUser').value;
+            const user = document.getElementById('reqUser').value.trim();
             const detail = document.getElementById('reqDetail').value.trim();
             const url = document.getElementById('reqUrl').value.trim();
             const date = getFormattedDate();
             const file = fileInput.files[0];
 
+            if (!user) { showToast("Gagal", "Nama wajib diisi."); return; }
             if (!char) { showToast("Gagal", "Karakter / Subjek wajib diisi."); return; }
             if (char.length > 100) { showToast("Gagal", "Nama karakter maksimal 100 karakter."); return; }
             if (detail.length > 500) { showToast("Gagal", "Keterangan maksimal 500 karakter."); return; }
@@ -1449,8 +1909,7 @@
                 let finalImage = null;
                 if (file) {
                     if (file.size > 2 * 1024 * 1024) { showToast("Gagal", "Ukuran file maksimal 2MB."); submitBtn.disabled = false; submitBtn.innerHTML = '<i class="ph-bold ph-paper-plane-right"></i> Kirim Tiket Request'; return; }
-                    const compressed = await compressImage(file, 0.2);
-                    finalImage = compressed || await new Promise(resolve => {
+                    finalImage = await new Promise(resolve => {
                         const reader = new FileReader();
                         reader.onload = e => resolve(e.target.result);
                         reader.readAsDataURL(file);
@@ -1463,7 +1922,6 @@
                 });
                 showToast("Tiket Terkirim! 🎉", `ID Tiket: #${docRef.id.slice(-6)}`);
                 this.reset();
-                document.getElementById('reqUser').value = currentUserData;
                 fileNameDisplay.innerText = "";
                 document.getElementById('imagePreview').src = '';
                 document.getElementById('imagePreviewContainer').classList.remove('has-image');
@@ -1503,84 +1961,53 @@
         };
 
         // =========================================================
-        //  MUSIC PLAYER
+        //  NEW: LOGIKA WIDGET MUSIC PLAYER (POP-UP)
         // =========================================================
-        document.getElementById('play-btn')?.addEventListener('click', function () {
+        window.toggleMusicWidget = function(e) {
+            if(e) e.stopPropagation();
+            const widget = document.getElementById('music-widget');
+            widget.classList.toggle('open');
+        };
+
+        window.togglePlayMusic = function(e) {
+            if(e) e.stopPropagation();
             const audio = document.getElementById('bg-audio');
-            const icon = document.getElementById('play-icon');
-            const player = document.getElementById('music-player');
+            const widget = document.getElementById('music-widget');
+            const iconMini = document.getElementById('icon-play-mini');
+            const iconMain = document.getElementById('icon-play-main');
+
             if (audio.paused) {
                 audio.play().catch(() => {});
-                icon.className = 'ph-fill ph-pause-circle';
-                player.classList.add('playing');
+                iconMini.className = 'ph-fill ph-pause-circle';
+                // Pada icon main, kita set style margin nol saat icon berubah jadi pause biar tetep di tengah.
+                iconMain.className = 'ph-fill ph-pause';
+                iconMain.style.marginLeft = '0';
+                widget.classList.add('playing');
             } else {
                 audio.pause();
-                icon.className = 'ph-fill ph-play-circle';
-                player.classList.remove('playing');
+                iconMini.className = 'ph-fill ph-play-circle';
+                // Balikin margin untuk icon play
+                iconMain.className = 'ph-fill ph-play';
+                iconMain.style.marginLeft = '4px';
+                widget.classList.remove('playing');
             }
-        });
+        };
 
-        // =========================================================
-        //  UPDATE AVATAR
-        // =========================================================
-        const updateAvatarForm = document.getElementById('formUpdateAvatar');
-        if (updateAvatarForm) {
-            updateAvatarForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                if (!currentUserData) { showToast("Gagal", "Login terlebih dahulu."); return; }
-                const fileIn = document.getElementById('updateAvatarFile');
-                const urlIn = document.getElementById('updateAvatarUrl');
-                const file = fileIn.files[0];
-                const url = urlIn.value.trim();
-                if (!file && !url) { showToast("Gagal", "Pilih file atau masukkan URL gambar."); return; }
-                try {
-                    if (file) {
-                        if (file.size > 2 * 1024 * 1024) { showToast("Gagal", "Ukuran maksimal 2MB."); return; }
-                        if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) { showToast("Gagal", "Hanya file gambar."); return; }
-                        const reader = new FileReader();
-                        reader.onload = async function (ev) {
-                            await updateDoc(doc(db, 'users', currentUserData), { avatar: ev.target.result });
-                            showToast("Berhasil!", "Foto profil diperbarui.");
-                            fileIn.value = ''; urlIn.value = '';
-                            document.getElementById('updateAvatarFileName').innerText = '';
-                        };
-                        reader.readAsDataURL(file);
-                    } else if (url) {
-                        if (url.match(/\.(jpeg|jpg|gif|png|webp)$/i) || url.startsWith('http')) {
-                            await updateDoc(doc(db, 'users', currentUserData), { avatar: url });
-                            showToast("Berhasil!", "Foto profil diperbarui.");
-                            fileIn.value = ''; urlIn.value = '';
-                            document.getElementById('updateAvatarFileName').innerText = '';
-                        } else { showToast("Gagal", "URL gambar tidak valid."); }
-                    }
-                } catch (err) { showToast("Error", "Gagal update avatar: " + err.message); }
-            });
-
-            document.getElementById('updateAvatarFile')?.addEventListener('change', function () {
-                const span = document.getElementById('updateAvatarFileName');
-                if (this.files && this.files[0]) {
-                    span.innerText = "📁 " + escapeHTML(this.files[0].name);
-                    document.getElementById('updateAvatarUrl').value = '';
-                } else { span.innerText = ''; }
-            });
-
-            document.getElementById('updateAvatarUrl')?.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    document.getElementById('updateAvatarFile').value = '';
-                    document.getElementById('updateAvatarFileName').innerText = '';
-                }
-            });
-        }
 
         // =========================================================
         //  ADMIN - REALTIME & STATS
         // =========================================================
+        let adminCachedDocs = [];
+        let adminStatsDebounceTimer = null;
         function setupAdminRealtime() {
             if (adminRequestsUnsub) adminRequestsUnsub();
             const q = query(collection(db, 'requests'), orderBy('createdAt', 'desc'), limit(100));
-            adminRequestsUnsub = onSnapshot(q, () => {
-                renderAdminRequests();
-                updateAdminStats();
+            adminRequestsUnsub = onSnapshot(q, (snap) => {
+                adminCachedDocs = [];
+                snap.forEach(d => adminCachedDocs.push({ id: d.id, ...d.data() }));
+                if (adminCurrentTab !== 'overview') renderAdminRequests();
+                if (adminStatsDebounceTimer) clearTimeout(adminStatsDebounceTimer);
+                adminStatsDebounceTimer = setTimeout(updateAdminStats, 500);
             });
             registerCleanup(adminRequestsUnsub);
         }
@@ -1604,34 +2031,51 @@
             if (adminCurrentTab === 'overview') return;
             const container = document.getElementById('admin-request-list');
             if (!container) return;
-            const q = query(collection(db, 'requests'), where('status', '==', adminCurrentTab), orderBy('createdAt', 'desc'), limit(100));
-            const snapshot = await getDocs(q);
-            if (snapshot.empty) {
-                container.innerHTML = `<div style="text-align:center;background:var(--input-bg);padding:35px;border-radius:20px;border:1px dashed var(--border-color);">
-                    <i class="ph-duotone ph-folder-open" style="font-size:3rem;color:var(--text-muted);margin-bottom:10px;display:block;"></i>
-                    <p style="color:var(--text-muted);font-size:0.9rem;font-weight:700;">Tidak ada tiket di kategori ini.</p>
+
+            let docs;
+            if (adminCachedDocs.length) {
+                docs = adminCachedDocs.filter(d => d.status === adminCurrentTab);
+            } else {
+                const q = query(collection(db, 'requests'), where('status', '==', adminCurrentTab), orderBy('createdAt', 'desc'), limit(100));
+                const snapshot = await getDocs(q);
+                docs = [];
+                snapshot.forEach(d => docs.push({ id: d.id, ...d.data() }));
+            }
+
+            if (!docs.length) {
+                container.innerHTML = `<div class="req-empty">
+                    <i class="ph-duotone ph-folder-open"></i>
+                    <p>Tidak ada tiket di kategori ini.</p>
                 </div>`;
                 return;
             }
             let html = '';
-            snapshot.forEach(d => {
-                const req = d.data();
+            docs.forEach(req => {
                 const imgSrc = req.image || req.url || null;
                 const imgHtml = imgSrc
                     ? `<img src="${escapeHTML(imgSrc)}" alt="Ref" loading="lazy" onclick="openModal('${escapeHTML(imgSrc)}','Referensi: ${escapeHTML(req.char).replace(/'/g, "\\'")}')" class="lazy-image">`
-                    : `<div class="no-img" style="padding:10px;text-align:center;"><i class="ph-duotone ph-image-broken" style="font-size:1.5rem;margin-bottom:5px;display:block;"></i>Tanpa<br>Gambar</div>`;
+                    : `<div class="no-img"><i class="ph-duotone ph-image-broken" style="font-size:1.5rem;margin-bottom:5px;display:block;"></i>Tanpa<br>Gambar</div>`;
                 const isDone = req.status === 'done';
                 const isRejected = req.status === 'rejected';
+                const statusMap = {
+                    pending:  { label: 'Menunggu', icon: 'ph-hourglass-high', color: 'var(--stat-yellow)' },
+                    done:     { label: 'Selesai',  icon: 'ph-check-circle',   color: 'var(--stat-green)' },
+                    rejected: { label: 'Ditolak',  icon: 'ph-x-circle',       color: 'var(--stat-red)' }
+                };
+                const st = statusMap[req.status] || statusMap.pending;
                 const btnCopy = `<button class="btn-act btn-act-copy" onclick="copyReqInfo('${escapeHTML(req.char).replace(/'/g, "\\'")}','${escapeHTML(req.user).replace(/'/g, "\\'")}','${escapeHTML(req.detail || '').replace(/'/g, "\\'")}')"><i class="ph-bold ph-copy"></i> Copy</button>`;
                 let actionsHtml = isDone
-                    ? `${btnCopy}<button class="btn-act btn-act-revert" onclick="updateStatus('${d.id}','pending','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-arrow-u-up-left"></i> Batal</button><button class="btn-act btn-act-reject" onclick="deleteReq('${d.id}')"><i class="ph-bold ph-trash"></i> Hapus</button>`
+                    ? `${btnCopy}<button class="btn-act btn-act-revert" onclick="updateStatus('${req.id}','pending','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-arrow-u-up-left"></i> Batal</button><button class="btn-act btn-act-reject" onclick="deleteReq('${req.id}')"><i class="ph-bold ph-trash"></i> Hapus</button>`
                     : (isRejected
-                        ? `${btnCopy}<button class="btn-act btn-act-revert" onclick="updateStatus('${d.id}','pending','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-arrow-counter-clockwise"></i> Pulihkan</button><button class="btn-act btn-act-reject" onclick="deleteReq('${d.id}')"><i class="ph-bold ph-trash"></i> Hapus</button>`
-                        : `${btnCopy}<button class="btn-act btn-act-edit" onclick="editReq('${d.id}')"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button class="btn-act btn-act-reject" onclick="updateStatus('${d.id}','rejected','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-x"></i> Tolak</button><button class="btn-act btn-act-done" onclick="updateStatus('${d.id}','done','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-check"></i> Selesai</button>`);
+                        ? `${btnCopy}<button class="btn-act btn-act-revert" onclick="updateStatus('${req.id}','pending','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-arrow-counter-clockwise"></i> Pulihkan</button><button class="btn-act btn-act-reject" onclick="deleteReq('${req.id}')"><i class="ph-bold ph-trash"></i> Hapus</button>`
+                        : `${btnCopy}<button class="btn-act btn-act-edit" onclick="editReq('${req.id}')"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button class="btn-act btn-act-reject" onclick="updateStatus('${req.id}','rejected','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-x"></i> Tolak</button><button class="btn-act btn-act-done" onclick="updateStatus('${req.id}','done','${escapeHTML(req.user)}','${escapeHTML(req.char)}')"><i class="ph-bold ph-check"></i> Selesai</button>`);
                 html += `
-                    <div class="req-item">
+                    <div class="req-item" style="--accent:${st.color};">
                         <div class="req-top">
-                            <span class="req-id">#REQ-${d.id.slice(-4)}</span>
+                            <div class="req-top-left">
+                                <span class="req-id">#REQ-${req.id.slice(-4)}</span>
+                                <span class="req-status ${req.status || 'pending'}"><i class="ph-bold ${st.icon}"></i> ${st.label}</span>
+                            </div>
                             <span class="req-date"><i class="ph-bold ph-clock"></i> ${escapeHTML(req.date) || 'No date'}</span>
                         </div>
                         <div class="req-main">
@@ -1646,8 +2090,31 @@
                     </div>`;
             });
             container.innerHTML = html;
-            setTimeout(() => observeImages(container), 100);
+            requestAnimationFrame(() => observeImages(container));
         }
+
+        const ADMIN_TAB_META = {
+            overview: {
+                eyebrow: '<i class="ph-bold ph-squares-four"></i> Dashboard',
+                title:   '<i class="ph-duotone ph-gauge"></i> Ringkasan Aktivitas',
+                desc:    'Pantau seluruh tiket request sticker — total, pending, selesai, ditolak — semua di satu tempat.'
+            },
+            pending: {
+                eyebrow: '<i class="ph-bold ph-envelope-simple-open"></i> Antrian Tiket',
+                title:   '<i class="ph-duotone ph-hourglass-high"></i> Tiket Menunggu',
+                desc:    'Daftar tiket yang masih harus dikerjakan. Geser & proses satu per satu, jangan numpuk ya.'
+            },
+            done: {
+                eyebrow: '<i class="ph-bold ph-check-circle"></i> Arsip',
+                title:   '<i class="ph-duotone ph-check-circle"></i> Tiket Selesai',
+                desc:    'Riwayat tiket yang sudah berhasil dikerjakan. Bisa dipulihkan ke status pending kalau perlu revisi.'
+            },
+            rejected: {
+                eyebrow: '<i class="ph-bold ph-x-circle"></i> Ditolak',
+                title:   '<i class="ph-duotone ph-x-circle"></i> Tiket Ditolak',
+                desc:    'Tiket yang tidak diproses (misal data kurang, gambar tidak jelas). Bisa dipulihkan kapan saja.'
+            }
+        };
 
         window.changeAdminTab = function (tabName) {
             adminCurrentTab = tabName;
@@ -1663,6 +2130,15 @@
                 overviewMgr.style.display = 'none';
                 reqList.style.display = 'block';
                 renderAdminRequests();
+            }
+            const meta = ADMIN_TAB_META[tabName];
+            if (meta) {
+                const eb = document.getElementById('admin-section-eyebrow');
+                const tt = document.getElementById('admin-section-title');
+                const ds = document.getElementById('admin-section-desc');
+                if (eb) eb.innerHTML = meta.eyebrow;
+                if (tt) tt.innerHTML = meta.title;
+                if (ds) ds.textContent = meta.desc;
             }
         };
 
@@ -1721,9 +2197,9 @@
                 const q = query(collection(db, 'activity_logs'), orderBy('timestamp', 'desc'), limit(20));
                 const snapshot = await getDocs(q);
                 if (snapshot.empty) {
-                    logList.innerHTML = `<div style="text-align:center;padding:35px 20px;">
-                        <i class="ph-duotone ph-ghost" style="font-size:3rem;color:var(--text-muted);margin-bottom:10px;display:block;"></i>
-                        <p style="color:var(--text-muted);font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:800;">Belum ada aktivitas.</p>
+                    logList.innerHTML = `<div class="req-empty">
+                        <i class="ph-duotone ph-ghost"></i>
+                        <p>Belum ada aktivitas.</p>
                     </div>`;
                     return;
                 }
@@ -1731,14 +2207,14 @@
                 snapshot.forEach(d => {
                     const log = d.data();
                     const time = log.timestamp ? new Date(log.timestamp.toDate()).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : 'baru saja';
-                    let icon = 'ph-user-circle', iconColor = 'var(--jelly-pink)', bgColor = 'rgba(255,126,179,0.15)';
+                    let icon = 'ph-user-circle', iconColor = 'var(--primary-blue)', bgColor = 'rgba(0, 122, 255, 0.15)';
                     if (log.action.includes('login') || log.action.includes('register')) { icon = 'ph-sign-in'; iconColor = 'var(--stat-blue)'; bgColor = 'rgba(59,130,246,0.15)'; }
                     else if (log.action.includes('request') || log.action.includes('add')) { icon = 'ph-paper-plane-tilt'; iconColor = 'var(--stat-green)'; bgColor = 'rgba(39,201,63,0.15)'; }
                     else if (log.action.includes('preview')) { icon = 'ph-image'; iconColor = 'var(--stat-yellow)'; bgColor = 'rgba(255,189,46,0.15)'; }
-                    else if (log.action.includes('search')) { icon = 'ph-magnifying-glass'; iconColor = 'var(--jelly-purple)'; bgColor = 'rgba(168,139,235,0.15)'; }
-                    else if (log.action.includes('delete')) { icon = 'ph-trash'; iconColor = 'var(--stat-red)'; bgColor = 'rgba(255,95,86,0.15)'; }
+                    else if (log.action.includes('search')) { icon = 'ph-magnifying-glass'; iconColor = 'var(--secondary-blue)'; bgColor = 'rgba(0, 198, 255, 0.15)'; }
+                    else if (log.action.includes('delete') || log.action.includes('clear')) { icon = 'ph-trash'; iconColor = 'var(--stat-red)'; bgColor = 'rgba(255,95,86,0.15)'; }
                     html += `
-                        <div class="activity-log-item">
+                        <div class="activity-log-item" style="--accent:${iconColor};">
                             <div class="activity-log-content">
                                 <div class="activity-log-icon" style="color:${iconColor};background:${bgColor};"><i class="ph-bold ${icon}"></i></div>
                                 <div class="activity-log-text">
