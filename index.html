@@ -696,11 +696,11 @@
         }
         .sidebar-credit strong { color: var(--text-main); font-weight: 800; }
         
-        /* =========================================================
-           5. VIEW SYSTEM — SUPER SMOOTH (GPU compositor only)
-           - Pure opacity + translate3d (NO scale → low-end GPU friendly)
-           - Single animation per child (no double layer like before)
-           - Stagger 110ms for clear "satu-satu" feel
+                        /* =========================================================
+           5. VIEW SYSTEM — GOD TIER (MAXIMUM FLOAT & FADE)
+           - Jarak tarikan ekstrem dari 100px
+           - Durasi 3 detik penuh dengan kurva zero-gravity
+           - Jeda 120ms biar ritmenya bener-bener memanjakan mata
         ========================================================= */
         .view-section { display: none; padding-bottom: 80px; }
 
@@ -708,10 +708,11 @@
 
         .view-section.active-view > * {
             opacity: 0;
-            animation: viewItemRise 0.95s cubic-bezier(0.19, 1, 0.22, 1) both;
+            /* 3 Detik! Kurva ini bikin efek "Zero Gravity" di akhir pergerakan */
+            animation: godTierFadeUp 3s cubic-bezier(0.05, 1, 0.05, 1) both;
         }
 
-        /* Stagger jelas per child */
+        /* Jeda diracik di 0.12s biar matanya bener-bener nikmatin urutannya */
         .view-section.active-view > *:nth-child(1) { animation-delay: 0.06s; }
         .view-section.active-view > *:nth-child(2) { animation-delay: 0.18s; }
         .view-section.active-view > *:nth-child(3) { animation-delay: 0.30s; }
@@ -721,41 +722,77 @@
         .view-section.active-view > *:nth-child(7) { animation-delay: 0.78s; }
         .view-section.active-view > *:nth-child(8) { animation-delay: 0.90s; }
 
-        @keyframes viewItemRise {
-            0%   { opacity: 0; transform: translate3d(0, 36px, 0); }
-            100% { opacity: 1; transform: translate3d(0, 0, 0); }
+        @keyframes godTierFadeUp {
+            0% { 
+                opacity: 0; 
+                transform: translate3d(0, 100px, 0); /* Ekstrem dari bawah */
+            }
+            50% {
+                /* Fade (memudar) pelan banget dari 0 detik sampai 1.5 detik pertama */
+                opacity: 1;
+            }
+            100% { 
+                opacity: 1; 
+                transform: translate3d(0, 0, 0); 
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .view-section.active-view > * { animation: none !important; opacity: 1 !important; }
+            .view-section.active-view > * { 
+                animation: none !important; 
+                opacity: 1 !important; 
+                transform: none !important; 
+            }
         }
 
-        /* =========================================================
-           6. MODAL / LIGHTBOX
+           /* =========================================================
+           6. MODAL / LIGHTBOX (SUPER SMOOTH CINEMATIC)
         ========================================================= */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+            position: fixed; inset: 0; background: rgba(7, 11, 24, 0.85); /* Navy gelap elegan */
             z-index: 9999; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; padding: 20px; transition: opacity 0.28s ease;
+            opacity: 0; pointer-events: none; padding: 20px; 
+            /* Fade in background dibikin lebih lembut */
+            transition: opacity 0.4s ease;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
+        
         .modal-content {
-            background: var(--card-bg); padding: 18px; border-radius: 22px;
-            border: 2px solid var(--primary-blue); max-width: 400px; width: 100%;
-            text-align: center; position: relative; transform: scale(0.82);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 15px 40px var(--shadow-color);
+            background: #11162a; /* Warna solid anti-lag */
+            padding: 18px; border-radius: 22px;
+            border: 1px solid var(--border-color); 
+            max-width: 400px; width: 100%;
+            text-align: center; position: relative; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            
+            /* POSISI AWAL (Pas belum muncul): Turun 40px, agak mengecil (0.95), dan transparan */
+            transform: translate3d(0, 40px, 0) scale(0.95);
+            opacity: 0;
+            
+            /* TRANSISI SAAT DITUTUP: Agak cepat biar responsif di HP */
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-content img { width: 100%; border-radius: 12px; margin-bottom: 10px; object-fit: contain; max-height: 50vh; background: var(--bg-color); transition: opacity 0.25s ease; }
+        
+        .modal-overlay.active .modal-content { 
+            /* POSISI AKHIR (Pas muncul): Tepat di tengah, ukuran normal (1), solid */
+            transform: translate3d(0, 0, 0) scale(1); 
+            opacity: 1;
+            
+            /* TRANSISI SAAT DIBUKA: Sangat lambat di akhir (0.75s) biar kelihatan melayang empuk */
+            transition: transform 0.75s cubic-bezier(0.05, 0.95, 0.1, 1), opacity 0.4s ease;
+            transition-delay: 0.05s; /* Jeda sedikit biar background gelap muncul duluan */
+        }
+        
+        .modal-content img { width: 100%; border-radius: 12px; margin-bottom: 10px; object-fit: contain; max-height: 50vh; background: #11162a; transition: opacity 0.25s ease; }
         .modal-content img.lazy-image { opacity: 0.5; }
         .modal-content img.lazy-image.loaded { opacity: 1; }
         .modal-title { font-size: 1.05rem; font-weight: 900; color: var(--text-main); font-family: 'Nunito', sans-serif; }
+        
         .modal-close {
             position: absolute; top: -14px; right: -14px;
             width: 34px; height: 34px; background: var(--stat-red); color: white;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid var(--card-bg);
+            cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid #11162a;
             transition: transform 0.2s ease;
         }
         .modal-close:hover { transform: scale(1.1) rotate(8deg); }
@@ -770,6 +807,8 @@
         .btn-modal:active { transform: scale(0.95); }
         .btn-modal-dl { background: var(--stat-blue); color: #fff; }
         .btn-modal-dl:hover { background: #2563eb; transform: translateY(-2px); }
+
+        /* Tombol Donate di Modal */
         .btn-donate {
             display: flex; justify-content: flex-start; align-items: center; gap: 14px;
             background: linear-gradient(135deg, #fff9e6, #ffd166);
@@ -788,21 +827,10 @@
             background: rgba(255,255,255,0.5);
             display: flex; align-items: center; justify-content: center;
         }
-        .btn-donate .donate-text {
-            display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; text-align: left;
-        }
-        .btn-donate .donate-title {
-            font-size: 0.9rem; font-weight: 900; color: #1a1a1a; letter-spacing: 0.2px;
-            text-transform: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .btn-donate .donate-sub {
-            font-size: 0.68rem; font-weight: 700; color: #5a4400; opacity: 0.75;
-            text-transform: none; letter-spacing: 0.1px;
-        }
-        .btn-donate .donate-arrow {
-            font-size: 1rem; color: #5a4400; opacity: 0.6; flex-shrink: 0;
-            transition: transform 0.2s ease;
-        }
+        .btn-donate .donate-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; text-align: left; }
+        .btn-donate .donate-title { font-size: 0.9rem; font-weight: 900; color: #1a1a1a; letter-spacing: 0.2px; text-transform: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .btn-donate .donate-sub { font-size: 0.68rem; font-weight: 700; color: #5a4400; opacity: 0.75; text-transform: none; letter-spacing: 0.1px; }
+        .btn-donate .donate-arrow { font-size: 1rem; color: #5a4400; opacity: 0.6; flex-shrink: 0; transition: transform 0.2s ease; }
         .btn-donate:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(255,193,7,0.28); }
         .btn-donate:hover .donate-arrow { transform: translate(2px, -2px); }
         .btn-donate:active { transform: scale(0.98); }
@@ -3077,7 +3105,7 @@
         </div>
 
         <audio id="bg-audio" loop preload="none">
-            <source src="https://cdn.yupra.my.id/yp/66g3hns6" type="audio/mpeg">
+            <source src="https://cdn.yupra.my.id/yp/m0p87o5o" type="audio/mpeg">
         </audio>
     </div>
 
