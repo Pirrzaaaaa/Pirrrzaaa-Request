@@ -8,6 +8,26 @@
     <meta name="theme-color" content="#070b18">
     <meta name="description" content="Ryuuzaa Stickers Hub — kirim request sticker favoritmu. Cepat, gratis, dan rapih.">
 
+    <!-- Favicon (inline SVG, instan di Chrome tab) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234f8bff'/%3E%3Cstop offset='100%25' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%23070b18'/%3E%3Crect x='4' y='4' width='56' height='56' rx='12' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='Arial Black,sans-serif' font-size='36' font-weight='900' fill='%23fff' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="https://app.devin.ai/attachments/7ecab72c-8305-4bb7-9485-25b9d5fce80a/og-image.jpg">
+
+    <!-- Open Graph / Preview saat di-share -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ryuuzaa Stickers — Sticker Request Hub">
+    <meta property="og:description" content="Kirim ide sticker favoritmu sekarang. Cepat, gratis, dan dipantau langsung sama admin Ryuuzaa.">
+    <meta property="og:image" content="https://app.devin.ai/attachments/7ecab72c-8305-4bb7-9485-25b9d5fce80a/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Ryuuzaa Stickers">
+    <meta property="og:locale" content="id_ID">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ryuuzaa Stickers — Sticker Request Hub">
+    <meta name="twitter:description" content="Kirim ide sticker favoritmu. Cepat, gratis, dan dipantau langsung.">
+    <meta name="twitter:image" content="https://app.devin.ai/attachments/7ecab72c-8305-4bb7-9485-25b9d5fce80a/og-image.jpg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -125,40 +145,155 @@
         nav {
             display: flex; justify-content: space-between; align-items: center;
             /* Solid bg — backdrop-filter dihapus (penyebab utama lag di HP) */
-            background: #11162a;
+            background: linear-gradient(180deg, #141a32 0%, #11162a 100%);
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-            padding: 11px 18px; border-radius: 20px;
-            width: calc(100% - 30px); max-width: 800px;
-            position: fixed; top: 15px; left: 50%; z-index: 1000;
+            padding: 10px 14px 10px 16px; border-radius: 22px;
+            width: calc(100% - 24px); max-width: 820px;
+            position: fixed; top: 14px; left: 50%; z-index: 1000;
             transform: translateX(-50%);
         }
         nav::after {
-            content: ""; position: absolute; left: 16px; right: 16px; bottom: -1px;
-            height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            content: ""; position: absolute; left: 18px; right: 18px; bottom: -1px;
+            height: 1px; background: linear-gradient(90deg, transparent, rgba(167,139,250,0.35), rgba(79,139,255,0.35), transparent);
             pointer-events: none;
         }
-        .brand-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-grad); box-shadow: 0 0 10px rgba(79,139,255,0.7); display: inline-block; margin-right: 4px; }
-        .nav-tagline { font-size: 0.65rem; font-weight: 700; color: var(--text-faint); letter-spacing: 0.8px; text-transform: uppercase; margin-top: 1px; }
-        @media (max-width: 480px) { .nav-tagline { display: none; } }
-        .nav-left { display: flex; align-items: center; gap: 14px; }
-        .nav-right { display: flex; align-items: center; gap: 10px; }
-        .menu-toggle {
-            font-size: 1.6rem; color: var(--text-main); cursor: pointer;
-            display: flex; align-items: center; background: none; border: none;
-            transition: color 0.2s ease, transform 0.2s ease;
-        }
-        .menu-toggle:hover { color: var(--secondary-blue); transform: scale(1.1); }
-        .brand { font-size: 1.25rem; font-weight: 900; color: var(--text-main); letter-spacing: 0.5px; }
+        .nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .nav-right { display: flex; align-items: center; gap: 8px; }
 
+        /* Brand block (kiri) */
+        .brand-mark {
+            width: 34px; height: 34px; border-radius: 11px;
+            background: var(--blue-grad);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.05rem; color: #fff;
+            letter-spacing: -0.5px; flex-shrink: 0;
+            position: relative;
+        }
+        .brand-mark::after {
+            content: ""; position: absolute; right: -2px; bottom: -2px;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: #22d39a; border: 2px solid #11162a;
+        }
+        .brand-text { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; }
+        .brand { font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 900; color: var(--text-main); letter-spacing: -0.3px; white-space: nowrap; }
+        .brand-dot { display: none; } /* legacy */
+        .nav-tagline {
+            font-size: 0.6rem; font-weight: 800; color: var(--secondary-blue);
+            letter-spacing: 1.4px; text-transform: uppercase; margin-top: 3px;
+            white-space: nowrap;
+        }
+        @media (max-width: 420px) { .nav-tagline { display: none; } .brand { font-size: 0.95rem; } .brand-mark { width: 32px; height: 32px; } }
+
+        .menu-toggle {
+            font-size: 1.3rem; color: var(--text-main); cursor: pointer;
+            width: 38px; height: 38px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-color); border-radius: 11px;
+            transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        }
+        @media (hover: hover) {
+            .menu-toggle:hover { color: var(--secondary-blue); background: rgba(0,198,255,0.08); border-color: rgba(0,198,255,0.35); }
+        }
+        .menu-toggle:active { transform: scale(0.94); }
+
+        /* Tombol Login (default, belum login) */
         .btn-nav-login {
             background: var(--blue-grad); color: white; border: none;
-            padding: 8px 16px; border-radius: 12px; font-weight: 800; font-size: 0.85rem;
+            padding: 8px 14px; border-radius: 12px; font-weight: 800; font-size: 0.83rem;
             cursor: pointer; font-family: 'Nunito', sans-serif;
-            display: flex; align-items: center; gap: 6px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: inline-flex; align-items: center; gap: 6px;
+            letter-spacing: 0.2px; white-space: nowrap;
+            transition: transform 0.18s ease, opacity 0.18s ease;
         }
-        .btn-nav-login:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
+        @media (hover: hover) {
+            .btn-nav-login:hover { transform: translateY(-1px); opacity: 0.92; }
+        }
+        .btn-nav-login:active { transform: scale(0.96); }
+        .btn-nav-login i { font-size: 1rem; }
+
+        /* Pill user (sudah login) — rapih + premium */
+        .nav-user-pill {
+            display: inline-flex; align-items: center; gap: 9px;
+            padding: 5px 11px 5px 5px; border-radius: 999px;
+            background: linear-gradient(135deg, rgba(79,139,255,0.15) 0%, rgba(167,139,250,0.15) 100%);
+            border: 1px solid rgba(79,139,255,0.35);
+            cursor: pointer; font-family: 'Nunito', sans-serif;
+            transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+            position: relative;
+        }
+        @media (hover: hover) {
+            .nav-user-pill:hover { border-color: rgba(167,139,250,0.55); background: linear-gradient(135deg, rgba(79,139,255,0.22) 0%, rgba(167,139,250,0.22) 100%); }
+        }
+        .nav-user-pill:active { transform: scale(0.97); }
+        .nav-user-avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: var(--blue-grad);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 0.82rem; color: #fff;
+            letter-spacing: -0.3px; flex-shrink: 0;
+            position: relative;
+        }
+        .nav-user-avatar::after {
+            content: ""; position: absolute; right: -1px; bottom: -1px;
+            width: 9px; height: 9px; border-radius: 50%;
+            background: #22d39a; border: 2px solid #11162a;
+        }
+        .nav-user-name {
+            font-weight: 800; font-size: 0.82rem; color: var(--text-main);
+            letter-spacing: -0.1px; max-width: 110px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .nav-user-chevron {
+            font-size: 0.85rem; color: var(--text-muted);
+            transition: transform 0.2s ease, color 0.18s ease;
+        }
+        .nav-user-pill.open .nav-user-chevron { transform: rotate(180deg); color: var(--secondary-blue); }
+        @media (max-width: 380px) {
+            .nav-user-name { max-width: 80px; font-size: 0.78rem; }
+            .nav-user-pill { padding: 4px 10px 4px 4px; }
+            .nav-user-avatar { width: 26px; height: 26px; font-size: 0.75rem; }
+        }
+
+        /* Dropdown menu user (saat pill diklik) */
+        .nav-user-menu {
+            position: absolute; top: calc(100% + 8px); right: 0;
+            background: #141a32;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            min-width: 200px;
+            padding: 6px;
+            opacity: 0; pointer-events: none;
+            transform: translateY(-4px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            z-index: 1100;
+        }
+        .nav-user-pill.open .nav-user-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .nav-user-menu-header {
+            padding: 10px 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 4px;
+            display: flex; flex-direction: column; gap: 3px;
+        }
+        .nav-user-menu-eyebrow { font-size: 0.6rem; font-weight: 800; color: var(--secondary-blue); letter-spacing: 1.4px; text-transform: uppercase; }
+        .nav-user-menu-name { font-size: 0.95rem; font-weight: 900; color: var(--text-main); letter-spacing: -0.2px; }
+        .nav-user-menu-status { font-size: 0.7rem; font-weight: 700; color: #22d39a; display: inline-flex; align-items: center; gap: 5px; }
+        .nav-user-menu-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #22d39a; }
+        .nav-user-menu-item {
+            display: flex; align-items: center; gap: 10px; width: 100%;
+            padding: 9px 12px; border-radius: 10px;
+            background: transparent; border: none; cursor: pointer;
+            font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.84rem;
+            color: var(--text-main); text-align: left;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .nav-user-menu-item i { font-size: 1.05rem; color: var(--secondary-blue); }
+        @media (hover: hover) {
+            .nav-user-menu-item:hover { background: rgba(0,198,255,0.08); }
+        }
+        .nav-user-menu-item.danger { color: #f87171; }
+        .nav-user-menu-item.danger i { color: #f87171; }
+        @media (hover: hover) {
+            .nav-user-menu-item.danger:hover { background: rgba(239,68,68,0.10); }
+        }
 
         /* =========================================================
            4. UNIFIED CARD (REPLACE ONLY THIS CLASS IN SECTION 8)
@@ -357,86 +492,212 @@
         .admin-header p {
             color: var(--text-muted); font-size: 0.82rem; line-height: 1.5; max-width: 580px;
         }
-                /* =========================================================
-           4. SIDEBAR (SOLID BG & GPU ACCELERATED)
+        /* =========================================================
+           4. SIDEBAR (SOLID BG & GPU ACCELERATED) — REDESIGNED
         ========================================================= */
         .sidebar-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-            z-index: 1999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+            z-index: 1999; opacity: 0; pointer-events: none;
+            transition: opacity 0.32s ease;
         }
         .sidebar-overlay.active { opacity: 1; pointer-events: all; }
-        
+
         .sidebar {
-            /* Posisinya di-set mentok kiri, tapi kita sembunyiin pakai transform */
-            position: fixed; top: 0; left: 0; width: 275px; height: 100vh;
-            
-            /* RAHASIA 1: Pakai warna solid (#11162a), jangan rgba/blur. Anti lag! */
-            background: #11162a; 
-            
-            border-right: 2px solid var(--border-color);
-            z-index: 2000; padding: 25px 18px; display: flex; flex-direction: column; gap: 6px;
-            overflow-y: auto; 
-            
-            /* RAHASIA 2: Animasi pakai transform translateX, JANGAN pakai 'left' */
+            position: fixed; top: 0; left: 0; width: 290px; height: 100vh;
+            background: linear-gradient(180deg, #141a32 0%, #0e1326 60%, #0b1020 100%);
+            border-right: 1px solid var(--border-color);
+            z-index: 2000; padding: 18px 14px 22px; display: flex; flex-direction: column;
+            overflow-y: auto;
+
             transform: translateX(-105%);
             will-change: transform;
-            
-            /* Kurva easeOutQuint biar gesernya cepet tapi berhentinya empuk */
-            transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: transform 0.38s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        
-        /* Pas aktif, kembalikan ke posisi 0 (muncul ke layar) */
-        .sidebar.active { 
-            transform: translateX(0); 
-            box-shadow: 10px 0 40px rgba(0,0,0,0.6); 
-        }
+        .sidebar.active { transform: translateX(0); }
 
-        .sidebar-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-        .sidebar-logo { font-size: 1.35rem; font-weight: 900; color: var(--primary-blue); font-family: 'Nunito', sans-serif; text-shadow: 0 0 10px rgba(0,122,255,0.3); }
+        /* Header sidebar — brand + close */
+        .sidebar-head {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 4px 4px 14px; margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .sidebar-brand { display: flex; align-items: center; gap: 10px; }
+        .sidebar-brand-mark {
+            width: 38px; height: 38px; border-radius: 12px; background: var(--blue-grad);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.1rem; color: #fff;
+            letter-spacing: -0.5px; flex-shrink: 0;
+        }
+        .sidebar-brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+        .sidebar-brand-name { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; color: var(--text-main); letter-spacing: -0.3px; }
+        .sidebar-brand-tag { font-size: 0.58rem; font-weight: 800; color: var(--secondary-blue); letter-spacing: 1.4px; text-transform: uppercase; margin-top: 2px; }
         .close-sidebar {
-            font-size: 1.4rem; cursor: pointer; color: var(--text-muted);
-            background: var(--input-bg); border: 1px solid var(--border-color);
-            border-radius: 10px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
-            transition: color 0.2s, background 0.2s, transform 0.2s;
+            font-size: 1.1rem; cursor: pointer; color: var(--text-muted);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 10px; width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            transition: color 0.18s, background 0.18s, border-color 0.18s;
         }
-        .close-sidebar:hover { color: var(--secondary-blue); background: rgba(0, 198, 255, 0.12); }
+        @media (hover: hover) {
+            .close-sidebar:hover { color: var(--secondary-blue); background: rgba(0,198,255,0.1); border-color: rgba(0,198,255,0.3); }
+        }
         .close-sidebar:active { transform: scale(0.9); }
-        
+
+        /* User card di sidebar (saat login) */
+        .sidebar-user-card {
+            display: none; align-items: center; gap: 11px;
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(79,139,255,0.12) 0%, rgba(167,139,250,0.12) 100%);
+            border: 1px solid rgba(79,139,255,0.28);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            position: relative;
+        }
+        .sidebar-user-card::before {
+            content: ""; position: absolute; left: 12px; top: 12px; right: 12px; bottom: 12px;
+            border-radius: 10px; pointer-events: none;
+        }
+        .sidebar-user-avatar-lg {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: var(--blue-grad);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; color: #fff;
+            letter-spacing: -0.3px; flex-shrink: 0;
+            position: relative;
+        }
+        .sidebar-user-avatar-lg::after {
+            content: ""; position: absolute; right: 0; bottom: 0;
+            width: 11px; height: 11px; border-radius: 50%;
+            background: #22d39a; border: 2px solid #11162a;
+        }
+        .sidebar-user-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+        .sidebar-user-eyebrow {
+            font-size: 0.55rem; font-weight: 800; color: var(--secondary-blue);
+            letter-spacing: 1.4px; text-transform: uppercase;
+        }
+        .sidebar-user-name {
+            font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.92rem; color: var(--text-main);
+            letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .sidebar-user-status {
+            font-size: 0.65rem; font-weight: 700; color: #22d39a;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .sidebar-user-status::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #22d39a; }
+
+        /* Card guest (belum login) */
+        .sidebar-guest-card {
+            display: flex; flex-direction: column; gap: 10px;
+            padding: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed rgba(167,139,250,0.3);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+        .sidebar-guest-icon {
+            width: 38px; height: 38px; border-radius: 50%; margin: 0 auto;
+            background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.3);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--secondary-blue); font-size: 1.1rem;
+        }
+        .sidebar-guest-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.9rem; color: var(--text-main); letter-spacing: -0.2px; }
+        .sidebar-guest-sub { font-size: 0.72rem; color: var(--text-muted); font-weight: 500; line-height: 1.45; }
+        .sidebar-guest-btn {
+            background: var(--blue-grad); color: #fff; border: none;
+            padding: 8px 12px; border-radius: 10px;
+            font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.78rem;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+        @media (hover: hover) { .sidebar-guest-btn:hover { opacity: 0.92; transform: translateY(-1px); } }
+        .sidebar-guest-btn:active { transform: scale(0.96); }
+
+        /* Section */
+        .sidebar-section { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
         .sidebar-label {
-            font-size: 0.65rem; font-weight: 800; color: var(--text-muted);
-            text-transform: uppercase; letter-spacing: 1.2px; margin-top: 12px; margin-bottom: 4px; padding-left: 6px;
+            font-size: 0.6rem; font-weight: 800; color: var(--text-faint);
+            text-transform: uppercase; letter-spacing: 1.6px;
+            margin: 10px 0 6px; padding-left: 10px;
+            display: flex; align-items: center; gap: 8px;
         }
-                .sidebar-link {
-            padding: 11px 15px; background: var(--input-bg); border-radius: 12px;
-            font-weight: 700; font-size: 0.9rem; color: var(--text-main);
-            display: flex; align-items: center; gap: 12px; cursor: pointer; border: 2px solid transparent; text-align: left; width: 100%;
-            /* Kurva smooth biar pas di-hover dan diklik kerasa organik */
-            transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+        .sidebar-label::after {
+            content: ""; flex: 1; height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
         }
-        .sidebar-link i { font-size: 1.25rem; color: var(--secondary-blue); transition: color 0.25s; flex-shrink: 0; }
-        
-        .sidebar-link:hover { 
-            background: rgba(0, 122, 255, 0.12); 
-            border-color: var(--primary-blue); 
-            transform: translateX(5px); /* Maju pelan pas di-hover */
+        .sidebar-link {
+            padding: 11px 12px; background: transparent; border-radius: 12px;
+            font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.88rem;
+            color: var(--text-main);
+            display: flex; align-items: center; gap: 12px; cursor: pointer;
+            border: 1px solid transparent; text-align: left; width: 100%;
+            letter-spacing: -0.1px;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.18s ease;
         }
-        
-        .sidebar-link:active { 
-            transform: scale(0.94) translateX(2px); /* Menciut empuk pas diklik */
-            opacity: 0.8;
+        .sidebar-link i {
+            font-size: 1.2rem; color: var(--secondary-blue); flex-shrink: 0;
+            transition: color 0.18s ease;
         }
-        
-        .sidebar-link.active-menu { 
-            background: var(--blue-grad); color: #fff; border-color: transparent; 
-            box-shadow: 0 4px 15px rgba(0,122,255,0.2); 
+        .sidebar-link-text { flex: 1; }
+        .sidebar-link-arrow {
+            font-size: 0.95rem; color: var(--text-faint);
+            opacity: 0; transform: translateX(-3px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        @media (hover: hover) {
+            .sidebar-link:hover {
+                background: rgba(0,122,255,0.08);
+                border-color: rgba(0,122,255,0.25);
+                color: #fff;
+            }
+            .sidebar-link:hover i { color: var(--accent-cyan); }
+            .sidebar-link:hover .sidebar-link-arrow { opacity: 1; transform: translateX(0); color: var(--secondary-blue); }
+        }
+        .sidebar-link:active { transform: scale(0.98); opacity: 0.85; }
+        .sidebar-link.active-menu {
+            background: var(--blue-grad); color: #fff; border-color: transparent;
         }
         .sidebar-link.active-menu i { color: #fff; }
+        .sidebar-link.active-menu .sidebar-link-arrow { opacity: 1; transform: translateX(0); color: rgba(255,255,255,0.85); }
+        .sidebar-link.danger-link i { color: #f87171; }
+        .sidebar-link.danger-link {
+            color: #f87171;
+        }
+        @media (hover: hover) {
+            .sidebar-link.danger-link:hover { background: rgba(239,68,68,0.10); border-color: rgba(239,68,68,0.30); color: #fca5a5; }
+            .sidebar-link.danger-link:hover i { color: #fca5a5; }
+        }
+
+        /* Footer sidebar */
+        .sidebar-footer {
+            margin-top: auto; padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .sidebar-footer-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 8px;
+        }
+        .sidebar-version {
+            font-size: 0.62rem; font-weight: 700; color: var(--text-faint);
+            letter-spacing: 0.6px; text-transform: uppercase;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .sidebar-version-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: #22d39a;
+        }
+        .sidebar-credit {
+            font-size: 0.7rem; color: var(--text-muted); font-weight: 500;
+            text-align: center; padding: 6px 0 0;
+        }
+        .sidebar-credit strong { color: var(--text-main); font-weight: 800; }
         
-                /* =========================================================
+        /* =========================================================
            5. VIEW SYSTEM — SUPER SMOOTH (GPU compositor only)
            - Pure opacity + translate3d (NO scale → low-end GPU friendly)
-           - Single animation per child
-           - Stagger 80ms for fluid "waterfall" feel
+           - Single animation per child (no double layer like before)
+           - Stagger 110ms for clear "satu-satu" feel
         ========================================================= */
         .view-section { display: none; padding-bottom: 80px; }
 
@@ -444,39 +705,29 @@
 
         .view-section.active-view > * {
             opacity: 0;
-            
-            /* RAHASIA ANTI LAG: Kasih tau GPU buat siap-siap ngerender ini */
-            will-change: transform, opacity;
-            
-            /* Durasi 1.2s dengan kurva ekstrem (melesat cepat, melayang lama di akhir) */
-            animation: viewItemRise 1.2s cubic-bezier(0.1, 1, 0.2, 1) both;
+            animation: viewItemRise 0.95s cubic-bezier(0.19, 1, 0.22, 1) both;
         }
 
-        /* Stagger dirapatkan jadi 0.08s biar ngalirnya menyambung seperti gelombang */
-        .view-section.active-view > *:nth-child(1) { animation-delay: 0.04s; }
-        .view-section.active-view > *:nth-child(2) { animation-delay: 0.12s; }
-        .view-section.active-view > *:nth-child(3) { animation-delay: 0.20s; }
-        .view-section.active-view > *:nth-child(4) { animation-delay: 0.28s; }
-        .view-section.active-view > *:nth-child(5) { animation-delay: 0.36s; }
-        .view-section.active-view > *:nth-child(6) { animation-delay: 0.44s; }
-        .view-section.active-view > *:nth-child(7) { animation-delay: 0.52s; }
-        .view-section.active-view > *:nth-child(8) { animation-delay: 0.60s; }
+        /* Stagger jelas per child */
+        .view-section.active-view > *:nth-child(1) { animation-delay: 0.06s; }
+        .view-section.active-view > *:nth-child(2) { animation-delay: 0.18s; }
+        .view-section.active-view > *:nth-child(3) { animation-delay: 0.30s; }
+        .view-section.active-view > *:nth-child(4) { animation-delay: 0.42s; }
+        .view-section.active-view > *:nth-child(5) { animation-delay: 0.54s; }
+        .view-section.active-view > *:nth-child(6) { animation-delay: 0.66s; }
+        .view-section.active-view > *:nth-child(7) { animation-delay: 0.78s; }
+        .view-section.active-view > *:nth-child(8) { animation-delay: 0.90s; }
 
         @keyframes viewItemRise {
-            /* Tarikan awal dari 45px biar pergerakan naiknya lebih kelihatan dan bisa dinikmati mata */
-            0%   { opacity: 0; transform: translate3d(0, 45px, 0); }
+            0%   { opacity: 0; transform: translate3d(0, 36px, 0); }
             100% { opacity: 1; transform: translate3d(0, 0, 0); }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .view-section.active-view > * { 
-                animation: none !important; 
-                opacity: 1 !important; 
-                transform: none !important; 
-            }
+            .view-section.active-view > * { animation: none !important; opacity: 1 !important; }
         }
 
-    /* =========================================================
+        /* =========================================================
            6. MODAL / LIGHTBOX
         ========================================================= */
         .modal-overlay {
@@ -1654,36 +1905,139 @@
         .login-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,122,255,0.4); }
         .login-cta-btn:active { transform: scale(0.96); }
 
-        /* FORM USER CHIP (when logged in) */
+        /* FORM USER CHIP (when logged in) — sekarang dengan avatar gambar/inisial */
         .form-userchip {
-            display: flex; align-items: center; gap: 10px;
-            background: linear-gradient(135deg, rgba(0,122,255,0.12), rgba(0,122,255,0.04));
-            border: 1.5px solid rgba(0,122,255,0.32);
-            border-radius: 14px; padding: 10px 14px;
+            display: flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, rgba(0,122,255,0.12), rgba(167,139,250,0.08));
+            border: 1px solid rgba(79,139,255,0.32);
+            border-radius: 14px; padding: 10px 12px;
             margin-bottom: 18px;
         }
-        .form-userchip > i:first-child {
-            font-size: 1.4rem; color: var(--secondary-blue);
-            background: rgba(0,122,255,0.15); padding: 6px;
-            border-radius: 10px;
+        .form-userchip-avatar {
+            width: 40px; height: 40px; border-radius: 12px;
+            background: var(--blue-grad);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; color: #fff;
+            letter-spacing: -0.3px; flex-shrink: 0; overflow: hidden;
+            position: relative;
         }
+        .form-userchip-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .form-userchip-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
         .form-userchip-label {
-            font-size: 0.7rem; color: var(--text-muted);
-            text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;
+            font-size: 0.6rem; color: var(--secondary-blue);
+            text-transform: uppercase; letter-spacing: 1.4px; font-weight: 800;
         }
         .form-userchip-name {
-            font-size: 0.92rem; color: var(--text-main); font-weight: 900;
+            font-size: 0.95rem; color: var(--text-main); font-weight: 900;
             font-family: 'Nunito', sans-serif; letter-spacing: -0.2px;
-            flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
-        .form-userchip-logout {
-            background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.3);
+        .form-userchip-handle {
+            font-size: 0.72rem; color: var(--text-muted); font-weight: 600;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .form-userchip-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .form-userchip-edit, .form-userchip-logout {
             width: 32px; height: 32px; border-radius: 10px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.95rem; transition: background 0.2s ease, transform 0.2s ease;
+            font-size: 0.95rem; transition: background 0.18s ease, transform 0.18s ease;
+            border: 1px solid;
         }
-        .form-userchip-logout:hover { background: rgba(239,68,68,0.22); transform: scale(1.05); }
+        .form-userchip-edit {
+            background: rgba(0,198,255,0.10); color: var(--accent-cyan); border-color: rgba(0,198,255,0.28);
+        }
+        @media (hover: hover) { .form-userchip-edit:hover { background: rgba(0,198,255,0.18); } }
+        .form-userchip-edit:active { transform: scale(0.92); }
+        .form-userchip-logout {
+            background: rgba(239,68,68,0.10); color: #ef4444; border-color: rgba(239,68,68,0.3);
+        }
+        @media (hover: hover) { .form-userchip-logout:hover { background: rgba(239,68,68,0.22); } }
         .form-userchip-logout:active { transform: scale(0.92); }
+
+        /* Avatar image inside circles (untuk nav-user-avatar, sidebar-user-avatar-lg) */
+        .nav-user-avatar img,
+        .sidebar-user-avatar-lg img {
+            width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit;
+        }
+        .nav-user-avatar { overflow: hidden; }
+        .sidebar-user-avatar-lg { overflow: hidden; }
+        /* Tetap ada ::after untuk status dot, jadi pastikan dot pakai z-index */
+        .nav-user-avatar::after, .sidebar-user-avatar-lg::after { z-index: 2; }
+
+        /* Edit button kecil di sidebar user card */
+        .sidebar-user-edit {
+            width: 32px; height: 32px; border-radius: 10px;
+            background: rgba(0,198,255,0.10);
+            border: 1px solid rgba(0,198,255,0.28);
+            color: var(--accent-cyan);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; flex-shrink: 0;
+            font-size: 0.95rem;
+            transition: background 0.18s ease, transform 0.18s ease;
+        }
+        @media (hover: hover) { .sidebar-user-edit:hover { background: rgba(0,198,255,0.20); } }
+        .sidebar-user-edit:active { transform: scale(0.92); }
+
+        /* =========================================================
+           PROFILE MODAL — edit display name + avatar
+        ========================================================= */
+        .profile-avatar-upload {
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+            margin-bottom: 18px;
+        }
+        .profile-avatar-circle {
+            width: 110px; height: 110px; border-radius: 50%;
+            background: var(--blue-grad);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 2.6rem; color: #fff;
+            letter-spacing: -1px; overflow: hidden;
+            border: 3px solid rgba(79,139,255,0.4);
+            position: relative;
+        }
+        .profile-avatar-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .profile-avatar-upload-btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(79,139,255,0.12);
+            border: 1px solid rgba(79,139,255,0.35);
+            color: var(--secondary-blue);
+            padding: 8px 14px; border-radius: 10px;
+            font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.78rem;
+            cursor: pointer; transition: background 0.18s ease, transform 0.18s ease;
+        }
+        .profile-avatar-upload-btn:active { transform: scale(0.96); }
+        .profile-avatar-upload-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .profile-avatar-remove {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(239,68,68,0.10);
+            border: 1px solid rgba(239,68,68,0.30);
+            color: #ef4444;
+            padding: 8px 14px; border-radius: 10px;
+            font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.78rem;
+            cursor: pointer; transition: background 0.18s ease, transform 0.18s ease;
+        }
+        .profile-avatar-remove:active { transform: scale(0.96); }
+        .profile-hint {
+            font-size: 0.72rem; color: var(--text-muted); text-align: center;
+            font-weight: 500; line-height: 1.45; max-width: 320px; margin: 0 auto;
+        }
+        .profile-username-static {
+            display: flex; align-items: center; gap: 9px;
+            background: rgba(255,255,255,0.04);
+            border: 1px dashed rgba(255,255,255,0.14);
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+        }
+        .profile-username-static i { color: var(--text-muted); font-size: 1rem; }
+        .profile-username-static-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+        .profile-username-static-label { font-size: 0.6rem; font-weight: 800; color: var(--text-faint); letter-spacing: 1.4px; text-transform: uppercase; }
+        .profile-username-static-value { font-size: 0.85rem; font-weight: 800; color: var(--text-muted); letter-spacing: -0.2px; font-family: 'Nunito', sans-serif; }
+        .profile-username-static-lock {
+            font-size: 0.62rem; font-weight: 700; color: var(--text-faint);
+            background: rgba(255,255,255,0.04); padding: 3px 8px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.08);
+            display: inline-flex; align-items: center; gap: 4px;
+        }
 
         /* =========================================================
            15. RESPONSIVE
@@ -2123,6 +2477,58 @@
         </div>
     </div>
 
+    <!-- PROFILE MODAL — edit display name + avatar -->
+    <div id="profileModal" class="modal-overlay" onclick="closeProfileModal(event)">
+        <div class="modal-content auth-card has-corner-accents" style="max-width:400px;margin:0 auto;border-radius:24px;padding:28px 24px;text-align:center;">
+            <span class="modal-close" onclick="closeProfileModal(event)"><i class="ph-bold ph-x"></i></span>
+            <h2 class="auth-title" style="font-size:1.25rem;margin-bottom:6px;">Edit Profil</h2>
+            <p class="auth-desc" style="margin-bottom:18px;font-size:0.82rem;">
+                Ubah <strong style="color:var(--text-soft);">foto profil</strong> & <strong style="color:var(--text-soft);">nama tampilan</strong> kamu.
+            </p>
+
+            <div class="profile-avatar-upload">
+                <div class="profile-avatar-circle" id="profileAvatarPreview" aria-hidden="true">U</div>
+                <div class="profile-avatar-upload-row">
+                    <label class="profile-avatar-upload-btn">
+                        <i class="ph-bold ph-image-square"></i>
+                        <span>Pilih Foto</span>
+                        <input type="file" id="profileAvatarInput" accept="image/*" style="display:none;">
+                    </label>
+                    <button type="button" class="profile-avatar-remove" id="profileAvatarRemoveBtn" style="display:none;">
+                        <i class="ph-bold ph-trash"></i>
+                        <span>Hapus</span>
+                    </button>
+                </div>
+                <p class="profile-hint">Pakai foto kotak biar pas. Max 3MB · auto-resize ke 240×240.</p>
+            </div>
+
+            <div class="profile-username-static">
+                <i class="ph-bold ph-at"></i>
+                <div class="profile-username-static-info">
+                    <span class="profile-username-static-label">Username (Login)</span>
+                    <span class="profile-username-static-value" id="profileUsernameStatic">@user</span>
+                </div>
+                <span class="profile-username-static-lock"><i class="ph-bold ph-lock-key" style="font-size:0.7rem;"></i> Tetap</span>
+            </div>
+
+            <form id="profileForm" style="display:flex;flex-direction:column;gap:0;">
+                <div class="auth-input-group">
+                    <i class="ph-bold ph-user-circle auth-input-icon"></i>
+                    <input type="text" id="profileDisplayName" class="auth-input"
+                        placeholder="Nama Tampilan (contoh: Naruto Boy)"
+                        maxlength="32" autocomplete="off">
+                </div>
+                <button type="submit" class="auth-btn-submit">
+                    <i class="ph-bold ph-floppy-disk"></i> Simpan Profil
+                </button>
+            </form>
+            <p style="margin-top:12px;font-size:0.7rem;color:var(--text-faint);font-weight:600;line-height:1.5;">
+                <i class="ph-bold ph-info" style="color:var(--accent-cyan);"></i>
+                Nama tampilan akan otomatis dipakai di form request & dilihat admin.
+            </p>
+        </div>
+    </div>
+
     <div id="imageModal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-content">
             <span class="modal-close" onclick="closeModal(event)"><i class="ph-bold ph-x"></i></span>
@@ -2137,14 +2543,15 @@
     <nav>
         <div class="nav-left">
             <button class="menu-toggle" id="btn-menu" aria-label="Buka menu"><i class="ph-bold ph-list"></i></button>
-            <div style="display:flex;flex-direction:column;line-height:1;">
-                <div class="brand"><span class="brand-dot"></span>Ryuuzaa Stickers</div>
+            <div class="brand-mark" aria-hidden="true">R</div>
+            <div class="brand-text">
+                <div class="brand">Ryuuzaa Stickers</div>
                 <span class="nav-tagline">Sticker Request Hub</span>
             </div>
         </div>
         <div class="nav-right" id="nav-user-info">
             <button class="btn-nav-login" onclick="openUserLoginModal()" id="nav-user-btn">
-                <i class="ph-bold ph-user"></i> Login
+                <i class="ph-bold ph-sign-in"></i> Login
             </button>
         </div>
     </nav>
@@ -2152,26 +2559,96 @@
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="sidebar" id="sidebar">
-        <div class="sidebar-top">
-            <div class="sidebar-logo"> Stickers Hub </div>
-            <button class="close-sidebar" id="btn-close-sidebar"><i class="ph-bold ph-x"></i></button>
+        <!-- Header brand + close -->
+        <div class="sidebar-head">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-mark" aria-hidden="true">R</div>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-name">Ryuuzaa Hub</span>
+                    <span class="sidebar-brand-tag">Sticker Request</span>
+                </div>
+            </div>
+            <button class="close-sidebar" id="btn-close-sidebar" aria-label="Tutup menu"><i class="ph-bold ph-x"></i></button>
         </div>
 
-        <div class="sidebar-label">Menu Utama</div>
-        <button class="sidebar-link active-menu" onclick="switchView('view-home', this)">
-            <i class="ph-duotone ph-house"></i> Beranda
-        </button>
+        <!-- User card (saat login) — dengan tombol edit profil -->
+        <div class="sidebar-user-card" id="sidebar-user-card">
+            <div class="sidebar-user-avatar-lg" id="sidebar-user-avatar" aria-hidden="true">U</div>
+            <div class="sidebar-user-info">
+                <span class="sidebar-user-eyebrow">Login sebagai</span>
+                <span class="sidebar-user-name" id="sidebar-user-name">User</span>
+                <span class="sidebar-user-status">Aktif sekarang</span>
+            </div>
+            <button class="sidebar-user-edit" type="button" onclick="(function(){var s=document.getElementById('sidebar');var so=document.getElementById('sidebar-overlay');if(s)s.classList.remove('active');if(so)so.classList.remove('active');setTimeout(()=>openProfileModal(),250);})()" title="Edit Profil" aria-label="Edit Profil">
+                <i class="ph-bold ph-pencil-simple-line"></i>
+            </button>
+        </div>
 
-        <div class="sidebar-label" id="label-system" style="margin-top: auto;">Sistem</div>
-        <button class="sidebar-link" onclick="switchView('view-auth', this)" id="nav-auth-menu">
-            <i class="ph-duotone ph-shield-check"></i> Login Admin
-        </button>
-        <button class="sidebar-link" onclick="switchView('view-admin', this)" id="nav-admin-menu" style="display:none;">
-            <i class="ph-duotone ph-shield-check"></i> Panel Admin
-        </button>
-        <button class="sidebar-link danger-link" onclick="logoutAccount()" id="nav-logout-menu" style="display:none;">
-            <i class="ph-duotone ph-sign-out"></i> Keluar
-        </button>
+        <!-- Guest card (belum login) -->
+        <div class="sidebar-guest-card" id="sidebar-guest-card">
+            <div class="sidebar-guest-icon"><i class="ph-bold ph-user-plus"></i></div>
+            <div class="sidebar-guest-title">Belum Login</div>
+            <div class="sidebar-guest-sub">Login dulu biar bisa kirim request sticker.</div>
+            <button class="sidebar-guest-btn" type="button" onclick="(function(){var s=document.getElementById('sidebar');var so=document.getElementById('sidebar-overlay');if(s)s.classList.remove('active');if(so)so.classList.remove('active');setTimeout(()=>openUserLoginModal(),200);})()">
+                <i class="ph-bold ph-sign-in"></i> Login Sekarang
+            </button>
+        </div>
+
+        <!-- Menu utama -->
+        <div class="sidebar-section">
+            <div class="sidebar-label">Navigasi</div>
+            <button class="sidebar-link active-menu" onclick="switchView('view-home', this)">
+                <i class="ph-duotone ph-house"></i>
+                <span class="sidebar-link-text">Beranda</span>
+                <i class="ph-bold ph-caret-right sidebar-link-arrow"></i>
+            </button>
+        </div>
+
+        <!-- Akun User (saat login) -->
+        <div class="sidebar-section" id="sidebar-account-section" style="display:none;">
+            <div class="sidebar-label">Akun</div>
+            <button class="sidebar-link" type="button" onclick="(function(){var s=document.getElementById('sidebar');var so=document.getElementById('sidebar-overlay');if(s)s.classList.remove('active');if(so)so.classList.remove('active');setTimeout(()=>openProfileModal(),250);})()">
+                <i class="ph-duotone ph-user-circle-gear"></i>
+                <span class="sidebar-link-text">Edit Profil</span>
+                <i class="ph-bold ph-caret-right sidebar-link-arrow"></i>
+            </button>
+            <button class="sidebar-link danger-link" type="button" onclick="userLogout()">
+                <i class="ph-duotone ph-sign-out"></i>
+                <span class="sidebar-link-text">Keluar Akun</span>
+                <i class="ph-bold ph-caret-right sidebar-link-arrow"></i>
+            </button>
+        </div>
+
+        <!-- Akses Admin -->
+        <div class="sidebar-section">
+            <div class="sidebar-label" id="label-system">Akses Admin</div>
+            <button class="sidebar-link" onclick="switchView('view-auth', this)" id="nav-auth-menu">
+                <i class="ph-duotone ph-shield-check"></i>
+                <span class="sidebar-link-text">Login Admin</span>
+                <i class="ph-bold ph-caret-right sidebar-link-arrow"></i>
+            </button>
+            <button class="sidebar-link" onclick="switchView('view-admin', this)" id="nav-admin-menu" style="display:none;">
+                <i class="ph-duotone ph-gauge"></i>
+                <span class="sidebar-link-text">Panel Admin</span>
+                <i class="ph-bold ph-caret-right sidebar-link-arrow"></i>
+            </button>
+            <button class="sidebar-link danger-link" onclick="logoutAccount()" id="nav-logout-menu" style="display:none;">
+                <i class="ph-duotone ph-sign-out"></i>
+                <span class="sidebar-link-text">Keluar Admin</span>
+                <i class="ph-bold ph-caret-right sidebar-link-arrow"></i>
+            </button>
+        </div>
+
+        <!-- Footer (margin-top:auto pushes to bottom) -->
+        <div class="sidebar-footer" style="margin-top:auto;">
+            <div class="sidebar-footer-row">
+                <span class="sidebar-version"><span class="sidebar-version-dot"></span> Online · v1.0</span>
+                <span class="sidebar-version" style="color:var(--text-muted);"><i class="ph-bold ph-shield-check" style="font-size:0.85rem;"></i> Aman</span>
+            </div>
+            <div class="sidebar-credit">
+                Dibuat oleh <strong>Ryuuzaa</strong> · 2026
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -2265,13 +2742,22 @@
 
                     <form id="stickerForm">
                         <input type="hidden" id="reqUser">
+                        <input type="hidden" id="reqDisplayName">
                         <div class="form-userchip" id="form-userchip">
-                            <i class="ph-bold ph-user-circle"></i>
-                            <span class="form-userchip-label">Login sebagai</span>
-                            <span class="form-userchip-name" id="form-userchip-name">@user</span>
-                            <button type="button" class="form-userchip-logout" onclick="userLogout()" title="Keluar">
-                                <i class="ph-bold ph-sign-out"></i>
-                            </button>
+                            <div class="form-userchip-avatar" id="form-userchip-avatar" aria-hidden="true">U</div>
+                            <div class="form-userchip-info">
+                                <span class="form-userchip-label">Login sebagai</span>
+                                <span class="form-userchip-name" id="form-userchip-name">User</span>
+                                <span class="form-userchip-handle" id="form-userchip-handle">@user</span>
+                            </div>
+                            <div class="form-userchip-actions">
+                                <button type="button" class="form-userchip-edit" onclick="openProfileModal()" title="Edit Profil">
+                                    <i class="ph-bold ph-pencil-simple-line"></i>
+                                </button>
+                                <button type="button" class="form-userchip-logout" onclick="userLogout()" title="Keluar">
+                                    <i class="ph-bold ph-sign-out"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="form-progress" id="formProgress">
@@ -2875,15 +3361,17 @@
             if (pop) { pop.currentTime = 0; pop.play().catch(() => {}); }
         }
 
-                            window.switchView = function (viewId, clickedElement = null) {
+                    window.switchView = function (viewId, clickedElement = null) {
             playPopSound();
             
+            // 1. Kasih visual instan ke tombol yang diklik biar kerasa responsif
             sideLinks.forEach(link => link.classList.remove('active-menu'));
             if (clickedElement && clickedElement.classList.contains('sidebar-link')) {
                 clickedElement.classList.add('active-menu');
             }
 
-            // Beri jeda 50ms biar browser bernapas & siap ngerender animasi CSS
+            // 2. RAHASIA SMOOTH: Kita tahan 180ms sebelum sidebar nutup dan view ganti.
+            // Biar user sempat lihat tombolnya kepencet dan animasinya selesai!
             setTimeout(() => {
                 views.forEach(v => v.classList.remove('active-view'));
                 
@@ -2893,7 +3381,6 @@
                 sidebar.classList.remove('active');
                 sidebarOverlay.classList.remove('active');
                 
-                // Wajib instan, bukan smooth!
                 window.scrollTo(0, 0); 
                 
                 requestAnimationFrame(() => observeImages());
@@ -2901,7 +3388,7 @@
                     updateAdminStats();
                     loadActivityLogs();
                 }
-            }, 50); 
+            }, 50); // <--- Angka 180ms ini ngasih delay yang pas banget, ga kelamaan, ga kacepetan.
         };
 
         // =========================================================
@@ -2954,35 +3441,200 @@
             const d = new Date();
             return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
         }
+
+        // =========================================================
+        //  PASSWORD HASH (SHA-256 + salt) — client-side
+        // =========================================================
+        const PWD_SALT = 'ryuuzaa-stickers-v1-2026';
+        async function hashPassword(password, username) {
+            const data = new TextEncoder().encode(PWD_SALT + ':' + (username || '') + ':' + (password || ''));
+            const hashBuf = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // =========================================================
+        //  FIRESTORE USER SYNC (hybrid: local cache + Firestore canonical)
+        // =========================================================
+        async function syncUserFromFirestore(username) {
+            if (!username) return null;
+            try {
+                const snap = await getDoc(doc(db, 'users', username));
+                if (!snap.exists()) return null;
+                const data = snap.data();
+                setUserProfile(username, {
+                    displayName: data.displayName || '',
+                    avatar: data.avatar || null
+                });
+                const cur = getUserAuth();
+                if (cur && cur.username === username) {
+                    setUserAuth({ ...cur, lastRequestDate: data.lastRequestDate || null });
+                }
+                return data;
+            } catch (e) {
+                console.warn('syncUserFromFirestore failed:', e);
+                return null;
+            }
+        }
+        async function pushProfileToFirestore(username, partial) {
+            if (!username) return;
+            try {
+                await updateDoc(doc(db, 'users', username), partial);
+            } catch (e) {
+                // Doc gak ada? fallback ke setDoc merge
+                try {
+                    await setDoc(doc(db, 'users', username), partial, { merge: true });
+                } catch (err) {
+                    console.warn('pushProfileToFirestore failed:', err);
+                }
+            }
+        }
+        // =========================================================
+        //  USER PROFILE (display name + avatar)
+        // =========================================================
+        const USER_PROFILES_KEY = 'ryuuzaa_user_profiles_v1';
+        function getProfiles() {
+            try { return JSON.parse(localStorage.getItem(USER_PROFILES_KEY) || '{}'); }
+            catch { return {}; }
+        }
+        function saveProfiles(p) {
+            try { localStorage.setItem(USER_PROFILES_KEY, JSON.stringify(p)); } catch (e) { console.warn('Profile save failed (storage full?)', e); }
+        }
+        function getUserProfile(username) {
+            if (!username) return null;
+            const p = getProfiles();
+            return p[username] || null;
+        }
+        function setUserProfile(username, profile) {
+            if (!username) return;
+            const p = getProfiles();
+            p[username] = profile || {};
+            saveProfiles(p);
+        }
+        function getDisplayName(username) {
+            const prof = getUserProfile(username);
+            return (prof && prof.displayName && prof.displayName.trim()) ? prof.displayName.trim() : username;
+        }
+        function getAvatarDataUrl(username) {
+            const prof = getUserProfile(username);
+            return (prof && prof.avatar) ? prof.avatar : null;
+        }
+        function renderAvatarHtml(avatarUrl, initial, alt) {
+            if (avatarUrl) return '<img src="' + avatarUrl + '" alt="' + escapeHtml(alt || '') + '" loading="lazy">';
+            return escapeHtml(initial || 'U');
+        }
+
         function updateUserUI() {
             const u = getUserAuth();
-            const navBtn = document.getElementById('nav-user-btn');
+            const navWrap = document.getElementById('nav-user-info');
             const cta = document.getElementById('form-login-cta');
             const form = document.getElementById('stickerForm');
             const chip = document.getElementById('form-userchip');
             const chipName = document.getElementById('form-userchip-name');
+            const chipHandle = document.getElementById('form-userchip-handle');
+            const chipAvatar = document.getElementById('form-userchip-avatar');
             const reqUser = document.getElementById('reqUser');
+            const reqDisplayName = document.getElementById('reqDisplayName');
+            const sbUser = document.getElementById('sidebar-user-card');
+            const sbUserName = document.getElementById('sidebar-user-name');
+            const sbUserAvatar = document.getElementById('sidebar-user-avatar');
+            const sbGuest = document.getElementById('sidebar-guest-card');
+            const sbAccount = document.getElementById('sidebar-account-section');
 
             if (u && u.username) {
-                if (navBtn) {
-                    navBtn.innerHTML = '<i class="ph-bold ph-user-circle"></i> @' + u.username;
-                    navBtn.onclick = userLogout;
+                const dn = getDisplayName(u.username);
+                const avatarUrl = getAvatarDataUrl(u.username);
+                const initial = (dn[0] || u.username[0] || 'U').toUpperCase();
+                const avatarHtml = renderAvatarHtml(avatarUrl, initial, dn);
+
+                if (navWrap) {
+                    navWrap.innerHTML =
+                        '<div class="nav-user-pill" id="nav-user-pill" role="button" aria-haspopup="menu" aria-expanded="false">' +
+                            '<div class="nav-user-avatar" aria-hidden="true">' + avatarHtml + '</div>' +
+                            '<span class="nav-user-name">' + escapeHtml(dn) + '</span>' +
+                            '<i class="ph-bold ph-caret-down nav-user-chevron"></i>' +
+                            '<div class="nav-user-menu" role="menu">' +
+                                '<div class="nav-user-menu-header">' +
+                                    '<span class="nav-user-menu-eyebrow">Akun Aktif</span>' +
+                                    '<span class="nav-user-menu-name">' + escapeHtml(dn) + '</span>' +
+                                    '<span style="font-size:0.7rem;font-weight:700;color:var(--text-muted);margin-top:1px;">@' + escapeHtml(u.username) + '</span>' +
+                                    '<span class="nav-user-menu-status">Online</span>' +
+                                '</div>' +
+                                '<button type="button" class="nav-user-menu-item" data-action="edit-profile">' +
+                                    '<i class="ph-bold ph-user-circle-gear"></i> Edit Profil' +
+                                '</button>' +
+                                '<button type="button" class="nav-user-menu-item" data-action="goto-form">' +
+                                    '<i class="ph-bold ph-pencil-simple-line"></i> Buat Request Baru' +
+                                '</button>' +
+                                '<button type="button" class="nav-user-menu-item danger" data-action="logout">' +
+                                    '<i class="ph-bold ph-sign-out"></i> Keluar dari Akun' +
+                                '</button>' +
+                            '</div>' +
+                        '</div>';
+                    const pill = document.getElementById('nav-user-pill');
+                    if (pill) {
+                        pill.addEventListener('click', function(e) {
+                            const target = e.target.closest('[data-action]');
+                            if (target) {
+                                const act = target.getAttribute('data-action');
+                                pill.classList.remove('open');
+                                pill.setAttribute('aria-expanded', 'false');
+                                if (act === 'logout') userLogout();
+                                else if (act === 'edit-profile') openProfileModal();
+                                else if (act === 'goto-form') {
+                                    const sb = document.getElementById('sidebar');
+                                    const sbo = document.getElementById('sidebar-overlay');
+                                    if (sb) sb.classList.remove('active');
+                                    if (sbo) sbo.classList.remove('active');
+                                    setTimeout(() => {
+                                        const f = document.getElementById('stickerForm');
+                                        if (f) f.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    }, 100);
+                                }
+                                return;
+                            }
+                            const isOpen = pill.classList.toggle('open');
+                            pill.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                        });
+                        document.addEventListener('click', function(ev) {
+                            if (!pill.contains(ev.target)) {
+                                pill.classList.remove('open');
+                                pill.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+                    }
                 }
                 if (cta) cta.style.display = 'none';
                 if (form) form.style.display = '';
                 if (chip) chip.style.display = 'flex';
-                if (chipName) chipName.textContent = '@' + u.username;
+                if (chipName) chipName.textContent = dn;
+                if (chipHandle) chipHandle.textContent = '@' + u.username;
+                if (chipAvatar) chipAvatar.innerHTML = avatarHtml;
                 if (reqUser) reqUser.value = u.username;
+                if (reqDisplayName) reqDisplayName.value = dn;
+                if (sbUser) sbUser.style.display = 'flex';
+                if (sbGuest) sbGuest.style.display = 'none';
+                if (sbAccount) sbAccount.style.display = 'flex';
+                if (sbUserName) sbUserName.textContent = dn;
+                if (sbUserAvatar) sbUserAvatar.innerHTML = avatarHtml;
             } else {
-                if (navBtn) {
-                    navBtn.innerHTML = '<i class="ph-bold ph-user"></i> Login';
-                    navBtn.onclick = openUserLoginModal;
+                if (navWrap) {
+                    navWrap.innerHTML =
+                        '<button class="btn-nav-login" id="nav-user-btn" onclick="openUserLoginModal()">' +
+                            '<i class="ph-bold ph-sign-in"></i> Login' +
+                        '</button>';
                 }
                 if (cta) cta.style.display = 'block';
                 if (form) form.style.display = 'none';
                 if (chip) chip.style.display = 'none';
                 if (reqUser) reqUser.value = '';
+                if (reqDisplayName) reqDisplayName.value = '';
+                if (sbUser) sbUser.style.display = 'none';
+                if (sbGuest) sbGuest.style.display = 'flex';
+                if (sbAccount) sbAccount.style.display = 'none';
             }
+        }
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
         window.openUserLoginModal = function() {
@@ -3007,6 +3659,148 @@
             }
         };
 
+        // =========================================================
+        //  PROFILE MODAL — buka, isi, simpan
+        // =========================================================
+        let _profileTempAvatar = null; // hold pending avatar selection (data URL) or 'REMOVE' or null (no change)
+
+        window.openProfileModal = function() {
+            const u = getUserAuth();
+            if (!u || !u.username) {
+                showToast("Login Dulu", "Login dulu sebelum edit profil.");
+                openUserLoginModal();
+                return;
+            }
+            const m = document.getElementById('profileModal');
+            if (!m) return;
+            const prof = getUserProfile(u.username) || {};
+            _profileTempAvatar = null;
+            const dnInput = document.getElementById('profileDisplayName');
+            const ustatic = document.getElementById('profileUsernameStatic');
+            const preview = document.getElementById('profileAvatarPreview');
+            const removeBtn = document.getElementById('profileAvatarRemoveBtn');
+            if (dnInput) dnInput.value = prof.displayName || '';
+            if (ustatic) ustatic.textContent = '@' + u.username;
+            if (preview) {
+                if (prof.avatar) {
+                    preview.innerHTML = '<img src="' + prof.avatar + '" alt="avatar">';
+                    if (removeBtn) removeBtn.style.display = 'inline-flex';
+                } else {
+                    preview.textContent = ((prof.displayName && prof.displayName[0]) || u.username[0] || 'U').toUpperCase();
+                    if (removeBtn) removeBtn.style.display = 'none';
+                }
+            }
+            m.classList.add('active');
+            setTimeout(() => { if (dnInput) dnInput.focus(); }, 100);
+        };
+        window.closeProfileModal = function(e) {
+            if (!e || (e.target && (e.target.classList.contains('modal-overlay') || (e.target.closest && e.target.closest('.modal-close'))))) {
+                document.getElementById('profileModal').classList.remove('active');
+                _profileTempAvatar = null;
+            }
+        };
+
+        // Resize avatar via canvas — output JPEG ≤ 240×240 (kira-kira < 30 KB)
+        function resizeImageToDataUrl(file, maxDim) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const w = img.width, h = img.height;
+                        const scale = Math.min(1, maxDim / Math.max(w, h));
+                        const cw = Math.round(w * scale);
+                        const ch = Math.round(h * scale);
+                        const c = document.createElement('canvas');
+                        c.width = cw; c.height = ch;
+                        const ctx = c.getContext('2d');
+                        // Solid bg biar PNG transparan jadi opaque
+                        ctx.fillStyle = '#11162a';
+                        ctx.fillRect(0, 0, cw, ch);
+                        ctx.drawImage(img, 0, 0, cw, ch);
+                        try {
+                            resolve(c.toDataURL('image/jpeg', 0.85));
+                        } catch (e) { reject(e); }
+                    };
+                    img.onerror = reject;
+                    img.src = ev.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Bind avatar input + remove button
+        document.addEventListener('DOMContentLoaded', () => {
+            const avatarInput = document.getElementById('profileAvatarInput');
+            const preview = document.getElementById('profileAvatarPreview');
+            const removeBtn = document.getElementById('profileAvatarRemoveBtn');
+            const profileForm = document.getElementById('profileForm');
+
+            if (avatarInput) {
+                avatarInput.addEventListener('change', async (e) => {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+                    if (!file.type.startsWith('image/')) {
+                        showToast("Format Salah", "Cuma terima file gambar yaa.");
+                        avatarInput.value = '';
+                        return;
+                    }
+                    if (file.size > 3 * 1024 * 1024) {
+                        showToast("Terlalu Besar", "Maksimal 3MB.");
+                        avatarInput.value = '';
+                        return;
+                    }
+                    try {
+                        const dataUrl = await resizeImageToDataUrl(file, 240);
+                        _profileTempAvatar = dataUrl;
+                        if (preview) preview.innerHTML = '<img src="' + dataUrl + '" alt="avatar">';
+                        if (removeBtn) removeBtn.style.display = 'inline-flex';
+                    } catch (err) {
+                        console.error(err);
+                        showToast("Gagal", "Gagal proses gambar. Coba foto lain.");
+                    } finally {
+                        avatarInput.value = '';
+                    }
+                });
+            }
+
+            if (removeBtn) {
+                removeBtn.addEventListener('click', () => {
+                    _profileTempAvatar = 'REMOVE';
+                    const u = getUserAuth();
+                    const dnInput = document.getElementById('profileDisplayName');
+                    const initial = ((dnInput && dnInput.value && dnInput.value[0]) || (u && u.username[0]) || 'U').toUpperCase();
+                    if (preview) preview.textContent = initial;
+                    removeBtn.style.display = 'none';
+                });
+            }
+
+            if (profileForm) {
+                profileForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const u = getUserAuth();
+                    if (!u || !u.username) return;
+                    const dnRaw = (document.getElementById('profileDisplayName').value || '').trim();
+                    const displayName = dnRaw.replace(/\s+/g, ' ').slice(0, 32);
+                    const cur = getUserProfile(u.username) || {};
+                    const next = { ...cur, displayName: displayName };
+                    if (_profileTempAvatar === 'REMOVE') delete next.avatar;
+                    else if (_profileTempAvatar) next.avatar = _profileTempAvatar;
+                    setUserProfile(u.username, next);
+                    _profileTempAvatar = null;
+                    document.getElementById('profileModal').classList.remove('active');
+                    showToast("Profil Tersimpan ✨", "Foto & nama tampilan diperbarui.");
+                    updateUserUI();
+                    // Push ke Firestore (background, non-blocking)
+                    pushProfileToFirestore(u.username, {
+                        displayName: next.displayName || '',
+                        avatar: next.avatar || null
+                    });
+                });
+            }
+        });
+
         // Storage akun terdaftar (per device). Format: { "username": { password, lastRequestDate } }
         const USER_ACCOUNTS_KEY = 'ryuuzaa_user_accounts_v1';
         function getAccounts() {
@@ -3017,7 +3811,7 @@
             try { localStorage.setItem(USER_ACCOUNTS_KEY, JSON.stringify(accs)); } catch {}
         }
 
-        document.getElementById('userLoginForm').addEventListener('submit', function(e) {
+        document.getElementById('userLoginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             let username = document.getElementById('userLoginUsername').value.trim().toLowerCase();
             username = username.replace(/[^a-z0-9._-]/g, '');
@@ -3035,30 +3829,96 @@
                 return;
             }
 
-            const accs = getAccounts();
-            let isNew = false;
-            if (accs[username]) {
-                // Username udah ada → cocokkan password
-                if (accs[username].password !== password) {
-                    showToast("Gagal", "Password salah untuk username ini.");
-                    return;
-                }
-            } else {
-                // Daftar otomatis
-                accs[username] = { password, lastRequestDate: null };
-                saveAccounts(accs);
-                isNew = true;
+            const submitBtn = this.querySelector('[type="submit"]');
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="ph-bold ph-spinner" style="animation:spin 0.8s linear infinite;"></i> Memproses...';
             }
 
-            const lastDate = accs[username].lastRequestDate || null;
-            setUserAuth({ username, lastRequestDate: lastDate });
-            document.getElementById('userLoginModal').classList.remove('active');
-            document.getElementById('userLoginForm').reset();
-            showToast(isNew ? "Daftar & Login Berhasil!" : "Login Berhasil!", "Selamat datang, @" + username + "!");
+            try {
+                const passHash = await hashPassword(password, username);
+                const userRef = doc(db, 'users', username);
+                let snap = null;
+                try { snap = await getDoc(userRef); }
+                catch (err) {
+                    console.error("Firestore baca gagal:", err);
+                    showToast("Server Error", "Gagal koneksi server. Coba lagi.");
+                    return;
+                }
+
+                let isNew = false;
+                let firestoreData = null;
+                if (snap && snap.exists()) {
+                    // Username sudah terdaftar di server → verifikasi password
+                    firestoreData = snap.data();
+                    if (firestoreData.passwordHash && firestoreData.passwordHash !== passHash) {
+                        showToast("Username Sudah Dipakai 🚫", "Username @" + username + " sudah punya password lain. Coba username lain atau pakai password yang benar.");
+                        return;
+                    }
+                    // Password cocok — update lastLogin
+                    try { await updateDoc(userRef, { lastLogin: serverTimestamp() }); } catch (_) {}
+                } else {
+                    // Belum ada di server → cek konflik localStorage lama (jika ada akun lokal yg passwordnya beda, blokir)
+                    const localAccs = getAccounts();
+                    if (localAccs[username] && localAccs[username].password !== password) {
+                        showToast("Password Salah", "Username ini ada akun lama di device ini dengan password berbeda.");
+                        return;
+                    }
+                    // Daftar baru di Firestore
+                    try {
+                        await setDoc(userRef, {
+                            username,
+                            passwordHash: passHash,
+                            displayName: '',
+                            avatar: null,
+                            createdAt: serverTimestamp(),
+                            lastLogin: serverTimestamp(),
+                            lastRequestDate: null
+                        });
+                    } catch (err) {
+                        console.error("Firestore tulis gagal:", err);
+                        showToast("Server Error", "Gagal mendaftar. Cek koneksi & rules Firestore.");
+                        return;
+                    }
+                    isNew = true;
+                }
+
+                // Sync local cache (akun + profil)
+                const accs = getAccounts();
+                accs[username] = { password, lastRequestDate: (firestoreData && firestoreData.lastRequestDate) || null };
+                saveAccounts(accs);
+                setUserProfile(username, {
+                    displayName: (firestoreData && firestoreData.displayName) || '',
+                    avatar: (firestoreData && firestoreData.avatar) || null
+                });
+                setUserAuth({ username, lastRequestDate: accs[username].lastRequestDate });
+
+                document.getElementById('userLoginModal').classList.remove('active');
+                document.getElementById('userLoginForm').reset();
+                const dn = getDisplayName(username);
+                showToast(isNew ? "Daftar & Login Berhasil! ✨" : "Login Berhasil!", "Selamat datang, " + dn + "!");
+                logUserActivity(username, isNew ? 'register' : 'login_success', 'User ' + username + (isNew ? ' baru daftar' : ' login'));
+            } catch (err) {
+                console.error("Login error:", err);
+                showToast("Error", "Terjadi kesalahan. Coba lagi.");
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+            }
         });
 
         // Init user UI saat halaman load
         updateUserUI();
+        // Background sync profil dari Firestore (kalau ada user login → ambil avatar/displayName terbaru)
+        (function() {
+            const u = getUserAuth();
+            if (u && u.username) {
+                syncUserFromFirestore(u.username).then(() => updateUserUI()).catch(() => {});
+            }
+        })();
 
         // =========================================================
         //  STICKER FORM SUBMIT (LOGIN REQUIRED + 1/HARI LIMIT)
@@ -3075,12 +3935,25 @@
             }
             const user = userAuth.username;
 
-            // 2. Cek rate limit 1x/hari
+            // 2. Cek rate limit 1x/hari (cache lokal dulu untuk feedback cepat)
             const tk = todayKey();
             if (userAuth.lastRequestDate === tk) {
                 showToast("Limit Tercapai 🚫", "Kamu sudah request hari ini. Coba lagi besok yaa!");
                 return;
             }
+            // 2b. Verifikasi rate limit ke Firestore (cross-device guard)
+            try {
+                const liveSnap = await getDoc(doc(db, 'users', user));
+                if (liveSnap.exists()) {
+                    const liveLast = liveSnap.data().lastRequestDate || null;
+                    if (liveLast === tk) {
+                        // Sync local cache supaya next time langsung ketahuan
+                        setUserAuth({ ...userAuth, lastRequestDate: tk });
+                        showToast("Limit Tercapai 🚫", "Kamu sudah request hari ini dari device lain. Coba lagi besok yaa!");
+                        return;
+                    }
+                }
+            } catch (e) { /* offline ok, lanjutkan */ }
 
             const char = document.getElementById('reqChar').value.trim();
             const origin = document.getElementById('reqOrigin').value.trim();
@@ -3108,8 +3981,10 @@
                         reader.readAsDataURL(file);
                     });
                 }
+                const displayName = getDisplayName(user);
+                const userAvatar = getAvatarDataUrl(user) || null;
                 const docRef = await addDoc(collection(db, 'requests'), {
-                    char, user, origin,
+                    char, user, origin, displayName, userAvatar,
                     image: finalImage, url: url !== "" ? url : null,
                     date, status: 'pending', createdAt: serverTimestamp()
                 });
@@ -3119,6 +3994,8 @@
                 // Sync ke storage akun supaya konsisten
                 const accs = getAccounts();
                 if (accs[user]) { accs[user].lastRequestDate = tk; saveAccounts(accs); }
+                // Sync ke Firestore (cross-device rate limit)
+                pushProfileToFirestore(user, { lastRequestDate: tk });
 
                 showToast("Tiket Terkirim! 🎉", `ID Tiket: #${docRef.id.slice(-6)}`);
                 this.reset();
@@ -3302,7 +4179,7 @@
             const searchQ = (adminFilterState.search || '').toLowerCase().trim();
             if (searchQ) {
                 docs = docs.filter(d => {
-                    const hay = `${d.user || ''} ${d.char || ''} ${d.origin || d.detail || ''}`.toLowerCase();
+                    const hay = `${d.user || ''} ${d.displayName || ''} ${d.char || ''} ${d.origin || d.detail || ''}`.toLowerCase();
                     return hay.includes(searchQ);
                 });
             }
@@ -3414,7 +4291,7 @@
                                     <span class="req-title-name">${escapeHTML(req.char)}</span>
                                 </div>
                             </div>
-                            <div class="req-user"><i class="ph-bold ph-user-circle"></i> ${escapeHTML(req.user)}</div>
+                            <div class="req-user">${req.userAvatar ? `<img src="${req.userAvatar}" alt="" style="width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:2px;">` : '<i class="ph-bold ph-user-circle"></i>'} <span style="font-weight:800;color:var(--text-soft);">${escapeHTML(req.displayName || req.user)}</span>${req.displayName && req.displayName !== req.user ? ` <span style="font-weight:600;color:var(--text-faint);font-size:0.78rem;">@${escapeHTML(req.user)}</span>` : ''}</div>
                             <div class="req-desc">
                                 <span class="req-desc-eyebrow"><i class="ph-bold ph-globe-hemisphere-west"></i> Asal Karakter</span>
                                 ${detailHtml}
