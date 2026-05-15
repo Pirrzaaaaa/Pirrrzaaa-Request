@@ -24,7 +24,7 @@ const CONFIG = {
   maxRestarts      : 50,
   baseDelay        : 2000,
   maxDelay         : 30000,
-  memThreshold     : 512,         // MB
+  memThreshold     : 1536,        // MB (1.5 GB)
   memCheckInterval : 60000,
   healthInterval   : 30000,
   logFile          : path.join(__dirname, 'crash.log'),
