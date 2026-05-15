@@ -1,0 +1,40 @@
+{
+  "name": "ryuuzaa-md",
+  "version": "1.0.0",
+  "description": "Ryuuzaa MD — WhatsApp Bot berbasis Baileys. Mendukung case-handler, plugins CommonJS (.cjs) & ESM (.mjs/.js), serta database SQLite.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "main": "node main.js",
+    "dev": "node --watch main.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "baileys",
+    "ryuuzaa",
+    "sqlite",
+    "case-handler",
+    "plugins"
+  ],
+  "author": "Ryuuzaa",
+  "license": "MIT",
+  "dependencies": {
+    "baileys": "latest",
+    "better-sqlite3": "^11.3.0",
+    "chalk": "^4.1.2",
+    "file-type": "^16.5.4",
+    "fluent-ffmpeg": "^2.1.3",
+    "form-data": "^4.0.0",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^2.7.0",
+    "pino": "^9.4.0",
+    "qrcode-terminal": "^0.12.0",
+    "sharp": "^0.33.5",
+    "wa-sticker-formatter": "^4.4.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
