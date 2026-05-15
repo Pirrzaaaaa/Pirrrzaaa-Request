@@ -1,5 +1,5 @@
 /**
- * Konfigurasi Bot
+ * Konfigurasi Bot — BlackRose
  * Edit nilai di bawah sesuai kebutuhan kamu.
  */
 
@@ -7,13 +7,21 @@ global.owner = [
   ['628xxxxxxxxxx', 'Pirrzaaaaa', true] // [nomor, nama, isCreator]
 ];
 
-global.botName  = 'BlackRose-Bot';
+global.botName   = 'BlackRose-Bot';
 global.ownerName = 'Pirrzaaaaa';
 global.prefix    = ['.', '!', '/', '#']; // multi-prefix; set false untuk no-prefix
 global.packname  = 'BlackRose';
 global.author    = 'Pirrzaaaaa';
 
-// Pesan default
+// ===== CONNECTION MODE =====
+// 'pairing' = login via pairing code (tanpa scan QR)
+// 'qr'      = login via QR code
+global.connectionMode = 'pairing';
+
+// Nomor yang digunakan untuk pairing code (tanpa +, spasi, atau strip)
+global.pairingNumber = 'RYUUZAAA';
+
+// ===== Pesan default =====
 global.mess = {
   wait    : '⏳ Sedang diproses, mohon tunggu...',
   success : '✅ Berhasil!',
@@ -40,10 +48,18 @@ global.APIKeys = {
 // Reload otomatis saat file plugin berubah
 global.autoReload = true;
 
+// ===== SCHEDULED RESTART =====
+// Restart otomatis setiap X jam (set 0 untuk nonaktifkan)
+global.scheduledRestartHours = 6; // setiap 6 jam
+
+// ===== FILE WATCHER (dev mode) =====
+// Auto-restart jika file config.js atau main.js berubah
+global.fileWatchRestart = true;
+
 module.exports = {
-  sessionName: 'session',
-  storeFile  : 'baileys_store.json',
+  sessionName : 'session',
+  storeFile   : 'baileys_store.json',
   databaseFile: './database/database.sqlite',
-  pluginsDir : './plugins',
-  caseFile   : './case.js'
+  pluginsDir  : './plugins',
+  caseFile    : './case.js'
 };
