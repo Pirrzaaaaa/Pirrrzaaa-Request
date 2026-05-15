@@ -21,7 +21,7 @@
   "author": "Ryuuzaa",
   "license": "MIT",
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.7.9",
+    "baileys": "^6.7.9",
     "better-sqlite3": "^11.3.0",
     "chalk": "^4.1.2",
     "file-type": "^16.5.4",
