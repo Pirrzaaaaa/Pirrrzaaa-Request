@@ -112,21 +112,28 @@ function logCrash(code, signal) {
 
 // ===== Banner =====
 function printBanner() {
+  const mode = (global.connectionMode || 'pairing').toUpperCase();
+  const fw = global.fileWatchRestart !== false ? 'active' : 'off';
+  const now = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+
   console.log('');
-  console.log(`${c.magenta}${c.bold}  ╔══════════════════════════════════════════════════╗${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║                                                  ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║     ${c.red}🌹 R Y U U Z A A   M D  —  W A  B O T 🌹${c.magenta}    ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║                                                  ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ╠══════════════════════════════════════════════════╣${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}Node.js${c.reset}    : ${c.white}${process.version.padEnd(30)}${c.magenta}${c.bold}   ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}PID${c.reset}        : ${c.white}${String(process.pid).padEnd(30)}${c.magenta}${c.bold}   ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}Platform${c.reset}   : ${c.white}${(process.platform + ' ' + process.arch).padEnd(30)}${c.magenta}${c.bold}   ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}Mode${c.reset}       : ${c.white}${(global.connectionMode || 'pairing').padEnd(30)}${c.magenta}${c.bold}   ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}Auto-Restart${c.reset}: ${c.green}${'Enabled (max ' + CONFIG.maxRestarts + 'x)'.padEnd(30)}${c.magenta}${c.bold}║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}Scheduled${c.reset}  : ${c.yellow}${'Every ' + CONFIG.scheduledRestartHours + ' hours'.padEnd(28)}${c.magenta}${c.bold}   ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}File Watch${c.reset} : ${c.green}${(global.fileWatchRestart !== false ? 'Active' : 'Disabled').padEnd(30)}${c.magenta}${c.bold}   ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}RAM Limit${c.reset}  : ${c.white}${(CONFIG.memThreshold + ' MB').padEnd(30)}${c.magenta}${c.bold}   ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ╚══════════════════════════════════════════════════╝${c.reset}`);
+  console.log(`${c.white}${c.bold}     ╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮${c.reset}`);
+  console.log(`${c.white}${c.bold}     ┃${c.reset}                                            ${c.white}${c.bold}┃${c.reset}`);
+  console.log(`${c.white}${c.bold}     ┃${c.reset}   ${c.cyan}${c.bold}R Y U U Z A A${c.reset}  ${c.gray}·${c.reset}  ${c.magenta}${c.bold}M D${c.reset}                  ${c.white}${c.bold}┃${c.reset}`);
+  console.log(`${c.white}${c.bold}     ┃${c.reset}   ${c.gray}WhatsApp Multi-Device Bot${c.reset}               ${c.white}${c.bold}┃${c.reset}`);
+  console.log(`${c.white}${c.bold}     ┃${c.reset}                                            ${c.white}${c.bold}┃${c.reset}`);
+  console.log(`${c.white}${c.bold}     ╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯${c.reset}`);
+  console.log('');
+  console.log(`${c.gray}     ┌─────────────┬────────────────────────────────┐${c.reset}`);
+  console.log(`${c.gray}     │${c.reset} ${c.cyan}runtime${c.reset}     ${c.gray}│${c.reset} ${c.white}${process.version}${c.reset} ${c.gray}(pid ${process.pid})${c.reset}`);
+  console.log(`${c.gray}     │${c.reset} ${c.cyan}platform${c.reset}    ${c.gray}│${c.reset} ${c.white}${process.platform} ${process.arch}${c.reset}`);
+  console.log(`${c.gray}     │${c.reset} ${c.cyan}mode${c.reset}        ${c.gray}│${c.reset} ${c.yellow}${mode}${c.reset}`);
+  console.log(`${c.gray}     │${c.reset} ${c.cyan}auto-restart${c.reset}${c.gray}│${c.reset} ${c.green}enabled${c.reset} ${c.gray}(max ${CONFIG.maxRestarts}x)${c.reset}`);
+  console.log(`${c.gray}     │${c.reset} ${c.cyan}schedule${c.reset}    ${c.gray}│${c.reset} ${c.green}every ${CONFIG.scheduledRestartHours}h${c.reset}`);
+  console.log(`${c.gray}     │${c.reset} ${c.cyan}file-watch${c.reset}  ${c.gray}│${c.reset} ${c.green}${fw}${c.reset}`);
+  console.log(`${c.gray}     │${c.reset} ${c.cyan}ram-limit${c.reset}   ${c.gray}│${c.reset} ${c.red}${CONFIG.memThreshold} MB${c.reset}`);
+  console.log(`${c.gray}     │${c.reset} ${c.cyan}started${c.reset}     ${c.gray}│${c.reset} ${c.gray}${now}${c.reset}`);
+  console.log(`${c.gray}     └─────────────┴────────────────────────────────┘${c.reset}`);
   console.log('');
 }
 

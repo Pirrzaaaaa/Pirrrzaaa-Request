@@ -45,23 +45,25 @@ const question = (text) => new Promise(resolve => rl.question(text, resolve));
 // ===== Console info helpers =====
 function printStartupInfo(version, isLatest) {
   console.log('');
-  console.log(chalk.magenta.bold('  ╔══════════════════════════════════════════════════╗'));
-  console.log(chalk.magenta.bold('  ║') + chalk.red.bold('        🌹 Ryuuzaa MD WhatsApp Bot 🌹             ') + chalk.magenta.bold('║'));
-  console.log(chalk.magenta.bold('  ╠══════════════════════════════════════════════════╣'));
-  console.log(chalk.magenta.bold('  ║') + chalk.white(`  Baileys    : v${version.join('.')} (latest: ${isLatest})`.padEnd(50)) + chalk.magenta.bold('║'));
-  console.log(chalk.magenta.bold('  ║') + chalk.white(`  Bot Name   : ${global.botName || 'Ryuuzaa MD'}`.padEnd(50)) + chalk.magenta.bold('║'));
-  console.log(chalk.magenta.bold('  ║') + chalk.white(`  Owner      : ${global.ownerName || '-'}`.padEnd(50)) + chalk.magenta.bold('║'));
-  console.log(chalk.magenta.bold('  ║') + chalk.white(`  Prefix     : ${JSON.stringify(global.prefix || ['.'])}`.padEnd(50)) + chalk.magenta.bold('║'));
-  console.log(chalk.magenta.bold('  ║') + chalk.white(`  Mode       : ${(global.connectionMode || 'pairing').toUpperCase()}`.padEnd(50)) + chalk.magenta.bold('║'));
-  console.log(chalk.magenta.bold('  ║') + chalk.white(`  Session    : ./${sessionName}/`.padEnd(50)) + chalk.magenta.bold('║'));
-  console.log(chalk.magenta.bold('  ╚══════════════════════════════════════════════════╝'));
+  console.log(chalk.white.bold('     ╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮'));
+  console.log(chalk.white.bold('     ┃') + '                                            ' + chalk.white.bold('┃'));
+  console.log(chalk.white.bold('     ┃') + chalk.cyan.bold('   R Y U U Z A A') + chalk.gray(' · ') + chalk.magenta.bold('M D') + '                  ' + chalk.white.bold('┃'));
+  console.log(chalk.white.bold('     ┃') + chalk.gray('   WhatsApp Multi-Device Bot') + '               ' + chalk.white.bold('┃'));
+  console.log(chalk.white.bold('     ┃') + '                                            ' + chalk.white.bold('┃'));
+  console.log(chalk.white.bold('     ╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯'));
+  console.log('');
+  console.log(chalk.gray('     ┌─────────────┬────────────────────────────────┐'));
+  console.log(chalk.gray('     │') + chalk.cyan(' baileys') + chalk.gray('     │ ') + chalk.white(`v${version.join('.')}`) + chalk.gray(` (latest: ${isLatest})`));
+  console.log(chalk.gray('     │') + chalk.cyan(' bot') + chalk.gray('         │ ') + chalk.white(global.botName || 'Ryuuzaa MD'));
+  console.log(chalk.gray('     │') + chalk.cyan(' owner') + chalk.gray('       │ ') + chalk.white(global.ownerName || '-'));
+  console.log(chalk.gray('     │') + chalk.cyan(' prefix') + chalk.gray('      │ ') + chalk.yellow(JSON.stringify(global.prefix || ['.'])));
+  console.log(chalk.gray('     │') + chalk.cyan(' mode') + chalk.gray('        │ ') + chalk.yellow((global.connectionMode || 'pairing').toUpperCase()));
+  console.log(chalk.gray('     │') + chalk.cyan(' session') + chalk.gray('     │ ') + chalk.gray(`./${sessionName}/`));
+  console.log(chalk.gray('     └─────────────┴────────────────────────────────┘'));
   console.log('');
 }
 
-function printPluginInfo(pluginNames) {
-  console.log(chalk.cyan.bold('  ┌─── Plugins Loaded ─────────────────────────────┐'));
-  
-  // Kategorikan
+function printPluginInfo() {
   const categories = {};
   for (const [name, plugin] of global.plugins) {
     const cat = plugin.category || 'misc';
@@ -69,46 +71,46 @@ function printPluginInfo(pluginNames) {
     categories[cat].push(name);
   }
 
+  console.log(chalk.gray('     ┌─ plugins ──────────────────────────────────────┐'));
   for (const [cat, items] of Object.entries(categories).sort()) {
-    console.log(chalk.cyan('  │') + chalk.yellow(` 📂 ${cat.toUpperCase()} (${items.length})`));
+    console.log(chalk.gray('     │ ') + chalk.yellow(`${cat}`) + chalk.gray(` (${items.length})`));
     for (const item of items) {
       const ext = path.extname(item);
-      const icon = ext === '.mjs' ? '📦' : ext === '.cjs' ? '📋' : '📄';
-      console.log(chalk.cyan('  │') + chalk.gray(`   ${icon} ${item}`));
+      const tag = ext === '.mjs' ? chalk.magenta('esm') : ext === '.cjs' ? chalk.blue('cjs') : chalk.gray(' js');
+      console.log(chalk.gray('     │   ') + tag + chalk.gray(' ') + chalk.white(item));
     }
   }
-
-  console.log(chalk.cyan('  │'));
-  console.log(chalk.cyan('  │') + chalk.green.bold(` ✓ Total: ${global.plugins.size} plugin(s) loaded`));
-  console.log(chalk.cyan.bold('  └──────────────────────────────────────────────────┘'));
+  console.log(chalk.gray('     │'));
+  console.log(chalk.gray('     │ ') + chalk.green.bold(`✓ ${global.plugins.size} plugin(s) loaded`));
+  console.log(chalk.gray('     └──────────────────────────────────────────────────┘'));
   console.log('');
 }
 
 function printDatabaseInfo() {
   const stats = global.db.stats();
-  console.log(chalk.blue.bold('  ┌─── Database Info ────────────────────────────────┐'));
-  console.log(chalk.blue('  │') + chalk.white(` 💾 Engine     : SQLite (better-sqlite3)`));
-  console.log(chalk.blue('  │') + chalk.white(` 📁 File       : ${databaseFile}`));
-  console.log(chalk.blue('  │') + chalk.white(` 👥 Users      : ${stats.users}`));
-  console.log(chalk.blue('  │') + chalk.white(` 💬 Groups     : ${stats.groups}`));
-  console.log(chalk.blue('  │') + chalk.white(` 📊 Tables     : users, groups, settings`));
-  console.log(chalk.blue.bold('  └──────────────────────────────────────────────────┘'));
+  console.log(chalk.gray('     ┌─ database ─────────────────────────────────────┐'));
+  console.log(chalk.gray('     │ ') + chalk.cyan('engine') + chalk.gray('  │ ') + chalk.white('SQLite (better-sqlite3)'));
+  console.log(chalk.gray('     │ ') + chalk.cyan('file') + chalk.gray('    │ ') + chalk.white(databaseFile));
+  console.log(chalk.gray('     │ ') + chalk.cyan('users') + chalk.gray('   │ ') + chalk.green(stats.users));
+  console.log(chalk.gray('     │ ') + chalk.cyan('groups') + chalk.gray('  │ ') + chalk.green(stats.groups));
+  console.log(chalk.gray('     │ ') + chalk.cyan('tables') + chalk.gray('  │ ') + chalk.gray('users, groups, settings'));
+  console.log(chalk.gray('     └──────────────────────────────────────────────────┘'));
   console.log('');
 }
 
 function printConnectionInfo() {
   const mode = (global.connectionMode || 'pairing').toUpperCase();
   if (mode === 'PAIRING') {
-    console.log(chalk.yellow.bold('  ┌─── Connection Mode ──────────────────────────────┐'));
-    console.log(chalk.yellow('  │') + chalk.white(` 🔗 Mode           : PAIRING CODE`));
-    console.log(chalk.yellow('  │') + chalk.white(` 📱 Pairing Number : ${global.pairingNumber || '-'}`));
-    console.log(chalk.yellow('  │') + chalk.gray(`    Menunggu pairing code...`));
-    console.log(chalk.yellow.bold('  └──────────────────────────────────────────────────┘'));
+    console.log(chalk.gray('     ┌─ connection ───────────────────────────────────┐'));
+    console.log(chalk.gray('     │ ') + chalk.cyan('mode') + chalk.gray('    │ ') + chalk.yellow('PAIRING CODE'));
+    console.log(chalk.gray('     │ ') + chalk.cyan('number') + chalk.gray('  │ ') + chalk.white(global.pairingNumber || '-'));
+    console.log(chalk.gray('     │ ') + chalk.gray('          menunggu pairing code...'));
+    console.log(chalk.gray('     └──────────────────────────────────────────────────┘'));
   } else {
-    console.log(chalk.yellow.bold('  ┌─── Connection Mode ──────────────────────────────┐'));
-    console.log(chalk.yellow('  │') + chalk.white(` 📷 Mode : QR CODE`));
-    console.log(chalk.yellow('  │') + chalk.gray(`    Scan QR di bawah...`));
-    console.log(chalk.yellow.bold('  └──────────────────────────────────────────────────┘'));
+    console.log(chalk.gray('     ┌─ connection ───────────────────────────────────┐'));
+    console.log(chalk.gray('     │ ') + chalk.cyan('mode') + chalk.gray('    │ ') + chalk.yellow('QR CODE'));
+    console.log(chalk.gray('     │ ') + chalk.gray('          scan QR di bawah...'));
+    console.log(chalk.gray('     └──────────────────────────────────────────────────┘'));
   }
   console.log('');
 }
@@ -293,7 +295,7 @@ async function startBot() {
 }
 
 // ===== Boot =====
-console.log(chalk.gray(`  [${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })}] Starting Ryuuzaa MD...`));
+console.log(chalk.gray(`     [${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })}] starting ryuuzaa md...`));
 console.log('');
 
 startBot().catch(err => {
