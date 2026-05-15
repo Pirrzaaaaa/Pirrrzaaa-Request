@@ -1,7 +1,7 @@
 {
-  "name": "wa-bot-blackrose",
+  "name": "ryuuzaa-md",
   "version": "1.0.0",
-  "description": "WhatsApp Bot BlackRose-style berbasis Baileys. Mendukung case-handler, plugins CommonJS (.cjs) & ESM (.mjs/.js), serta database SQLite.",
+  "description": "Ryuuzaa MD — WhatsApp Bot berbasis Baileys. Mendukung case-handler, plugins CommonJS (.cjs) & ESM (.mjs/.js), serta database SQLite.",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
@@ -13,12 +13,12 @@
     "whatsapp",
     "bot",
     "baileys",
-    "blackrose",
+    "ryuuzaa",
     "sqlite",
     "case-handler",
     "plugins"
   ],
-  "author": "Pirrzaaaaa",
+  "author": "Ryuuzaa",
   "license": "MIT",
   "dependencies": {
     "@whiskeysockets/baileys": "^6.7.9",

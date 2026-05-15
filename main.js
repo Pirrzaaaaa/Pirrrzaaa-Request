@@ -1,5 +1,5 @@
 /**
- * main.js — BlackRose Core Bot
+ * main.js — Ryuuzaa MD Core Bot
  * Membuat koneksi Baileys, memuat plugins (CJS + ESM), dan menjalankan handler.
  * Mengirim plugin report & DB info ke parent (index.js) via IPC.
  * Connection mode: pairing / qr (dari config.js)
@@ -46,10 +46,10 @@ const question = (text) => new Promise(resolve => rl.question(text, resolve));
 function printStartupInfo(version, isLatest) {
   console.log('');
   console.log(chalk.magenta.bold('  ╔══════════════════════════════════════════════════╗'));
-  console.log(chalk.magenta.bold('  ║') + chalk.red.bold('        🌹 BlackRose WhatsApp Bot 🌹              ') + chalk.magenta.bold('║'));
+  console.log(chalk.magenta.bold('  ║') + chalk.red.bold('        🌹 Ryuuzaa MD WhatsApp Bot 🌹             ') + chalk.magenta.bold('║'));
   console.log(chalk.magenta.bold('  ╠══════════════════════════════════════════════════╣'));
   console.log(chalk.magenta.bold('  ║') + chalk.white(`  Baileys    : v${version.join('.')} (latest: ${isLatest})`.padEnd(50)) + chalk.magenta.bold('║'));
-  console.log(chalk.magenta.bold('  ║') + chalk.white(`  Bot Name   : ${global.botName || 'BlackRose-Bot'}`.padEnd(50)) + chalk.magenta.bold('║'));
+  console.log(chalk.magenta.bold('  ║') + chalk.white(`  Bot Name   : ${global.botName || 'Ryuuzaa MD'}`.padEnd(50)) + chalk.magenta.bold('║'));
   console.log(chalk.magenta.bold('  ║') + chalk.white(`  Owner      : ${global.ownerName || '-'}`.padEnd(50)) + chalk.magenta.bold('║'));
   console.log(chalk.magenta.bold('  ║') + chalk.white(`  Prefix     : ${JSON.stringify(global.prefix || ['.'])}`.padEnd(50)) + chalk.magenta.bold('║'));
   console.log(chalk.magenta.bold('  ║') + chalk.white(`  Mode       : ${(global.connectionMode || 'pairing').toUpperCase()}`.padEnd(50)) + chalk.magenta.bold('║'));
@@ -162,7 +162,7 @@ async function startBot() {
     },
     msgRetryCounterCache: new NodeCache(),
     generateHighQualityLinkPreview: true,
-    getMessage: async () => ({ conversation: 'BlackRose-Bot' })
+    getMessage: async () => ({ conversation: 'Ryuuzaa MD' })
   });
 
   // ----- Pairing Code mode -----
@@ -293,7 +293,7 @@ async function startBot() {
 }
 
 // ===== Boot =====
-console.log(chalk.gray(`  [${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })}] Starting BlackRose Bot...`));
+console.log(chalk.gray(`  [${new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })}] Starting Ryuuzaa MD...`));
 console.log('');
 
 startBot().catch(err => {

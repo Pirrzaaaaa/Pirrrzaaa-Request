@@ -1,5 +1,5 @@
 /**
- * handler.js — BlackRose Full-Featured Message Handler
+ * handler.js — Ryuuzaa MD Full-Featured Message Handler
  *
  * Pipeline:
  *  1. Filter (baileys msg, status broadcast, banned user)

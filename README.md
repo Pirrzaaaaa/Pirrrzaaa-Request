@@ -1,6 +1,6 @@
-# BlackRose WhatsApp Bot
+# Ryuuzaa MD
 
-WhatsApp Bot berbasis [Baileys](https://github.com/WhiskeySockets/Baileys) dengan struktur **BlackRose-style** yang fleksibel:
+WhatsApp Bot berbasis [Baileys](https://github.com/WhiskeySockets/Baileys) yang fleksibel:
 
 - ✅ **Case handler** (`case.js`) — gaya legacy `switch/case`
 - ✅ **Plugin system** — mendukung **CommonJS (`.cjs`)**, **ESM (`.mjs`)**, dan **JS biasa (`.js`)**
@@ -8,6 +8,9 @@ WhatsApp Bot berbasis [Baileys](https://github.com/WhiskeySockets/Baileys) denga
 - ✅ **Database SQLite** (`better-sqlite3`) — users, groups, settings
 - ✅ **Auto restart** dari `index.js`
 - ✅ **Pairing code** & **QR code** login
+- ✅ **Scheduled restart** (setiap 6 jam)
+- ✅ **File watcher** (auto-restart saat config/main/handler berubah)
+- ✅ **Plugin report** (tampil di console saat boot)
 - ✅ **Group event** (welcome, leave, promote, demote)
 
 ---
@@ -15,7 +18,7 @@ WhatsApp Bot berbasis [Baileys](https://github.com/WhiskeySockets/Baileys) denga
 ## Struktur Project
 
 ```
-wa-bot-blackrose/
+ryuuzaa-md/
 ├── index.js              # Auto-restart wrapper
 ├── main.js               # Core (Baileys connect + load plugins + handler)
 ├── handler.js            # Pipeline pesan: case -> plugins
@@ -44,8 +47,8 @@ wa-bot-blackrose/
 ## Instalasi
 
 ```bash
-git clone <repo-url> wa-bot-blackrose
-cd wa-bot-blackrose
+git clone <repo-url> ryuuzaa-md
+cd ryuuzaa-md
 npm install
 ```
 
@@ -61,19 +64,23 @@ global.owner = [
 
 ## Menjalankan
 
-**Dengan QR code (default):**
+**Dengan Pairing Code (default):**
 
 ```bash
 npm start
 ```
 
-**Dengan Pairing Code (tanpa scan QR):**
+**Dengan QR Code:**
 
-```bash
-node index.js --pairing
+Ubah di `config.js`:
+```js
+global.connectionMode = 'qr';
 ```
 
-Setelah login, session disimpan di folder `./session/` agar tidak perlu login ulang.
+Lalu jalankan:
+```bash
+npm start
+```
 
 ---
 
@@ -87,9 +94,6 @@ module.exports = {
   command : ['halo', 'hello'],
   category: 'tools',
   desc    : 'Sapa bot',
-  group   : false,   // true = hanya di grup
-  admin   : false,   // true = hanya admin grup
-  owner   : false,   // true = hanya owner
   handler : async ({ reply, m }) => {
     await reply(`Halo ${m.pushName}!`);
   }
@@ -123,42 +127,15 @@ module.exports = [
 
 ---
 
-## Context (`ctx`) yang tersedia di handler
-
-| Property      | Tipe        | Keterangan                                    |
-| ------------- | ----------- | --------------------------------------------- |
-| `sock`        | object      | Instance Baileys socket                       |
-| `m`           | object      | Pesan yang sudah di-serialize                 |
-| `body`        | string      | Teks pesan                                    |
-| `args`        | string[]    | Argumen setelah command                       |
-| `text`        | string      | Argumen di-join spasi                         |
-| `command`     | string      | Nama command (lowercase)                      |
-| `usedPrefix`  | string      | Prefix yang dipakai user                      |
-| `isOwner`     | boolean     | Sender adalah owner                           |
-| `isAdmin`     | boolean     | Sender adalah admin grup                      |
-| `isBotAdmin`  | boolean     | Bot adalah admin grup                         |
-| `db`          | Database    | Akses SQLite                                  |
-| `reply(text)` | function    | Kirim balasan teks                            |
-| `react(emoji)`| function    | Reaksi ke pesan                               |
-
-`m.quoted` (jika ada): pesan yang di-reply, lengkap dengan `m.quoted.download()`.
-
----
-
 ## Database
 
 Tiga tabel default: `users`, `groups`, `settings`.
-
-Contoh penggunaan:
 
 ```js
 db.ensureUser(m.sender, m.pushName);
 db.addExp(m.sender, 25);
 db.addMoney(m.sender, 1000);
-
 db.setSetting('foo', 'bar');
-const v = db.getSetting('foo');
-
 const stats = db.stats(); // { users, groups }
 ```
 
@@ -166,20 +143,6 @@ File DB disimpan di `./database/database.sqlite` (otomatis dibuat).
 
 ---
 
-## Case Handler
-
-Edit `case.js` untuk command sederhana:
-
-```js
-case 'halo':
-  await reply('Halo!');
-  return true;  // <- return true = hentikan pipeline (skip plugin)
-```
-
-Bila `return false`/tidak return, eksekusi lanjut ke plugins.
-
----
-
 ## Lisensi
 
-MIT © Pirrzaaaaa
+MIT

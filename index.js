@@ -1,5 +1,5 @@
 /**
- * index.js — BlackRose Auto-Restart Manager v2
+ * index.js — Ryuuzaa MD Auto-Restart Manager v2
  * 
  * Features:
  *  - Auto restart on crash with exponential backoff
@@ -115,7 +115,7 @@ function printBanner() {
   console.log('');
   console.log(`${c.magenta}${c.bold}  ╔══════════════════════════════════════════════════╗${c.reset}`);
   console.log(`${c.magenta}${c.bold}  ║                                                  ║${c.reset}`);
-  console.log(`${c.magenta}${c.bold}  ║     ${c.red}🌹 B L A C K R O S E  —  W A  B O T 🌹${c.magenta}      ║${c.reset}`);
+  console.log(`${c.magenta}${c.bold}  ║     ${c.red}🌹 R Y U U Z A A   M D  —  W A  B O T 🌹${c.magenta}    ║${c.reset}`);
   console.log(`${c.magenta}${c.bold}  ║                                                  ║${c.reset}`);
   console.log(`${c.magenta}${c.bold}  ╠══════════════════════════════════════════════════╣${c.reset}`);
   console.log(`${c.magenta}${c.bold}  ║${c.reset}  ${c.cyan}Node.js${c.reset}    : ${c.white}${process.version.padEnd(30)}${c.magenta}${c.bold}   ║${c.reset}`);
@@ -264,7 +264,7 @@ function start() {
   const args = [CONFIG.mainFile, ...process.argv.slice(2)];
   child = spawn(process.execPath, args, {
     stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
-    env: { ...process.env, BLACKROSE_RESTART_COUNT: String(restartCount) }
+    env: { ...process.env, RYUUZAA_RESTART_COUNT: String(restartCount) }
   });
 
   // ----- IPC Messages -----

@@ -24,7 +24,7 @@ module.exports = {
     const buffer = await target.download();
 
     const sticker = new Sticker(buffer, {
-      pack    : global.packname || 'BlackRose',
+      pack    : global.packname || 'Ryuuzaa MD',
       author  : global.author   || 'Bot',
       type    : StickerTypes.FULL,
       quality : 70

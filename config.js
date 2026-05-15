@@ -1,17 +1,17 @@
 /**
- * Konfigurasi Bot — BlackRose
+ * Konfigurasi Bot — Ryuuzaa MD
  * Edit nilai di bawah sesuai kebutuhan kamu.
  */
 
 global.owner = [
-  ['628xxxxxxxxxx', 'Pirrzaaaaa', true] // [nomor, nama, isCreator]
+  ['628xxxxxxxxxx', 'Ryuuzaa', true] // [nomor, nama, isCreator]
 ];
 
-global.botName   = 'BlackRose-Bot';
-global.ownerName = 'Pirrzaaaaa';
+global.botName   = 'Ryuuzaa MD';
+global.ownerName = 'Ryuuzaa';
 global.prefix    = ['.', '!', '/', '#']; // multi-prefix; set false untuk no-prefix
-global.packname  = 'BlackRose';
-global.author    = 'Pirrzaaaaa';
+global.packname  = 'Ryuuzaa MD';
+global.author    = 'Ryuuzaa';
 
 // ===== CONNECTION MODE =====
 // 'pairing' = login via pairing code (tanpa scan QR)

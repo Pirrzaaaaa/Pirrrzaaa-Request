@@ -1,5 +1,5 @@
 /**
- * case.js — Case-style handler (BlackRose / Lyfia / Adiwajshing legacy)
+ * case.js — Case-style handler (Ryuuzaa MD)
  * Return `true` untuk menghentikan pipeline (skip plugins).
  *
  * Tambahkan case kamu di blok switch.
