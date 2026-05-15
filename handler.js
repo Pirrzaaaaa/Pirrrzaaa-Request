@@ -25,6 +25,14 @@ const path  = require('path');
 const fs    = require('fs');
 
 const { caseFile } = require('./config');
+const {
+  sendTrolleyText,
+  sendTrolleyImage,
+  sendTrolleyDocument,
+  sendTrolleyAudio,
+  sendNativeTrolleyReply,
+  safeStyledReply
+} = require('./lib/global-reply');
 
 // ===== ANTI-SPAM / COOLDOWN =====
 const cooldowns = new Map();  // Map<senderJid, timestamp>
@@ -276,21 +284,25 @@ module.exports = async function handler(sock, m, chatUpdate) {
     participants: groupMetadata?.participants || [],
     // Database
     db,
-    // Helpers (shortcut)
-    reply    : (t, opts) => m.reply(t, opts),
+    // Helpers (shortcut) — pakai global-reply style (trolley + newsletter)
+    reply    : (t, opts) => safeStyledReply(sock, m, t, opts),
+    send     : (t, opts) => sendTrolleyText(sock, m, t, opts),
     react    : (e) => m.react(e),
-    send     : (t, opts) => m.send(t, opts),
     typing   : () => m.typing(),
-    // Media helpers
-    replyImage   : (buf, cap, opts) => m.replyImage(buf, cap, opts),
+    // Reply biasa (tanpa style, fallback)
+    replyPlain: (t, opts) => m.reply(t, opts),
+    // Media helpers (pakai trolley quoted)
+    replyImage   : (buf, cap, opts) => sendTrolleyImage(sock, m, buf, cap, opts),
     replyVideo   : (buf, cap, opts) => m.replyVideo(buf, cap, opts),
-    replyAudio   : (buf, opts) => m.replyAudio(buf, opts),
+    replyAudio   : (buf, opts) => sendTrolleyAudio(sock, m, buf, {}, opts),
     replyPtt     : (buf, opts) => m.replyPtt(buf, opts),
     replySticker : (buf, opts) => m.replySticker(buf, opts),
-    replyDocument: (buf, fn, mt, opts) => m.replyDocument(buf, fn, mt, opts),
+    replyDocument: (buf, fn, mt, opts) => sendTrolleyDocument(sock, m, buf, { fileName: fn, mimetype: mt }, opts),
     replyContact : (name, num) => m.replyContact(name, num),
     replyLocation: (lat, lon, opts) => m.replyLocation(lat, lon, opts),
     replyPoll    : (name, vals, cnt) => m.replyPoll(name, vals, cnt),
+    // Interactive (native buttons + limited offer)
+    replyInteractive: (body, opts) => sendNativeTrolleyReply(sock, m, { body, ...opts }, opts),
     // Utility
     download   : () => (m.quoted?.isMedia ? m.quoted.download() : m.download()),
     forward    : (jid) => m.forward(jid),
