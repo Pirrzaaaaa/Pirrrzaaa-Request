@@ -1,0 +1,11 @@
+node_modules/
+session/
+database/
+*.log
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+baileys_store.json
+.env
+.DS_Store
